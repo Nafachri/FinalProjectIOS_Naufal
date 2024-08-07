@@ -18,6 +18,7 @@ import netfox
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
+  var app: AppCoordinator?
   
   var authDependency = AuthenticationModule()
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -47,14 +48,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     //MARK: set coordinator
     let authenticationDependency = AuthenticationModule()
-    let app = AppCoordinator(
+      app = AppCoordinator(
       profileDependency: ProfileModule(),
       authDependency: authenticationDependency,
       settingDependency: SettingModule(),
       contactDependency: ContactsModule(),
       onBoardingDependency: OnBoardingModule(authDependency: authenticationDependency),
       navigationController: nav)
-    app.start()
+    app?.start()
   }
   
   func sceneDidDisconnect(_ scene: UIScene) {
