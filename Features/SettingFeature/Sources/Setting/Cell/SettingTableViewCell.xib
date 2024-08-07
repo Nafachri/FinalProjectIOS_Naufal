@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="98" id="KGk-i7-Jjw" customClass="SettingTableViewCell" customModule="SettingFeature" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="317" height="98"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="317" height="98"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9tX-BR-0yM">
+                        <rect key="frame" x="15.999999999999998" y="17" width="19.333333333333329" height="29.333333333333336"/>
+                        <color key="tintColor" systemColor="systemYellowColor"/>
+                        <imageReference key="image" image="moon.fill" catalog="system" variableValue="0.0"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="theme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-sm-nPO">
+                        <rect key="frame" x="51.333333333333329" y="16" width="60.333333333333329" height="31"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y64-TL-e5E">
+                        <rect key="frame" x="51.333333333333329" y="42" width="192.66666666666669" height="32"/>
+                        <string key="text">choose your preference using 
+dark mode or light mode</string>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xKn-4O-kvZ">
+                        <rect key="frame" x="252" y="16" width="51" height="31"/>
+                        <color key="onTintColor" red="0.14901960780000001" green="0.41568627450000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <action selector="switchButton:" destination="KGk-i7-Jjw" eventType="valueChanged" id="kfO-w6-fc3"/>
+                        </connections>
+                    </switch>
+                </subviews>
+                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                <constraints>
+                    <constraint firstItem="yFk-sm-nPO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="A3S-hF-nTH"/>
+                    <constraint firstItem="yFk-sm-nPO" firstAttribute="centerY" secondItem="9tX-BR-0yM" secondAttribute="centerY" id="CxM-3c-RG6"/>
+                    <constraint firstItem="9tX-BR-0yM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="H6C-er-CCX"/>
+                    <constraint firstItem="Y64-TL-e5E" firstAttribute="top" secondItem="yFk-sm-nPO" secondAttribute="baseline" id="HF0-9J-7Bu"/>
+                    <constraint firstAttribute="trailing" secondItem="xKn-4O-kvZ" secondAttribute="trailing" constant="16" id="M4q-FG-p7d"/>
+                    <constraint firstItem="xKn-4O-kvZ" firstAttribute="leading" secondItem="Y64-TL-e5E" secondAttribute="trailing" constant="8" id="TTF-py-woT"/>
+                    <constraint firstItem="xKn-4O-kvZ" firstAttribute="centerY" secondItem="9tX-BR-0yM" secondAttribute="centerY" id="bNq-71-SOj"/>
+                    <constraint firstItem="xKn-4O-kvZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="c4Y-Yc-lAM"/>
+                    <constraint firstItem="yFk-sm-nPO" firstAttribute="leading" secondItem="9tX-BR-0yM" secondAttribute="trailing" constant="16" id="eG8-7h-1YU"/>
+                    <constraint firstItem="9tX-BR-0yM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="fhu-EH-clo"/>
+                    <constraint firstItem="Y64-TL-e5E" firstAttribute="leading" secondItem="9tX-BR-0yM" secondAttribute="trailing" constant="16" id="gkS-1k-bqG"/>
+                    <constraint firstAttribute="bottom" secondItem="Y64-TL-e5E" secondAttribute="bottom" constant="24" id="iM9-MR-b97"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="themeIcon" destination="9tX-BR-0yM" id="Rca-a3-JYa"/>
+                <outlet property="uiSwitch" destination="xKn-4O-kvZ" id="RfD-jG-uNv"/>
+            </connections>
+            <point key="canvasLocation" x="-11.450381679389313" y="36.619718309859159"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="moon.fill" catalog="system" width="128" height="123"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
