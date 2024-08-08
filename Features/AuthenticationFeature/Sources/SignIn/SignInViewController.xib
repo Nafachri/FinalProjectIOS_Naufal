@@ -9,11 +9,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignInViewController" customModule="AuthenticationFeature" customModuleProvider="target">
             <connections>
+                <outlet property="emailField" destination="Xhy-Df-juc" id="uR8-Ju-xye"/>
                 <outlet property="forgotPasswordButton" destination="yEd-0z-FX3" id="KC9-tu-afY"/>
                 <outlet property="passwordField" destination="L5g-Wg-41F" id="PX2-Kp-OEz"/>
                 <outlet property="signUpButton" destination="6St-oW-Ebe" id="1P7-dq-Pm5"/>
                 <outlet property="signinButton" destination="hwj-JM-wzs" id="rXQ-W2-sRy"/>
-                <outlet property="usernameField" destination="Xhy-Df-juc" id="3i8-C7-l5N"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,13 +33,13 @@ in the world.</string>
                     <color key="textColor" red="0.50588235294117645" green="0.48627450980392156" blue="0.48627450980392156" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email or username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRZ-H6-sej" userLabel="email or username label">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRZ-H6-sej" userLabel="email or username label">
                     <rect key="frame" x="24" y="251.00000000000003" width="345" height="19.333333333333343"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                     <color key="textColor" red="0.50588235290000005" green="0.48627450979999998" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="enter email or username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xhy-Df-juc" userLabel="email or username textfield">
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xhy-Df-juc" userLabel="email or username textfield">
                     <rect key="frame" x="24" y="278.33333333333331" width="345" height="64"/>
                     <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -55,7 +55,7 @@ in the world.</string>
                     <color key="textColor" red="0.50588235290000005" green="0.48627450979999998" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="enter password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Wg-41F" userLabel="password textfield">
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-Wg-41F" userLabel="password textfield">
                     <rect key="frame" x="24" y="385.66666666666669" width="345" height="64"/>
                     <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>

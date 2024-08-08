@@ -13,12 +13,12 @@ import Services
 class SignInViewModel {
   private let authentication: AuthenticationServiceable
   
-  let username = BehaviorRelay<String>(value: "")
+  let email = BehaviorRelay<String>(value: "")
   let password = BehaviorRelay<String>(value: "")
   let signIn = PublishSubject<Void>()
   
   
-  var usernameError: Driver<String?>!
+  var emailError: Driver<String?>!
   var passwordError: Driver<String?>!
   var disableSignInButton: Driver<Bool>!
   
@@ -37,16 +37,16 @@ class SignInViewModel {
   func setupSigninBinding() {
     signIn.subscribe { [weak self] _ in
       guard let self = self else { return }
-      let username = username.value
+      let email = email.value
       let password = password.value
-      guard !username.isEmpty,
+      guard !email.isEmpty,
             !password.isEmpty else {
         errorMessage.accept("username and password cannot be emptied.")
         return
       }
 
       self.isLoading.accept(true)
-      authentication.signIn(username: username, password: password) { result in
+      authentication.signIn(email: email, password: password) { result in
         self.isLoading.accept(false)
         switch result {
         case .success(let value):

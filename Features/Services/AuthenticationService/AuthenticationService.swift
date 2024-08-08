@@ -9,7 +9,7 @@ import Foundation
 import Networking
 
 public protocol AuthenticationServiceable {
-  func signIn(username: String, password: String, onComplete: @escaping (Result<SigninResponse, PCError>) -> Void)
+  func signIn(email: String, password: String, onComplete: @escaping (Result<SigninResponse, PCError>) -> Void)
   
   func changePassword(email: String, phoneNumber: String, password: String, confirmPassword: String, onComplete: @escaping (Result<ChangePasswordResponse, PCError>) -> Void)
   
@@ -27,11 +27,11 @@ public class AuthenticationService: AuthenticationServiceable {
   }
   
   // MARK: Sign In
-  public func signIn(username: String, password: String, onComplete: @escaping (Result<SigninResponse, PCError>) -> Void) {
+  public func signIn(email: String, password: String, onComplete: @escaping (Result<SigninResponse, PCError>) -> Void) {
     requestor.request(
       "\(baseAPI)/auth/signin", method: .post,
       params: [
-        "username": username,
+        "email": email,
         "password": password],
       onComplete: onComplete
     )

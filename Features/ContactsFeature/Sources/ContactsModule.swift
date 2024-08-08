@@ -16,6 +16,10 @@ public class ContactsModule: ContactsDependency {
     ContactsCoordinator(navigationController: navigationController)
   }
   
+  public func contactDetailCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
+    ContactDetailCoordinator(navigationController: navigationController)
+  }
+  
   public init() {}
   
 }

@@ -17,6 +17,9 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
   let settingDependency: SettingDependency
   let contactsDependency: ContactsDependency
   let onBoardingDependency: OnBoardingDependency
+  let homeDependency: HomeDependency
+  let payRequestDependency: PayRequestDependency
+  let historyDependency: HistoryDependency
   weak var parentCoordinator: Coordinator?
   var childCoordinators = [Coordinator]()
   var navigationController: UINavigationController
@@ -27,6 +30,9 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
       settingDependency: SettingDependency,
       contactDependency: ContactsDependency,
       onBoardingDependency: OnBoardingDependency,
+      homeDependency: HomeDependency,
+      payRequestDependency: PayRequestDependency,
+      historyDependency: HistoryDependency,
        navigationController: UINavigationController) {
     
     self.authDependency = authDependency
@@ -34,6 +40,9 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
          self.settingDependency = settingDependency
          self.contactsDependency = contactDependency
          self.onBoardingDependency = onBoardingDependency
+         self.homeDependency = homeDependency
+         self.payRequestDependency = payRequestDependency
+         self.historyDependency = historyDependency
          self.navigationController = navigationController
   }
   
@@ -42,7 +51,9 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
 //    showProfile()
 //    showSetting()
 //    showContacts()
-    showOnBoarding()
+//    showOnBoarding()
+    showHome()
+//    showHistory()
   }
   
   func showLogin() {
@@ -74,5 +85,24 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
     addChildCoordinator(coordinator)
     coordinator.start()
   }
+  
+  func showHome() {
+    let coordinator = homeDependency.homeCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
+  }
+  
+  func showPayRequest() {
+    let coordinator = payRequestDependency.payRequestCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
+  }
+  
+  func showHistory() {
+    let coordinator = historyDependency.historyCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
+  }
+  
   
 }

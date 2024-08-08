@@ -25,7 +25,15 @@ class ContactsCoordinator: Coordinator {
   
   func start(){
     let contactsVC = ContactsViewController(coordinator: self)
-    navigationController.setViewControllers([contactsVC], animated: true)
-    startWithRoot(navigationController)
+    navigationController.pushViewController(contactsVC, animated: true)
+//    let contactsVC = ContactsViewController(coordinator: self)
+//    navigationController.setViewControllers([contactsVC], animated: true)
+//    startWithRoot(navigationController)
+  }
+  
+  func goToContactDetail() {
+    let coordinator = ContactDetailCoordinator(navigationController: navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
   }
 }

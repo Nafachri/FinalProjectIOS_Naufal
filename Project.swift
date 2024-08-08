@@ -16,6 +16,8 @@ let project = Project(
               .target(name: "PayRequestFeature"),
               .target(name: "ContactsFeature"),
               .target(name: "OnBoardingFeature"),
+              .target(name: "HomeFeature"),
+              .target(name: "HistoryFeature"),
               .external(name: "netfox"),
 ]),
     
@@ -120,6 +122,29 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
+               ]),
+    .framework("HomeFeature",
+               sources: ["Features/HomeFeature/Sources/**/*.swift"],
+               resources: ["Features/HomeFeature/Sources/**/*.xib",
+                           "Features/HomeFeature/Resources/**/*.xcassets"
+                          ],
+               dependencies: [
+                .target(name: "TNUI"),
+                .target(name: "Dependency"),
+                .target(name: "Coordinator"),
+                .target(name: "Services"),
+                .external(name: "SnapKit"),
+               ]),
+    .framework("HistoryFeature",
+               sources: ["Features/HistoryFeature/Sources/**/*.swift"],
+               resources: ["Features/HistoryFeature/Sources/**/*.xib",
+                           "Features/HistoryFeature/Resources/**/*.xcassets"
+                          ],
+               dependencies: [
+                .target(name: "TNUI"),
+                .target(name: "Dependency"),
+                .target(name: "Coordinator"),
+                .target(name: "Services"),
                ]),
     
     //     diaktifkan kalau perlu test

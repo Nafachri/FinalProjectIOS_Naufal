@@ -11,6 +11,9 @@ import ProfileFeature
 import SettingFeature
 import ContactsFeature
 import OnBoardingFeature
+import PayRequestFeature
+import HomeFeature
+import HistoryFeature
 import Dependency
 import netfox
 //import FLEX
@@ -31,8 +34,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let nav = UINavigationController()
     window?.rootViewController = nav
     
-//    let userInterfaceStyle = UserDefaults.standard.integer(forKey: "userInterfaceStyle")
-//    window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: userInterfaceStyle) ?? .light
+    //    let userInterfaceStyle = UserDefaults.standard.integer(forKey: "userInterfaceStyle")
+    //    window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: userInterfaceStyle) ?? .light
     
     window?.makeKeyAndVisible()
     
@@ -42,18 +45,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let style: UIUserInterfaceStyle = darkModeEnabled ? .dark : .light
     window?.overrideUserInterfaceStyle = style
     
-//    #if DEBUG
-//    NFX.sharedInstance().setGesture(.custom)
-//    #endif
+    //    #if DEBUG
+    //    NFX.sharedInstance().setGesture(.custom)
+    //    #endif
     
     //MARK: set coordinator
     let authenticationDependency = AuthenticationModule()
-      app = AppCoordinator(
+    let contacsDependency = ContactsModule()
+    let payRequestDependency = PayRequestModule()
+    let historyDependency = HistoryModule()
+    app = AppCoordinator(
       profileDependency: ProfileModule(),
       authDependency: authenticationDependency,
       settingDependency: SettingModule(),
       contactDependency: ContactsModule(),
       onBoardingDependency: OnBoardingModule(authDependency: authenticationDependency),
+      homeDependency: HomeModule(payRequestDependency: payRequestDependency, contactsDependency: contacsDependency, historyDependency: historyDependency),
+      payRequestDependency: payRequestDependency,
+      historyDependency: HistoryModule(),
       navigationController: nav)
     app?.start()
   }
@@ -117,7 +126,7 @@ extension UIWindow {
     // show FLEX
     
     alert.addAction(UIAlertAction(title: "UI DEBUGGING 😮‍💨", style: .default, handler: { _ in
-//      FLEXManager.shared.showExplorer()
+      //      FLEXManager.shared.showExplorer()
     }))
     
     controller.present(alert, animated: true, completion: {})

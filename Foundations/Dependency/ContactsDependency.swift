@@ -11,4 +11,5 @@ import Coordinator
 
 public protocol ContactsDependency{
   func contactsCoordinator(_ navigationController: UINavigationController) -> Coordinator
+  func contactDetailCoordinator(_ navigationController: UINavigationController) -> Coordinator
 }

@@ -13,7 +13,7 @@ import RxRelay
 class SignInViewController: UIViewController {
   var disposeBag = DisposeBag()
   
-  @IBOutlet weak var usernameField: UITextField!
+  @IBOutlet weak var emailField: UITextField!
   @IBOutlet weak var passwordField: UITextField!
   @IBOutlet weak var signinButton: UIButton!
   @IBOutlet weak var forgotPasswordButton: UIButton!
@@ -41,12 +41,12 @@ class SignInViewController: UIViewController {
   }
   
   private func setupUI(){
-    let usernamePlaceholder = "enter email or username"
+    let emailPlaceholder = "enter email"
     let passwordPlaceholder = "enter password"
     let attributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
     
     // Email/Username TextField
-    usernameField.attributedPlaceholder = NSAttributedString(string: usernamePlaceholder, attributes: attributes)
+    emailField.attributedPlaceholder = NSAttributedString(string: emailPlaceholder, attributes: attributes)
     // Password TextField
     passwordField.attributedPlaceholder = NSAttributedString(string: passwordPlaceholder, attributes: attributes)
     // Sign In Button
@@ -64,9 +64,9 @@ class SignInViewController: UIViewController {
       }
       .disposed(by: disposeBag)
     
-    // email or username textfield
-    usernameField.rx.text.orEmpty
-      .bind(to: viewModel.username)
+    // email textfield
+    emailField.rx.text.orEmpty
+      .bind(to: viewModel.email)
       .disposed(by: disposeBag)
     
     passwordField.rx.text.orEmpty
