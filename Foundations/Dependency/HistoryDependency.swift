@@ -10,6 +10,6 @@ import Networking
 import Coordinator
 
 public protocol HistoryDependency {
-  func historyCoordinator(_ navigationController: UINavigationController) -> Coordinator
-  func historyDetailCoordinator(_ navigationController: UINavigationController) -> Coordinator
+  func historyCoordinator(_ navigationController: UINavigationController) -> HistoryCoordinatorable
+  func historyDetailCoordinator(_ navigationController: UINavigationController) -> HistoryCoordinatorable
 }

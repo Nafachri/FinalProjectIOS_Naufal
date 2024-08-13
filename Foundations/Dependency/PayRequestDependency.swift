@@ -11,4 +11,7 @@ import Coordinator
 
 public protocol PayRequestDependency {
   func payRequestCoordinator(_ navigationController: UINavigationController) -> Coordinator
+  func scanQRCoordinator(_ navigationController: UINavigationController) -> Coordinator
+  func generateQRCoordinator(_ navigationController: UINavigationController) ->
+      Coordinator
 }

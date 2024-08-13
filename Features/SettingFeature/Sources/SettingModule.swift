@@ -12,7 +12,7 @@ import Coordinator
 
 public class SettingModule: SettingDependency {
   
-  public func settingCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
+  public func settingCoordinator(_ navigationController: UINavigationController) ->  SettingCoordinatorable {
     SettingCoordinator(navigationController: navigationController)
   }
   

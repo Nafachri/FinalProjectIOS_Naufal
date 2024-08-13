@@ -11,12 +11,12 @@ import Networking
 import Coordinator
 
 public class HistoryModule: HistoryDependency {
-  
-  public func historyCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
+  public func historyCoordinator(_ navigationController: UINavigationController) -> any HistoryCoordinatorable {
     HistoryCoordinator(navigationController: navigationController)
   }
   
-  public func historyDetailCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
+  
+  public func historyDetailCoordinator(_ navigationController: UINavigationController) -> HistoryCoordinatorable {
     HistoryDetailCoordinator(navigationController: navigationController)
   }
   

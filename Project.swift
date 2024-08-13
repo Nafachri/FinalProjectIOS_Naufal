@@ -13,36 +13,50 @@ let project = Project(
               .target(name: "AuthenticationFeature"),
               .target(name: "ProfileFeature"),
               .target(name: "SettingFeature"),
-              .target(name: "PayRequestFeature"),
+              .target(name: "PaymentFeature"),
               .target(name: "ContactsFeature"),
               .target(name: "OnBoardingFeature"),
               .target(name: "HomeFeature"),
               .target(name: "HistoryFeature"),
+              .target(name: "TabBarFeature"),
               .external(name: "netfox"),
+              .external(name: "Lottie"),
+              .external(name: "KeychainSwift")
 ]),
     
     //MARK: Foundations
     .framework("TNUI",
-               sources: ["Foundations/TNUI/**"],
-               resources: [],
+               sources: ["Foundations/TNUI/Sources/**/*.swift"],
+               resources: [
+                "Foundations/TNUI/Sources/**/*.xib",
+                "Foundations/TNUI/Resources/**/*.xcassets",
+                "Foundations/TNUI/Resources/**/*.json"
+                          ],
                dependencies: []),
     .framework("Dependency",
-               sources: ["Foundations/Dependency/**"],
+               sources: ["Foundations/Dependency/**/*.swift"],
                resources: [],
                dependencies: [
                 .target(name: "Networking")
                ]),
     .framework("Networking",
-               sources: ["Foundations/Networking/**"],
+               sources: ["Foundations/Networking/**/*.swift"],
                resources: [],
                dependencies: [
                 .external(name: "Alamofire"),
                 .external(name: "RxSwift"),
                ]),
     .framework("Coordinator",
-               sources: ["Foundations/Coordinator/**"],
+               sources: ["Foundations/Coordinator/**/*.swift"],
                resources: [],
                dependencies: []
+              ),
+    .framework("Utils",
+               sources: ["Foundations/Utils/**/*.swift"],
+               resources: [],
+               dependencies: [
+                .external(name: "RxSwift"),
+               ]
               ),
     //MARK: Features
     .framework("Services",
@@ -55,13 +69,13 @@ let project = Project(
                ]),
     .framework("AuthenticationFeature",
                sources: ["Features/AuthenticationFeature/Sources/**/*.swift"],
-               resources: ["Features/AuthenticationFeature/Sources/**/*.xib",         "Features/AuthenticationFeature/Resources/**/*.xcassets"
+               resources: ["Features/AuthenticationFeature/Sources/**/*.xib",         
+                           "Features/AuthenticationFeature/Resources/**/*.xcassets"
                           ],
                dependencies: [
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Services"),
-                .external(name: "RxSwift"),
                 .external(name: "RxRelay"),
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
@@ -93,15 +107,20 @@ let project = Project(
                 .target(name: "Coordinator"),
 
                ]),
-    .framework("PayRequestFeature",
-               sources: ["Features/PayRequestFeature/Sources/**/*.swift"],
-               resources: ["Features/PayRequestFeature/Sources/**/*.xib",
-                           "Features/PayRequestFeature/Resources/**/*.xcassets"
+    .framework("PaymentFeature",
+               sources: ["Features/PaymentFeature/Sources/**/*.swift"],
+               resources: ["Features/PaymentFeature/Sources/**/*.xib",
+                           "Features/PaymentFeature/Resources/**/*.xcassets"
                           ],
                dependencies: [
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
+                .external(name: "RxSwift"),
+                .external(name: "RxRelay"),
+                .external(name: "RxCocoa"),
+                .external(name: "RxSwift"),
+                .target(name: "Utils")
                ]),
     .framework("ContactsFeature",
                sources: ["Features/ContactsFeature/Sources/**/*.swift"],
@@ -139,6 +158,17 @@ let project = Project(
                sources: ["Features/HistoryFeature/Sources/**/*.swift"],
                resources: ["Features/HistoryFeature/Sources/**/*.xib",
                            "Features/HistoryFeature/Resources/**/*.xcassets"
+                          ],
+               dependencies: [
+                .target(name: "TNUI"),
+                .target(name: "Dependency"),
+                .target(name: "Coordinator"),
+                .target(name: "Services"),
+               ]),
+    .framework("TabBarFeature",
+               sources: ["Features/TabBarFeature/Sources/**/*.swift"],
+               resources: ["Features/TabBarFeature/Sources/**/*.xib",
+                           "Features/TabBarFeature/Resources/**/*.xcassets"
                           ],
                dependencies: [
                 .target(name: "TNUI"),

@@ -40,7 +40,7 @@
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
-            <color key="backgroundColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.14901960780000001" green="0.41568627450000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="Gzf-07-bGa" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="0cg-9a-vnW"/>
                 <constraint firstItem="mWn-wj-otY" firstAttribute="top" secondItem="Gzf-07-bGa" secondAttribute="bottom" constant="8" id="3gQ-71-cUQ"/>

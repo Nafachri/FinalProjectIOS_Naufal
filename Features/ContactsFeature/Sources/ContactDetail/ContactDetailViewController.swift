@@ -9,6 +9,7 @@ import UIKit
 
 class ContactDetailViewController: UIViewController {
   
+  @IBOutlet weak var sendButton: UIButton!
   weak var coordinator: ContactDetailCoordinator!
   
   init(coordinator: ContactDetailCoordinator!){
@@ -22,6 +23,14 @@ class ContactDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+      title = "contact detail"
+      setupUI()
     }
+  
+  func setupUI() {
+    sendButton.layer.cornerRadius = 8
+  }
+  @IBAction func sendButtonTapped(_ sender: UIButton) {
+    coordinator.goToPayment()
+  }
 }

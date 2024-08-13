@@ -10,5 +10,5 @@ import Networking
 import Coordinator
 
 public protocol SettingDependency {
-  func settingCoordinator(_ navigationController: UINavigationController) -> Coordinator
+  func settingCoordinator(_ navigationController: UINavigationController) -> SettingCoordinatorable
 }

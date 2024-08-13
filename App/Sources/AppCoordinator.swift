@@ -20,6 +20,7 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
   let homeDependency: HomeDependency
   let payRequestDependency: PayRequestDependency
   let historyDependency: HistoryDependency
+  let tabBarDependency: TabBarDependency
   weak var parentCoordinator: Coordinator?
   var childCoordinators = [Coordinator]()
   var navigationController: UINavigationController
@@ -33,7 +34,8 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
       homeDependency: HomeDependency,
       payRequestDependency: PayRequestDependency,
       historyDependency: HistoryDependency,
-       navigationController: UINavigationController) {
+      tabBarDependency: TabBarDependency,
+      navigationController: UINavigationController) {
     
     self.authDependency = authDependency
          self.profileDependency = profileDependency
@@ -43,6 +45,7 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
          self.homeDependency = homeDependency
          self.payRequestDependency = payRequestDependency
          self.historyDependency = historyDependency
+         self.tabBarDependency = tabBarDependency
          self.navigationController = navigationController
   }
   
@@ -52,8 +55,9 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
 //    showSetting()
 //    showContacts()
 //    showOnBoarding()
-    showHome()
+//    showHome()
 //    showHistory()
+    showTabBar()
   }
   
   func showLogin() {
@@ -98,11 +102,21 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
     coordinator.start()
   }
   
+  func showScanQR() {
+    let coordinator = payRequestDependency.scanQRCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
+  }
+  
   func showHistory() {
     let coordinator = historyDependency.historyCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start()
   }
   
-  
+  func showTabBar() {
+    let coordinator = tabBarDependency.tabBarCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
+  }
 }

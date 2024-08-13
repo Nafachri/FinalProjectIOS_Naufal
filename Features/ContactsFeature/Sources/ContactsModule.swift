@@ -12,14 +12,24 @@ import Coordinator
 
 public class ContactsModule: ContactsDependency {
   
-  public func contactsCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
-    ContactsCoordinator(navigationController: navigationController)
+   var paymentDependency: PayRequestDependency!
+  
+  public init(paymentDependency: PayRequestDependency){
+    self.paymentDependency = paymentDependency
   }
   
-  public func contactDetailCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
-    ContactDetailCoordinator(navigationController: navigationController)
+  public func contactsCoordinator(_ navigationController: UINavigationController) -> any ContactsCoordinatorable {
+    ContactsCoordinator(navigationController: navigationController, paymentDependency: paymentDependency)
   }
   
-  public init() {}
+  public func contactDetailCoordinator(_ navigationController: UINavigationController) -> any ContactsCoordinatorable {
+    ContactDetailCoordinator(navigationController: navigationController, paymentDependency: paymentDependency)
+  }
+  
+//  public func paymentCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
+//    paymentCoordinator.payRequestCoordinator(navigationController)
+//  }
+  
+  
   
 }

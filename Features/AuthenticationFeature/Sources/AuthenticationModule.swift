@@ -12,9 +12,14 @@ import Coordinator
 
 public class AuthenticationModule: AuthenticationDependency {
   
-  public func signinCoordinator(_ navigationController: UINavigationController) -> Coordinator {
-    SignInCoordinator(navigationController: navigationController)
+  var tabBarDependency: TabBarDependency
+  
+  public  init(tabBarDependency: TabBarDependency) {
+    self.tabBarDependency = tabBarDependency
   }
   
-  public init() {}
+  public func signinCoordinator(_ navigationController: UINavigationController) -> Coordinator {
+    SignInCoordinator(navigationController: navigationController, tabBarDependency: tabBarDependency)
+  }
+  
 }

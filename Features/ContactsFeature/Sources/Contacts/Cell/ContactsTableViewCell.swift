@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import TNUI
+
 
 class ContactsTableViewCell: UITableViewCell {
 
@@ -13,13 +15,17 @@ class ContactsTableViewCell: UITableViewCell {
   @IBOutlet weak var contactNameLabel: UILabel!
   override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        selectionStyle = .none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
+  
+  func populate(_ contact: Contact){
+    contactImage.image = UIImage(named: contact.image ?? "", in: .module, with: nil)
+    contactNameLabel.text = contact.name
+  }
     
 }

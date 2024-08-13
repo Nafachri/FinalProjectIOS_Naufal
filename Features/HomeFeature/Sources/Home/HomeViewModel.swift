@@ -22,8 +22,9 @@ class HomeViewModel {
     Contact(image: "home-contact-dummy3"),
   ]
   var historyData: [History] = [
-    History(image: "home-history-dummy", name: "Shinta", date: "08/08/2024", amount: "- IDR 50.000.000 "),
-    History(image: "home-history-dummy", name: "Jojo", date: "08/08/2024", amount: "- IDR 50.000.000 ")
+    History(image: "home-history-dummy", name: "Naufal", date: "08/08/2024", amount: "+ IDR 50.000.000"),
+    History(image: "home-history-dummy", name: "Bill Gates", date: "08/08/2024", amount: "- IDR 10.000.000"),
+    History(image: "home-history-dummy", name: "Steve Jobs", date: "08/08/2024", amount: "+ IDR 15.000"),
   ]
   
   var quickSendDataLoaded = PublishSubject<Void>()

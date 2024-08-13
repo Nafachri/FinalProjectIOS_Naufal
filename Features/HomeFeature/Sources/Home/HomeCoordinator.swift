@@ -17,6 +17,7 @@ class HomeCoordinator: Coordinator {
   let payRequestDependency: PayRequestDependency
   let contactsDependency: ContactsDependency
   let historyDependency: HistoryDependency
+  let settingDependency: SettingDependency
   
   
   init(navigationController: UINavigationController,
@@ -24,7 +25,8 @@ class HomeCoordinator: Coordinator {
        parentCoordinator: Coordinator? = nil,
        payRequestDependency: PayRequestDependency,
        contactsDependency: ContactsDependency,
-       historyDependency: HistoryDependency
+       historyDependency: HistoryDependency,
+       settingDependency: SettingDependency
     ) {
     self.navigationController = navigationController
     self.childCoordinators = childCoordinators
@@ -32,13 +34,19 @@ class HomeCoordinator: Coordinator {
     self.payRequestDependency = payRequestDependency
     self.contactsDependency = contactsDependency
     self.historyDependency = historyDependency
+    self.settingDependency = settingDependency
     
   }
   
   func start() {
     let homeVC = HomeViewController(coordinator: self)
     navigationController.setViewControllers([homeVC], animated: true)
-    startWithRoot(navigationController)
+  }
+  
+  func goToScanQR() {
+    let coordinator = payRequestDependency.scanQRCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
   }
   
   func goToPayRequest() {
@@ -47,28 +55,44 @@ class HomeCoordinator: Coordinator {
     coordinator.start()
   }
   
-  func goToContacts(){
-    let coordinator =
-    contactsDependency.contactsCoordinator(navigationController)
+  func goToGenerateQR() {
+    let coordinator = payRequestDependency.generateQRCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start()
+  }
+  
+  func goToContacts(){
+    let nav = UINavigationController()
+    let coordinator = contactsDependency.contactsCoordinator(nav)
+    addChildCoordinator(coordinator)
+    coordinator.startPresent()
   }
   
   func goToContactDetail() {
-    let coordinator = contactsDependency.contactDetailCoordinator(navigationController)
+    let nav = UINavigationController()
+    let coordinator = contactsDependency.contactDetailCoordinator(nav)
     addChildCoordinator(coordinator)
-    coordinator.start()
+    coordinator.startPresent()
   }
   
   func goToHistory() {
-    let coordinator = historyDependency.historyCoordinator(navigationController)
+    let nav = UINavigationController()
+    let coordinator = historyDependency.historyCoordinator(nav)
     addChildCoordinator(coordinator)
-    coordinator.start()
+    coordinator.startPresent()
   }
   
   func goToHistoryDetail() {
-    let coordinator = historyDependency.historyDetailCoordinator(navigationController)
+    let nav = UINavigationController()
+    let coordinator = historyDependency.historyDetailCoordinator(nav)
     addChildCoordinator(coordinator)
-    coordinator.start()
+    coordinator.startPresent()
+  }
+  
+  func goToSetting() {
+    let nav = UINavigationController()
+    let coordinator = settingDependency.settingCoordinator(nav)
+    addChildCoordinator(coordinator)
+    coordinator.startPresent()
   }
 }

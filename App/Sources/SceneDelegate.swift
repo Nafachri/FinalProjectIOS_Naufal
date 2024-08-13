@@ -11,31 +11,30 @@ import ProfileFeature
 import SettingFeature
 import ContactsFeature
 import OnBoardingFeature
-import PayRequestFeature
+import PaymentFeature
 import HomeFeature
 import HistoryFeature
+import TabBarFeature
 import Dependency
 import netfox
-//import FLEX
+import TNUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
   var app: AppCoordinator?
   
-  var authDependency = AuthenticationModule()
+  
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-    // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     let nav = UINavigationController()
     window?.rootViewController = nav
+    UITabBar.appearance().unselectedItemTintColor = .gray
+    UITabBar.appearance().tintColor = .label
     
-    //    let userInterfaceStyle = UserDefaults.standard.integer(forKey: "userInterfaceStyle")
-    //    window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(rawValue: userInterfaceStyle) ?? .light
+    
     
     window?.makeKeyAndVisible()
     
@@ -43,6 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let darkModeEnabled = UserDefaults.standard.bool(forKey: "darkModeEnabled")
     let style: UIUserInterfaceStyle = darkModeEnabled ? .dark : .light
+    
     window?.overrideUserInterfaceStyle = style
     
     //    #if DEBUG
@@ -50,19 +50,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     //    #endif
     
     //MARK: set coordinator
-    let authenticationDependency = AuthenticationModule()
-    let contacsDependency = ContactsModule()
+    
+    
+
     let payRequestDependency = PayRequestModule()
+    let contactsDependency = ContactsModule(paymentDependency: payRequestDependency)
     let historyDependency = HistoryModule()
+    let settingDependency = SettingModule()
+    let homeDependency = HomeModule(payRequestDependency: payRequestDependency, contactsDependency: contactsDependency, historyDependency: historyDependency, settingDependency: settingDependency)
+    let profileDependency = ProfileModule()
+    let tabBarDependency = TabBarModule(homeDependency: homeDependency, contactsDependency: contactsDependency, historyDependency: historyDependency, profileDependency: profileDependency)
+    let authenticationDependency = AuthenticationModule(tabBarDependency: tabBarDependency)
     app = AppCoordinator(
       profileDependency: ProfileModule(),
       authDependency: authenticationDependency,
-      settingDependency: SettingModule(),
-      contactDependency: ContactsModule(),
+      settingDependency: settingDependency,
+      contactDependency: ContactsModule(paymentDependency: payRequestDependency),
       onBoardingDependency: OnBoardingModule(authDependency: authenticationDependency),
-      homeDependency: HomeModule(payRequestDependency: payRequestDependency, contactsDependency: contacsDependency, historyDependency: historyDependency),
+      homeDependency: homeDependency,
       payRequestDependency: payRequestDependency,
       historyDependency: HistoryModule(),
+      tabBarDependency: tabBarDependency,
       navigationController: nav)
     app?.start()
   }

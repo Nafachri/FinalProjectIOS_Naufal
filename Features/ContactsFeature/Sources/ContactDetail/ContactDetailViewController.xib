@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactDetailViewController" customModule="ContactsFeature" customModuleProvider="target">
             <connections>
+                <outlet property="sendButton" destination="o2N-zv-xA3" id="iWF-zJ-jA7"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -43,11 +44,25 @@
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o2N-zv-xA3">
+                    <rect key="frame" x="24" y="629" width="345" height="60"/>
+                    <color key="backgroundColor" red="0.14901960780000001" green="0.41568627450000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="RGW-Q0-Vc4"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="send"/>
+                    <connections>
+                        <action selector="sendButtonTapped:" destination="-1" eventType="touchUpInside" id="gGs-fY-yMh"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="kvD-R7-kvU" secondAttribute="trailing" constant="24" id="30a-5u-Wjg"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="o2N-zv-xA3" secondAttribute="trailing" constant="24" id="8AG-ka-Ggm"/>
                 <constraint firstItem="tFJ-R3-nhP" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="64" id="CYN-D1-awC"/>
                 <constraint firstItem="kvD-R7-kvU" firstAttribute="top" secondItem="Tqt-tV-Plm" secondAttribute="bottom" constant="24" id="DRb-fS-vZf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4Qq-Nt-zCQ" secondAttribute="trailing" constant="24" id="ERS-MF-v8G"/>
@@ -57,6 +72,8 @@
                 <constraint firstItem="tFJ-R3-nhP" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eIZ-NU-Ikg"/>
                 <constraint firstItem="4Qq-Nt-zCQ" firstAttribute="top" secondItem="kvD-R7-kvU" secondAttribute="bottom" constant="24" id="ez5-CL-SlC"/>
                 <constraint firstItem="Tqt-tV-Plm" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="rHT-Hc-7Nt"/>
+                <constraint firstItem="o2N-zv-xA3" firstAttribute="top" secondItem="4Qq-Nt-zCQ" secondAttribute="bottom" constant="24" id="rho-zC-idd"/>
+                <constraint firstItem="o2N-zv-xA3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="tum-7o-CP8"/>
             </constraints>
             <point key="canvasLocation" x="50" y="20"/>
         </view>

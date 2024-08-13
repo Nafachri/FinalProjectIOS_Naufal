@@ -30,6 +30,7 @@ class HistoryDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    title = "history detail"
   }
   
   func setupUI() {

@@ -28,6 +28,7 @@ class SettingViewController: UIViewController {
       tableView.dataSource = self
       tableView.delegate = self
       
+    title = "settings"
     }
 }
 

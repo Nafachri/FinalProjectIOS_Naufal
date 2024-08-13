@@ -8,6 +8,7 @@
 import Foundation
 import Coordinator
 import UIKit
+import Dependency
 
 class ProfileCoordinator: Coordinator {
   weak var navigationController: UINavigationController!
@@ -25,6 +26,5 @@ class ProfileCoordinator: Coordinator {
   func start(){
     let profileViewController = ProfileViewController(coordinator: self)
     navigationController.setViewControllers([profileViewController], animated: true)
-    startWithRoot(navigationController)
   }
 }

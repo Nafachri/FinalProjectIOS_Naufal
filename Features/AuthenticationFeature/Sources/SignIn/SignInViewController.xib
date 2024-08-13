@@ -101,6 +101,9 @@ in the world.</string>
                             </fragment>
                         </attributedString>
                     </buttonConfiguration>
+                    <connections>
+                        <action selector="signInButtonTapped:" destination="-1" eventType="touchUpInside" id="A5K-vy-Ppr"/>
+                    </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="oCV-Ux-fUk" userLabel="don't have account &amp; button">
                     <rect key="frame" x="66.333333333333343" y="584.66666666666663" width="260.33333333333326" height="19.333333333333371"/>
@@ -135,15 +138,6 @@ in the world.</string>
                         </button>
                     </subviews>
                 </stackView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ak6-sT-xqg" userLabel="or label">
-                    <rect key="frame" x="188.33333333333334" y="623" width="16.333333333333343" height="19.333333333333371"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                    <color key="textColor" red="0.50588235290000005" green="0.48627450979999998" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btngoogledark" translatesAutoresizingMaskIntoConstraints="NO" id="b3v-yr-8Fk">
-                    <rect key="frame" x="107" y="661.33333333333337" width="179" height="46"/>
-                </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -151,7 +145,6 @@ in the world.</string>
                 <constraint firstItem="hwj-JM-wzs" firstAttribute="top" secondItem="yEd-0z-FX3" secondAttribute="bottom" constant="24" id="0ys-F7-dD8"/>
                 <constraint firstItem="ExY-FN-vnX" firstAttribute="top" secondItem="Lp3-S7-RMI" secondAttribute="bottom" constant="8" id="1DW-JI-bZU"/>
                 <constraint firstItem="ZRZ-H6-sej" firstAttribute="top" secondItem="ExY-FN-vnX" secondAttribute="bottom" constant="64" id="1K8-d6-zDJ"/>
-                <constraint firstItem="Ak6-sT-xqg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="2ZH-Rf-m89"/>
                 <constraint firstItem="yEd-0z-FX3" firstAttribute="top" secondItem="L5g-Wg-41F" secondAttribute="bottom" constant="8" id="5Wr-gv-xl1"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="L5g-Wg-41F" secondAttribute="trailing" constant="24" id="6bi-l2-qmS"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hwj-JM-wzs" secondAttribute="trailing" constant="24" id="8Ba-PM-E2f"/>
@@ -168,9 +161,6 @@ in the world.</string>
                 <constraint firstAttribute="trailing" secondItem="yEd-0z-FX3" secondAttribute="trailing" constant="24" id="bQo-Fr-mb0"/>
                 <constraint firstItem="Lp3-S7-RMI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="cFF-93-1Nv"/>
                 <constraint firstItem="Xhy-Df-juc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="cc4-S9-Ugw"/>
-                <constraint firstItem="Ak6-sT-xqg" firstAttribute="top" secondItem="oCV-Ux-fUk" secondAttribute="bottom" constant="19" id="lJ4-2m-Qlo"/>
-                <constraint firstItem="b3v-yr-8Fk" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mtx-kp-6jL"/>
-                <constraint firstItem="b3v-yr-8Fk" firstAttribute="top" secondItem="Ak6-sT-xqg" secondAttribute="bottom" constant="19" id="qST-Vi-slu"/>
                 <constraint firstItem="hwj-JM-wzs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="rqV-Wu-ePq"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="dgj-tC-qVG" secondAttribute="trailing" constant="24" id="soi-gQ-0BJ"/>
                 <constraint firstItem="L5g-Wg-41F" firstAttribute="top" secondItem="dgj-tC-qVG" secondAttribute="bottom" constant="8" id="uxk-8w-c8F"/>
@@ -181,7 +171,6 @@ in the world.</string>
         </view>
     </objects>
     <resources>
-        <image name="btngoogledark" width="179" height="46"/>
         <image name="thenorthlogo" width="198" height="48"/>
     </resources>
 </document>

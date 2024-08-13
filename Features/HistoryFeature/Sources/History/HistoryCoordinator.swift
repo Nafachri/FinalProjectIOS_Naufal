@@ -9,7 +9,7 @@ import Foundation
 import Coordinator
 import UIKit
 
-class HistoryCoordinator: Coordinator {
+class HistoryCoordinator: HistoryCoordinatorable {
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
@@ -22,15 +22,17 @@ class HistoryCoordinator: Coordinator {
     self.parentCoordinator = parentCoordinator
   }
   
-  //  func start() {
-  //    let historyVC = HistoryViewController(coordinator: self)
-  //    navigationController.setViewControllers([historyVC], animated: true)
-  //    startWithRoot(navigationController)
-  //  }
-  
   func start() {
     let historyVC = HistoryViewController(coordinator: self)
-    navigationController.pushViewController(historyVC, animated: true)
+    navigationController.setViewControllers([historyVC], animated: false)
+  }
+  
+  func startPresent() {
+    let historyVC = HistoryViewController(coordinator: self)
+    navigationController.setViewControllers([historyVC], animated: false)
+    let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
+    tabBarCoordinator?.tabbarController
+      .present(navigationController, animated: true)
   }
   
   func goToHistoryDetail() {

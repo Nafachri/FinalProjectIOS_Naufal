@@ -8,7 +8,7 @@
 import Foundation
 
 struct History {
-  let image: String
+  let image: String?
   let name: String
   let date: String
   let amount: String

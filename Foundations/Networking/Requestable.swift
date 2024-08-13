@@ -6,10 +6,19 @@
 //
 
 import Alamofire
+import Foundation
 
 public typealias Method = HTTPMethod
 public typealias URLConvertible = Alamofire.URLConvertible
-public typealias PCError = AFError
+public typealias PCError = RequestError
+
+public struct RequestError: Error, LocalizedError {
+  let message: String
+  
+  public var errorDescription: String? {
+    NSLocalizedString(message, comment: "My error")
+  }
+}
 
 public protocol Requestable {
   func request<T: Responseable>(_ url: URLConvertible, method: Method, params: [String: Any], onComplete: @escaping (Result<T, PCError>) -> Void)
@@ -24,9 +33,18 @@ public class NetworkRequest: Requestable {
       .responseDecodable(of: T.self) { dataResponse in
         switch dataResponse.result {
         case .success(let value):
-          onComplete(.success(value))
+          if value.success {
+            onComplete(.success(value))
+          } else {
+            onComplete(.failure(
+              RequestError(message: value.message)
+            ))
+          }
+          
         case .failure(let error):
-          onComplete(.failure(error))
+          onComplete(.failure(
+            PCError(message: error.localizedDescription)
+          ))
         }
       }
   }

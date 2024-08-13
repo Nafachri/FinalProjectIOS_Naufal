@@ -15,14 +15,17 @@ public class HomeModule: HomeDependency {
   var payRequestDependency: PayRequestDependency!
   var contactsDependency: ContactsDependency!
   var historyDependency: HistoryDependency!
+  var settingDependency: SettingDependency!
   
-  public init(payRequestDependency: PayRequestDependency, contactsDependency: ContactsDependency, historyDependency: HistoryDependency){
+  public init(payRequestDependency: PayRequestDependency, contactsDependency: ContactsDependency, historyDependency: HistoryDependency, settingDependency: SettingDependency){
     self.payRequestDependency = payRequestDependency
     self.contactsDependency = contactsDependency
     self.historyDependency = historyDependency
+    self.settingDependency = settingDependency
   }
   
   public func homeCoordinator(_ navigationController: UINavigationController) -> Coordinator {
-    HomeCoordinator(navigationController: navigationController, payRequestDependency: payRequestDependency, contactsDependency: contactsDependency, historyDependency: historyDependency)
+    HomeCoordinator(navigationController: navigationController, payRequestDependency: payRequestDependency, contactsDependency: contactsDependency, historyDependency: historyDependency, settingDependency: settingDependency
+    )
   }
 }

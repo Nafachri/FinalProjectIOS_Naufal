@@ -4,11 +4,16 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileViewController" customModule="ProfileFeature" customModuleProvider="target">
             <connections>
+                <outlet property="confirmButton" destination="Cwm-xe-nrS" id="Rli-B8-t4q"/>
+                <outlet property="editButton" destination="RFg-Nb-gIj" id="HDJ-ZE-de0"/>
+                <outlet property="emailField" destination="2tY-FD-Z5u" id="LKl-oL-sYt"/>
+                <outlet property="phoneNumberField" destination="uSb-d6-Kef" id="CcC-3G-gjd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,7 +31,6 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Naufal" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yz7-uG-cIv">
                             <rect key="frame" x="0.0" y="0.0" width="149.33333333333334" height="60"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFg-Nb-gIj">
@@ -40,6 +44,9 @@
                             <buttonConfiguration key="configuration" style="plain" image="square.and.pencil" catalog="system" buttonSize="large">
                                 <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" weight="bold"/>
                             </buttonConfiguration>
+                            <connections>
+                                <action selector="editButtonTapped:" destination="-1" eventType="touchUpInside" id="5Yl-VW-BHQ"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
@@ -63,18 +70,34 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cwm-xe-nrS">
+                    <rect key="frame" x="24" y="594" width="345" height="50"/>
+                    <color key="backgroundColor" red="0.14901960780000001" green="0.41568627450000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="31b-L8-lEm"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Confirm"/>
+                    <connections>
+                        <action selector="confirmButtonTapped:" destination="-1" eventType="touchUpInside" id="fCD-mD-Iw5"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="Cwm-xe-nrS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="2m4-Yy-he0"/>
                 <constraint firstItem="BDD-zE-B4w" firstAttribute="top" secondItem="3QE-Vg-d78" secondAttribute="bottom" constant="48" id="3eB-ty-haE"/>
                 <constraint firstItem="uSb-d6-Kef" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="7Qy-1i-loK"/>
                 <constraint firstItem="2tY-FD-Z5u" firstAttribute="top" secondItem="BDD-zE-B4w" secondAttribute="bottom" constant="48" id="Csb-Ou-fo8"/>
+                <constraint firstItem="Cwm-xe-nrS" firstAttribute="top" secondItem="uSb-d6-Kef" secondAttribute="bottom" constant="16" id="N6D-xj-5Dy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="uSb-d6-Kef" secondAttribute="trailing" constant="24" id="PJA-fp-rLB"/>
                 <constraint firstItem="3QE-Vg-d78" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="64" id="Upg-Z5-A9d"/>
                 <constraint firstItem="uSb-d6-Kef" firstAttribute="top" secondItem="2tY-FD-Z5u" secondAttribute="bottom" constant="16" id="cbr-cZ-Bae"/>
                 <constraint firstItem="BDD-zE-B4w" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ce6-q9-WC3"/>
                 <constraint firstItem="2tY-FD-Z5u" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="clB-Yt-Z1P"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cwm-xe-nrS" secondAttribute="trailing" constant="24" id="k2f-l7-IWY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2tY-FD-Z5u" secondAttribute="trailing" constant="24" id="oN2-lA-HVM"/>
                 <constraint firstItem="3QE-Vg-d78" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="oyT-1x-7JL"/>
             </constraints>
@@ -84,5 +107,8 @@
     <resources>
         <image name="profileavatar" width="197" height="195"/>
         <image name="square.and.pencil" catalog="system" width="128" height="121"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

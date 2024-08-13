@@ -23,6 +23,7 @@ class SignInViewController: UIViewController {
   var viewModel: SignInViewModel
   
   let alertController = UIAlertController(title: "Signing", message: "Signin in..", preferredStyle: .alert)
+  let alertErrorController = UIAlertController(title: "Failed", message: "Signin in failed..", preferredStyle: .alert)
   
   init(coordinator: SignInCoordinator!, viewModel: SignInViewModel = SignInViewModel(authentication: AuthenticationService())) {
     self.coordinator = coordinator
@@ -51,7 +52,11 @@ class SignInViewController: UIViewController {
     passwordField.attributedPlaceholder = NSAttributedString(string: passwordPlaceholder, attributes: attributes)
     // Sign In Button
     signinButton.layer.cornerRadius = 10
-    
+    let okButton = UIAlertAction(title: "Dismiss", style: .cancel) { [weak self] _ in
+      guard let self else { return }
+      alertErrorController.dismiss(animated: true)
+    }
+    alertErrorController.addAction(okButton)
   }
   
   func setupBinding(){
@@ -81,25 +86,34 @@ class SignInViewController: UIViewController {
     
     // setup error binding
     viewModel.errorMessage
-      .subscribe(onNext: { errorMessage in
-        print("error: \(String(describing: errorMessage))")
+      .subscribe(onNext: { [weak self] errorMessage in
+        guard let self else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+          self.showError(errorMessage)
+        }
       })
       .disposed(by: disposeBag)
     
     // setup isSuccess
     viewModel.isSuccess
-      .subscribe(onNext: { value in
-        print(value)
+      .subscribe(onNext: { [weak self] value in
+        guard let self, value else { return }
+        coordinator.goToDashboard()
       })
       .disposed(by: disposeBag)
   }
   
   func showLoading(isLoading: Bool) {
-    if isLoading {
+    if isLoading  {
       present(alertController, animated: true)
     } else {
       alertController.dismiss(animated: true)
     }
+  }
+  
+  func showError(_ message: String) {
+    alertErrorController.message = message
+    present(alertErrorController, animated: true)
   }
   
   @IBAction func forgotPasswordButtonTapped(_ sender: UIButton) {
@@ -109,6 +123,9 @@ class SignInViewController: UIViewController {
   @IBAction func signupButtonTapped(_ sender: UIButton) {
     let signupVC = SignUpViewController(nibName: "SignUpViewController", bundle: .module)
     show(signupVC, sender: self)
+  }
+  @IBAction func signInButtonTapped(_ sender: UIButton) {
+//    coordinator.goToDashboard()
   }
 }
 
