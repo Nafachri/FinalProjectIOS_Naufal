@@ -8,12 +8,11 @@
 import Foundation
 
 public struct Constants {
-  static var moneyFormatter: NumberFormatter = {
+  static let moneyFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency
-    formatter.currencySymbol = "IDR"
-    formatter.locale = Locale(identifier: "id_ID") 
-    formatter.maximumFractionDigits = 0
+    formatter.locale = Locale(identifier: "id_ID") // Change as needed
+    formatter.currencyCode = "IDR" // Change as needed
     return formatter
   }()
 }

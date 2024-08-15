@@ -33,6 +33,11 @@ class SignInCoordinator: Coordinator {
     startWithRoot(navigationController)
   }
   
+  func showOnBoarding() {
+    let appCoordinator = getParentCoordinator(from: self, with: "AppCoordinator") as? AppCoordinatorable
+    appCoordinator?.showOnBoarding()
+  }
+  
   func goToDashboard() {
     let tabBarCoordinator = tabBarDependency.tabBarCoordinator(navigationController)
     let appCoordinator = getParentCoordinator(from: self, with: "AppCoordinator")

@@ -26,6 +26,7 @@ class SettingTableViewCell: UITableViewCell {
     super.awakeFromNib()
     uiSwitch.isOn = darkModeEnabled
     updateAppearance()
+    setupUI()
   }
   
   override func setSelected(_ selected: Bool, animated: Bool) {
@@ -35,10 +36,10 @@ class SettingTableViewCell: UITableViewCell {
   
   func setupUI() {
     if darkModeEnabled {
-      themeIcon.image = UIImage(named: "moon.fill")
+      themeIcon.image = UIImage(systemName: "moon.fill")
 
     } else {
-      themeIcon.image = UIImage(named: "sun.max.fill")
+      themeIcon.image = UIImage(systemName: "sun.max.fill")
     }
   }
   
@@ -46,6 +47,13 @@ class SettingTableViewCell: UITableViewCell {
     darkModeEnabled = sender.isOn
     
     updateAppearance()
+    
+    if darkModeEnabled {
+      themeIcon.image = UIImage(systemName: "moon.fill")
+
+    } else {
+      themeIcon.image = UIImage(systemName: "sun.max.fill")
+    }
     
   }
   private func updateAppearance() {

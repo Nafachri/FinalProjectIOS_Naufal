@@ -59,7 +59,7 @@ class SignUpViewModel {
         self.isLoading.accept(false)
         switch result {
         case .success(let value):
-          print(value.data!)
+          print(value.data)
         case .failure(let error):
           print(error.localizedDescription)
         }

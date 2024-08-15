@@ -1,5 +1,5 @@
 {
-  "originHash" : "3d869a7ce348895ae44973e1cac5c3cdf55634506f99d7705cfc7ab09533d6c1",
+  "originHash" : "32dc3ee092b2d0594a0af3cd21546bef66e9e75ea989549319c401f021a283b1",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -53,6 +53,15 @@
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "veritrans-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/veritrans/Veritrans-ios-sdk.git",
+      "state" : {
+        "revision" : "ceca78a445dd6ee5a4e59a5882e9727fbdb3e8c3",
+        "version" : "1.27.0"
       }
     }
   ],

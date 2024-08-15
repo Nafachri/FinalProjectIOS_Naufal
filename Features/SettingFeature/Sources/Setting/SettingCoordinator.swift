@@ -8,27 +8,27 @@
 import Foundation
 import Coordinator
 import UIKit
+import Dependency
 
 class SettingCoordinator: SettingCoordinatorable {
-
+  
   
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
-  var childCoordinators: [Coordinator] = []
-  
+  var childCoordinators: [Coordinator] = []  
   
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
-       parentCoordinator: Coordinator? = nil) {
+       parentCoordinator: Coordinator? = nil
+  ) {
     self.navigationController = navigationController
     self.childCoordinators = childCoordinators
     self.parentCoordinator = parentCoordinator
   }
   
   func start(){
-    let settingViewController = SettingViewController(coordinator: self)
-    navigationController.setViewControllers([settingViewController], animated: true)
-    startWithRoot(navigationController)
+    let appCoordinator = getParentCoordinator(from: self, with: "AppCoordinator") as? AppCoordinatorable
+    appCoordinator?.showOnBoarding()
   }
   
   func startPresent() {
@@ -37,5 +37,10 @@ class SettingCoordinator: SettingCoordinatorable {
     let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
     tabBarCoordinator?.tabbarController
       .present(navigationController, animated: true)
+  }
+  
+  func showOnBoarding() {
+    let appCoordinator = getParentCoordinator(from: self, with: "AppCoordinator") as? AppCoordinatorable
+    appCoordinator?.showOnBoarding()
   }
 }

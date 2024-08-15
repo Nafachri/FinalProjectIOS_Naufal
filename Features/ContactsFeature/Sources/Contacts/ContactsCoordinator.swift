@@ -15,12 +15,13 @@ class ContactsCoordinator: ContactsCoordinatorable {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let paymentDependency: PayRequestDependency
+  var onSelect: ((any Dependency.Modelable) -> Void)?
   
   
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
        parentCoordinator: Coordinator? = nil,
-paymentDependency: PayRequestDependency
+       paymentDependency: PayRequestDependency
   ) {
     self.navigationController = navigationController
     self.childCoordinators = childCoordinators

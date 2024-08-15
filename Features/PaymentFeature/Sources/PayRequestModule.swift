@@ -25,4 +25,8 @@ public class PayRequestModule: PayRequestDependency {
   public func payRequestCoordinator(_ navigationController: UINavigationController) ->  Coordinator {
     PaymentCoordinator(navigationController: navigationController)
   }
+  
+  public func midtransCoordinator(_ navigationController: UINavigationController) -> Coordinator {
+    MidtransCoordinator(navigationController: navigationController)
+  }
 }

@@ -125,7 +125,7 @@ extension HomeViewController : UICollectionViewDataSource, UICollectionViewDeleg
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if collectionView === quickSendCollectionView {
       if indexPath.row == 0 {
-        print("plus")
+        coordinator.goToContacts()
       } else {
         coordinator.goToContactDetail()
       }

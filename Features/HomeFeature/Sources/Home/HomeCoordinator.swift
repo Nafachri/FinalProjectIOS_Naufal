@@ -63,7 +63,9 @@ class HomeCoordinator: Coordinator {
   
   func goToContacts(){
     let nav = UINavigationController()
-    let coordinator = contactsDependency.contactsCoordinator(nav)
+    let coordinator = contactsDependency.contactsCoordinator(nav){contact in
+      print("contact : \(contact)")
+    }
     addChildCoordinator(coordinator)
     coordinator.startPresent()
   }

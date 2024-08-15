@@ -7,9 +7,10 @@
 
 import Foundation
 import Networking
+import KeychainSwift
 
 public protocol AuthenticationServiceable {
-  func signIn(email: String, password: String, onComplete: @escaping (Result<SigninResponse, PCError>) -> Void)
+  func signIn(email: String, password: String, onComplete: @escaping (Result<SignInResponse, PCError>) -> Void)
   
   func changePassword(email: String, phoneNumber: String, password: String, confirmPassword: String, onComplete: @escaping (Result<ChangePasswordResponse, PCError>) -> Void)
   
@@ -23,7 +24,8 @@ public protocol AuthenticationServiceable {
 public class AuthenticationService: AuthenticationServiceable {
   
   let requestor: Requestable
-  let baseAPI = "http://localhost:3001"
+  let baseAPI = "http://localhost:8080"
+  let keychain = KeychainSwift()
   
   
   public init(requestor: Requestable = NetworkRequest()) {
@@ -31,26 +33,36 @@ public class AuthenticationService: AuthenticationServiceable {
   }
   
   // MARK: Sign In
-  public func signIn(email: String, password: String, onComplete: @escaping (Result<SigninResponse, PCError>) -> Void) {
+  public func signIn(email: String, password: String, onComplete: @escaping (Result<SignInResponse, PCError>) -> Void) {
+    let credentialData = "\(email):\(password)".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue)) ?? .init()
+    let base64Credentials = credentialData.base64EncodedString()
+    let headers: HTTPHeaders = [
+                "Authorization": "Basic \(base64Credentials)",
+                "Accept": "application/json",
+                "Content-Type": "application/json" ]
+
+    
     requestor.request(
       "\(baseAPI)/auth/signin", method: .post,
-      params: [
-        "email": email,
-        "password": password]) { [weak self] (result: Result<SigninResponse, PCError>) in
-          guard let self else { return }
+      params: [:],
+      headers: headers
+    ) { [weak self] (result: Result<SignInResponse, PCError>) in
           switch result {
-          case .success(let response):
-            print("simpan token")
-            saveLocalUser(response.data)
-          default: break
-            
+          case .success(let res):
+            self?.keychain.set(res.data?.token ?? "", forKey: "userToken")
+            self?.saveLocalUser(res.data?.user)
+
+          case .failure(let error):
+            print(error)
           }
-          
           onComplete(result)
-          
         }
-    
   }
+  
+  public func saveLocalUser(_ user: UserData?){
+    print("ini save local user : \(user)")
+  }
+  
   
   // MARK: Forgot Password / Change Password
   public func changePassword(email: String, phoneNumber: String, password: String, confirmPassword: String, onComplete: @escaping (Result<ChangePasswordResponse, PCError>) -> Void) {
@@ -67,29 +79,22 @@ public class AuthenticationService: AuthenticationServiceable {
   }
   
   // MARK: Sign Up
-  public func signUp(username: String, email: String, phoneNumber: String, password: String, confirmPassword: String, onComplete: @escaping
-                     (Result<SignupResponse, PCError>) -> Void){
+  public func signUp(username: String, email: String, phoneNumber: String, password: String, confirmPassword: String, onComplete: @escaping (Result<SignupResponse, PCError>) -> Void) {
+    
     requestor.request(
-      "\(baseAPI)/auth/signup", method: .post,
+      "\(baseAPI)/users", method: .post,
       params: [
         "username": username,
         "email": email,
         "phoneNumber": phoneNumber,
         "password": password,
-        "confirmPassword": confirmPassword
+        "confirmPassword": confirmPassword,
       ],
-      onComplete: onComplete)
+      onComplete: onComplete
+    )
   }
   
   public func getLocalUser() -> Networking.UserData? {
     nil
   }
-  
-  private func saveLocalUser(_ user: UserData?){
-  
-  }
-  
-  
-  
-  
 }

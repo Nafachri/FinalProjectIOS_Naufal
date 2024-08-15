@@ -38,7 +38,7 @@ class TabbarCoordinator: NSObject, TabbarCoordinatorable {
     homeCoordinator.start()
     
     let contactsNav = UINavigationController()
-    let contactsCoordinator = contactsDependency.contactsCoordinator(contactsNav)
+    let contactsCoordinator = contactsDependency.contactsCoordinator(contactsNav,onSelect: nil)
     addChildCoordinator(contactsCoordinator)
     contactsCoordinator.start()
     

@@ -21,7 +21,8 @@ let project = Project(
               .target(name: "TabBarFeature"),
               .external(name: "netfox"),
               .external(name: "Lottie"),
-              .external(name: "KeychainSwift")
+              .external(name: "KeychainSwift"),
+              .external(name: "MidtransKit")
 ]),
     
     //MARK: Foundations
@@ -32,7 +33,10 @@ let project = Project(
                 "Foundations/TNUI/Resources/**/*.xcassets",
                 "Foundations/TNUI/Resources/**/*.json"
                           ],
-               dependencies: []),
+               dependencies: [
+                .target(name: "Utils"),
+                .external(name: "RxSwift")
+               ]),
     .framework("Dependency",
                sources: ["Foundations/Dependency/**/*.swift"],
                resources: [],

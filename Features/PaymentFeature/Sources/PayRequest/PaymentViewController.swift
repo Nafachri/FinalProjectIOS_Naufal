@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxRelay
-import Utils
 import TNUI
 
 class PaymentViewController: UIViewController {

@@ -13,6 +13,7 @@ import RxRelay
 class ProfileViewController: UIViewController {
   var disposeBag = DisposeBag()
   var viewModel: ProfileViewModel
+  @IBOutlet weak var topUpButton: UIButton!
   @IBOutlet weak var emailField: UITextField!
   @IBOutlet weak var phoneNumberField: UITextField!
   @IBOutlet weak var editButton: UIButton!
@@ -37,6 +38,7 @@ class ProfileViewController: UIViewController {
   }
   
   func setupUI() {
+    topUpButton.layer.cornerRadius = 10
     emailField.isEnabled = false
     phoneNumberField.isEnabled = false
     editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)

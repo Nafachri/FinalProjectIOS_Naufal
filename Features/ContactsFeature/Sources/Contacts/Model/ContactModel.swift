@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Dependency
 
-struct Contact {
+struct Contact: Modelable {
   let image: String?
   let name: String
 }

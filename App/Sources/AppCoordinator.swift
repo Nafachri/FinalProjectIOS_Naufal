@@ -8,10 +8,10 @@
 import UIKit
 import Coordinator
 import Dependency
+import KeychainSwift
 
-
-class AppCoordinator: Coordinator, NavigationCoordinator {
-  
+class AppCoordinator: AppCoordinatorable, NavigationCoordinator {
+  let keychain = KeychainSwift()
   let authDependency: AuthenticationDependency
   let profileDependency: ProfileDependency
   let settingDependency: SettingDependency
@@ -26,38 +26,42 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
   var navigationController: UINavigationController
   
   init(
-      profileDependency: ProfileDependency,
-      authDependency: AuthenticationDependency,
-      settingDependency: SettingDependency,
-      contactDependency: ContactsDependency,
-      onBoardingDependency: OnBoardingDependency,
-      homeDependency: HomeDependency,
-      payRequestDependency: PayRequestDependency,
-      historyDependency: HistoryDependency,
-      tabBarDependency: TabBarDependency,
-      navigationController: UINavigationController) {
-    
-    self.authDependency = authDependency
-         self.profileDependency = profileDependency
-         self.settingDependency = settingDependency
-         self.contactsDependency = contactDependency
-         self.onBoardingDependency = onBoardingDependency
-         self.homeDependency = homeDependency
-         self.payRequestDependency = payRequestDependency
-         self.historyDependency = historyDependency
-         self.tabBarDependency = tabBarDependency
-         self.navigationController = navigationController
-  }
+    profileDependency: ProfileDependency,
+    authDependency: AuthenticationDependency,
+    settingDependency: SettingDependency,
+    contactDependency: ContactsDependency,
+    onBoardingDependency: OnBoardingDependency,
+    homeDependency: HomeDependency,
+    payRequestDependency: PayRequestDependency,
+    historyDependency: HistoryDependency,
+    tabBarDependency: TabBarDependency,
+    navigationController: UINavigationController) {
+      
+      self.authDependency = authDependency
+      self.profileDependency = profileDependency
+      self.settingDependency = settingDependency
+      self.contactsDependency = contactDependency
+      self.onBoardingDependency = onBoardingDependency
+      self.homeDependency = homeDependency
+      self.payRequestDependency = payRequestDependency
+      self.historyDependency = historyDependency
+      self.tabBarDependency = tabBarDependency
+      self.navigationController = navigationController
+    }
   
   func start() {
-//    showLogin()
-//    showProfile()
-//    showSetting()
-//    showContacts()
-//    showOnBoarding()
-//    showHome()
-//    showHistory()
-    showTabBar()
+//    if keychain.get("userToken") == nil {
+//      showOnBoarding()
+//    } else {
+//      showTabBar()
+//    }
+    //    showProfile()
+    //    showSetting()
+    //    showContacts()
+    //    showOnBoarding()
+    //    showHome()
+    //    showHistory()
+        showTabBar()
   }
   
   func showLogin() {
@@ -78,11 +82,11 @@ class AppCoordinator: Coordinator, NavigationCoordinator {
     coordinator.start()
   }
   
-  func showContacts() {
-    let coordinator = contactsDependency.contactsCoordinator(navigationController)
-    addChildCoordinator(coordinator)
-    coordinator.start()
-  }
+//  func showContacts() {
+//    let coordinator = contactsDependency.contactsCoordinator(navigationController)
+//    addChildCoordinator(coordinator)
+//    coordinator.start()
+//  }
   
   func showOnBoarding() {
     let coordinator = onBoardingDependency.onBoardingCoordinator(navigationController)

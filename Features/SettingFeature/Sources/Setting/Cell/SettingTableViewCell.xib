@@ -19,29 +19,33 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9tX-BR-0yM">
-                        <rect key="frame" x="15.999999999999998" y="17" width="19.333333333333329" height="29.333333333333336"/>
+                        <rect key="frame" x="16" y="17.000000000000007" width="40" height="38.333333333333336"/>
                         <color key="tintColor" systemColor="systemYellowColor"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="TWb-KH-ZX6"/>
+                            <constraint firstAttribute="height" constant="40" id="aOX-hx-Q9J"/>
+                        </constraints>
                         <imageReference key="image" image="moon.fill" catalog="system" variableValue="0.0"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="theme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-sm-nPO">
-                        <rect key="frame" x="51.333333333333329" y="16" width="60.333333333333329" height="31"/>
+                        <rect key="frame" x="72" y="16" width="60.333333333333343" height="40"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y64-TL-e5E">
-                        <rect key="frame" x="51.333333333333329" y="42" width="192.66666666666669" height="32"/>
-                        <string key="text">choose your preference using 
-dark mode or light mode</string>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xKn-4O-kvZ">
-                        <rect key="frame" x="252" y="16" width="51" height="31"/>
+                        <rect key="frame" x="252" y="16" width="51" height="40"/>
                         <color key="onTintColor" red="0.14901960780000001" green="0.41568627450000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <action selector="switchButton:" destination="KGk-i7-Jjw" eventType="valueChanged" id="kfO-w6-fc3"/>
                         </connections>
                     </switch>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y64-TL-e5E">
+                        <rect key="frame" x="72" y="51" width="179" height="23"/>
+                        <string key="text">choose your preference using 
+dark mode or light mode</string>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 <constraints>
@@ -50,7 +54,6 @@ dark mode or light mode</string>
                     <constraint firstItem="9tX-BR-0yM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="H6C-er-CCX"/>
                     <constraint firstItem="Y64-TL-e5E" firstAttribute="top" secondItem="yFk-sm-nPO" secondAttribute="baseline" id="HF0-9J-7Bu"/>
                     <constraint firstAttribute="trailing" secondItem="xKn-4O-kvZ" secondAttribute="trailing" constant="16" id="M4q-FG-p7d"/>
-                    <constraint firstItem="xKn-4O-kvZ" firstAttribute="leading" secondItem="Y64-TL-e5E" secondAttribute="trailing" constant="8" id="TTF-py-woT"/>
                     <constraint firstItem="xKn-4O-kvZ" firstAttribute="centerY" secondItem="9tX-BR-0yM" secondAttribute="centerY" id="bNq-71-SOj"/>
                     <constraint firstItem="xKn-4O-kvZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="c4Y-Yc-lAM"/>
                     <constraint firstItem="yFk-sm-nPO" firstAttribute="leading" secondItem="9tX-BR-0yM" secondAttribute="trailing" constant="16" id="eG8-7h-1YU"/>

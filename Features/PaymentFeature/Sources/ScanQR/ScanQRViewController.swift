@@ -35,8 +35,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
   private var qrCodeFrameView = UIView()
   var qrCodeLabel = UILabel()
   
-  private var lastScannedCode: String? // Track the last scanned QR code
-  
+  private var lastScannedCode: String?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -48,8 +47,6 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     view.bringSubviewToFront(qrCodeFrameView)
     qrCodeFrameView.isHidden = true
     view.addSubview(qrCodeLabel)
-    
-    // Check if the device has a camera
     setupScanQR()
   }
   
@@ -93,10 +90,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     @unknown default:
       angle = 0
     }
-    
     return CGAffineTransform(rotationAngle: angle)
-    
-    
   }
   
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
@@ -104,39 +98,67 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
       guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
       
       if let stringValue = readableObject.stringValue {
-        // Check if the scanned code is different from the last scanned code
         if stringValue != lastScannedCode {
           lastScannedCode = stringValue
           self.captureSession?.stopRunning()
-          DispatchQueue.main.async {
+          DispatchQueue.main.async { [self] in
             self.qrCodeLabel.text = stringValue
             
-            // Check if the scanned string is not "0"
-            if stringValue != "0.0" {
-              
-              
-            
-              // Show the alert after the scanner is dismissed
-              self.showAlert(message: "Scanned QR code is: \(stringValue)")
-              
-              //              }
-            } else {
-              // Handle the case where the string is "0.0"
-              let alert = UIAlertController(title: "Invalid Code", message: "Please input the amount first!", preferredStyle: .alert)
-              let action = UIAlertAction(title: "OK", style: .default) { _ in
-//                self.dismiss(animated: true)
-                self.lastScannedCode = nil
-                DispatchQueue.global(qos: .background).async {
-                  self.captureSession.startRunning()
-                }
-              }
-              alert.addAction(action)
-              self.present(alert, animated: true)
+            //            MARK: CHANGES HERE!!
+            if let data = stringValue.data(using: .utf8) {
+              do {
+                if let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                  // Extract values
+                  let amount = jsonObject["amount"] as? String ?? ""
+                  let transactionId = jsonObject["transactionId"] as? String
+                  let userName = jsonObject["userName"] as? String
+                  
+                  // Validate data
+                  if amount != "0.0" && !transactionId!.isEmpty && !userName!.isEmpty{
+                    let transactionName = userName ?? ""
+                    let transactionAmount = formatCurrency(amount)
+                    let transactionId = transactionId ?? ""
+                    let transactionDate = Date.now.formatted(.dateTime.year().month().day())
+                    let transactionTitle = "Payment Success"
+                    let transactionType = "pay"
 
+                    self.showAlert(message: "Do you want to complete this transaction?", transactionName: transactionName, transactionAmount: transactionAmount, transactionDate: transactionDate, transactionTitle: transactionTitle, transactionId: transactionId, transactionType: transactionType)
+                  } else {
+                    showInvalidCodeAlert()
+                  }
+                } else {
+                  showInvalidCodeAlert()
+                }
+              } catch {
+                showInvalidCodeAlert()
+              }
+            } else {
+              showInvalidCodeAlert()
             }
           }
         }
       }
+      //            if stringValue != "0.0" {
+      //              let transactionName = "Coffee Purchase"
+      //              let transactionAmount = formatCurrency(stringValue)
+      //              let transactionDate = Date.now.formatted(.dateTime.year().month().day())
+      //              let transactionTitle = "Payment Success"
+      //
+      //              self.showAlert(message: "Do you want to complete this transaction?", transactionName: transactionName, transactionAmount: transactionAmount, transactionDate: transactionDate, transactionTitle: transactionTitle)
+      //            } else {
+      //              let alert = UIAlertController(title: "Invalid Code", message: "Please input the amount first!", preferredStyle: .alert)
+      //              let action = UIAlertAction(title: "OK", style: .default) { _ in
+      //                self.lastScannedCode = nil
+      //                DispatchQueue.global(qos: .background).async {
+      //                  self.captureSession.startRunning()
+      //                }
+      //              }
+      //              alert.addAction(action)
+      //              self.present(alert, animated: true)
+      //            }
+      //          }
+      //        }
+      //      }
       
       if let barCodeObject = previewLayer.transformedMetadataObject(for: metadataObject) {
         let qrCodeFrame = barCodeObject.bounds
@@ -154,15 +176,45 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     }
   }
   
-  func showAlert(message: String) {
+  func showAlert(message: String, transactionName: String, transactionAmount: String, transactionDate: String, transactionTitle: String, transactionId: String, transactionType: String) {
     let alert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .alert)
-    let action = UIAlertAction(title: "Confirm", style: .default) {_ in
+    let action = UIAlertAction(title: "Confirm", style: .default) { _ in
       self.dismiss(animated: true) { [self] in
-        self.coordinator.showSuccess()
+        self.coordinator.showSuccess(transactionName: transactionName, transactionAmount: transactionAmount, transactionDate: transactionDate, transactionTitle: transactionTitle, transactionId: transactionId, transactionType: transactionType)
       }
-      
     }
     alert.addAction(action)
     present(alert, animated: true)
   }
+  
+  func showInvalidCodeAlert() {
+    let alert = UIAlertController(title: "Invalid Code", message: "The QR code is invalid or incomplete. Please try again.", preferredStyle: .alert)
+    let action = UIAlertAction(title: "OK", style: .default) { _ in
+      self.lastScannedCode = nil
+      DispatchQueue.global(qos: .background).async {
+        self.captureSession.startRunning()
+      }
+    }
+    alert.addAction(action)
+    self.present(alert, animated: true)
+  }
+  
+  //  func formatCurrency(_ amountString: String) -> String {
+  //      let inputFormatter = NumberFormatter()
+  //      inputFormatter.numberStyle = .decimal
+  //      inputFormatter.locale = Locale(identifier: "en_US") // Use a locale that supports decimal points
+  //      inputFormatter.usesGroupingSeparator = false // Disable commas in the input
+  //
+  //      guard let number = inputFormatter.number(from: amountString) else {
+  //          return "Invalid amount"
+  //      }
+  //
+  //      let currencyFormatter = NumberFormatter()
+  //      currencyFormatter.numberStyle = .currency
+  //      currencyFormatter.currencyCode = "IDR"
+  //      currencyFormatter.locale = Locale(identifier: "id_ID") // Indonesian locale
+  //      currencyFormatter.usesGroupingSeparator = true // Disable commas in the output
+  //
+  //      return currencyFormatter.string(from: number) ?? ""
+  //  }
 }

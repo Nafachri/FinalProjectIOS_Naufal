@@ -30,9 +30,10 @@ class ScanQRCoordinator: Coordinator {
       .present(scanQRVC, animated: true)
   }
   
-  func showSuccess() {
-    let successVC = SuccessScreenViewController()
-    let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
-    tabBarCoordinator?.tabbarController.present(successVC, animated: true)
+  func showSuccess(transactionName: String, transactionAmount: String, transactionDate: String, transactionTitle: String, transactionId: String, transactionType: String) {
+    let successVC = SuccessScreenViewController(transactionName: transactionName, transactionAmount: transactionAmount, transactionDate: transactionDate, transactionTitle: transactionTitle, transactionId: transactionId, transactionType:transactionType)
+      
+      let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
+      tabBarCoordinator?.tabbarController.present(successVC, animated: true)
   }
 }

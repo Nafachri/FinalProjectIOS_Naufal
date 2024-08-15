@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import Dependency
 
 class ContactsViewController: UIViewController {
   
   @IBOutlet weak var tableView: UITableView!
   
   weak var coordinator: ContactsCoordinator!
+  var onSelect: ((any Dependency.Modelable) -> Void)?
+
   
   
   init(coordinator: ContactsCoordinator!){
@@ -76,7 +79,12 @@ extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    coordinator.goToContactDetail()
+    if onSelect != nil {
+      onSelect?(dataArray[indexPath.row])
+    } else {
+      coordinator.goToContactDetail()
+    }
+    
     
     tableView.deselectRow(at: indexPath, animated: true)
   }

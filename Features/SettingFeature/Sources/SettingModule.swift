@@ -12,10 +12,16 @@ import Coordinator
 
 public class SettingModule: SettingDependency {
   
+//  var onboardingDependency: OnBoardingDependency
+//  
+//  public init(onboardingDependency: OnBoardingDependency){
+//    self.onboardingDependency = onboardingDependency
+//  }
+  
   public func settingCoordinator(_ navigationController: UINavigationController) ->  SettingCoordinatorable {
-    SettingCoordinator(navigationController: navigationController)
+    SettingCoordinator(navigationController: navigationController
+//                       onboardingDependency: onboardingDependency
+    )
   }
-  
-  public init() {}
-  
+  public init (){}
 }

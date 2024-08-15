@@ -14,4 +14,5 @@ public protocol PayRequestDependency {
   func scanQRCoordinator(_ navigationController: UINavigationController) -> Coordinator
   func generateQRCoordinator(_ navigationController: UINavigationController) ->
       Coordinator
+  func midtransCoordinator(_ navigationController: UINavigationController) -> Coordinator
 }

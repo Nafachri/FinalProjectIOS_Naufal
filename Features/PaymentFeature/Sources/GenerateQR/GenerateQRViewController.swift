@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxRelay
-import Utils
 
 class GenerateQRViewController: UIViewController {
   var disposeBag = DisposeBag()
@@ -20,6 +19,9 @@ class GenerateQRViewController: UIViewController {
   let toolbar = UIToolbar()
   weak var coordinator: GenerateQRCoordinator!
   var viewModel: GenerateQRViewModel
+  
+  let transactionId: String = "085883749172"
+  let userName: String = "Nafachri"
   
   
   init(coordinator: GenerateQRCoordinator!, viewModel: GenerateQRViewModel = GenerateQRViewModel()){
@@ -38,23 +40,6 @@ class GenerateQRViewController: UIViewController {
     setupBinding()
   }
   
-//  override func viewDidLayoutSubviews() {
-//    super.viewDidLayoutSubviews()
-//    // setting uiView corner radius
-//    let cornerRadius: CGFloat = 20.0
-//    let path = UIBezierPath(roundedRect:uiView.bounds,
-//                            byRoundingCorners: [.bottomLeft, .bottomRight],
-//                            cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
-//    
-//    let maskLayer = CAShapeLayer()
-//    maskLayer.path = path.cgPath
-//    uiView.layer.mask = maskLayer
-//  }
-//  override func viewWillLayoutSubviews() {
-//    super.viewWillLayoutSubviews()
-//    
-//  }
-  
   func setupUI() {
     uiView.layer.cornerRadius = 20
     amountTextField.keyboardType = .numberPad
@@ -69,7 +54,10 @@ class GenerateQRViewController: UIViewController {
     guard let qrImageView = qrImageView else {
       return
     }
-    qrImageView.image = generateQRCode(from: "0")
+//    MARK: Changes here
+//    qrImageView.image = generateQRCode(from: "0")
+    qrImageView.image = generateQRCode(from: "{}")
+
 
   }
   
@@ -90,7 +78,20 @@ class GenerateQRViewController: UIViewController {
       .distinctUntilChanged()
       .subscribe(onNext: { [weak self] value in
         guard let self else { return }
-        qrImageView.image = generateQRCode(from: value)
+        // Create user data object
+        let userData: [String: Any] = [
+            "transactionId": self.transactionId,
+            "userName": self.userName,
+            "amount": value
+        ]
+        
+        // Convert to JSON string
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userData, options: []),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            self.qrImageView.image = self.generateQRCode(from: jsonString)
+        }
+//        MARK: Changes here!
+//        qrImageView.image = generateQRCode(from: value)
       }).disposed(by: disposeBag)
   }
   

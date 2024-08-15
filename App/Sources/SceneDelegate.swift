@@ -18,7 +18,7 @@ import TabBarFeature
 import Dependency
 import netfox
 import TNUI
-
+import MidtransKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
@@ -33,9 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.rootViewController = nav
     UITabBar.appearance().unselectedItemTintColor = .gray
     UITabBar.appearance().tintColor = .label
-    
-    
-    
+    MidtransConfig.shared().setClientKey("SB-Mid-client-4zX2hEwOqCgsOpUX", environment: .sandbox, merchantServerURL: "https://merchant-url-sandbox.com")
     window?.makeKeyAndVisible()
     
     //MARK: set theme
@@ -45,33 +43,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     window?.overrideUserInterfaceStyle = style
     
-    //    #if DEBUG
-    //    NFX.sharedInstance().setGesture(.custom)
-    //    #endif
-    
+   
     //MARK: set coordinator
-    
-    
-
-    let payRequestDependency = PayRequestModule()
-    let contactsDependency = ContactsModule(paymentDependency: payRequestDependency)
+    let paymentDependency = PayRequestModule()
+    let contactsDependency = ContactsModule(paymentDependency: paymentDependency)
     let historyDependency = HistoryModule()
     let settingDependency = SettingModule()
-    let homeDependency = HomeModule(payRequestDependency: payRequestDependency, contactsDependency: contactsDependency, historyDependency: historyDependency, settingDependency: settingDependency)
+    let homeDependency = HomeModule(payRequestDependency: paymentDependency, contactsDependency: contactsDependency, historyDependency: historyDependency, settingDependency: settingDependency)
     let profileDependency = ProfileModule()
     let tabBarDependency = TabBarModule(homeDependency: homeDependency, contactsDependency: contactsDependency, historyDependency: historyDependency, profileDependency: profileDependency)
     let authenticationDependency = AuthenticationModule(tabBarDependency: tabBarDependency)
+    let onboardingDependency =  OnBoardingModule(authDependency: authenticationDependency)
     app = AppCoordinator(
-      profileDependency: ProfileModule(),
+      profileDependency: profileDependency,
       authDependency: authenticationDependency,
       settingDependency: settingDependency,
-      contactDependency: ContactsModule(paymentDependency: payRequestDependency),
-      onBoardingDependency: OnBoardingModule(authDependency: authenticationDependency),
+      contactDependency: contactsDependency,
+      onBoardingDependency: onboardingDependency,
+//        OnBoardingModule(authDependency: authenticationDependency),
       homeDependency: homeDependency,
-      payRequestDependency: payRequestDependency,
-      historyDependency: HistoryModule(),
+      payRequestDependency: paymentDependency,
+      historyDependency: historyDependency,
       tabBarDependency: tabBarDependency,
       navigationController: nav)
+//    let coor = paymentDependency.midtransCoordinator(nav)
+//    coor.start()
     app?.start()
   }
   
@@ -110,17 +106,17 @@ extension UIWindow {
   override open func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
     // code you want to implement
     
-    if motion == .motionShake {
-      guard let view = UIApplication.topViewController() else {
-        return
-      }
-      
-      if view.responds(to: Selector(("shouldForceLandscape"))) {
-        // If the rootViewController should force landscape, do not handle shake
-        return
-      }
-      showSimpleActionSheet(controller: view)
-    }
+//    if motion == .motionShake {
+//      guard let view = UIApplication.topViewController() else {
+//        return
+//      }
+//      
+//      if view.responds(to: Selector(("shouldForceLandscape"))) {
+//        // If the rootViewController should force landscape, do not handle shake
+//        return
+//      }
+//      showSimpleActionSheet(controller: view)
+//    }
     
   }
   
