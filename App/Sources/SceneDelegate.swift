@@ -19,10 +19,15 @@ import Dependency
 import netfox
 import TNUI
 import MidtransKit
+import TheNorthCoreDataManager
+import TheNorthCoreDataModel
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
   var app: AppCoordinator?
+  
+//  let coreData = CoreDataManager.shared
   
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -43,7 +48,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     window?.overrideUserInterfaceStyle = style
     
-   
+//    do {
+//      let contactList = try coreData.fetch(entity: ContactModel.self)
+//      if contactList.count <= 0 {
+//        let contactJson = loadData()
+//        for contactJson in contactJson {
+//          try coreData.create(entity: ContactModel.self, properties: contactJson)
+//        }
+//      }
+//    } catch {
+//      print("Cannot added data to the contact model")
+//    }
+//    do {
+//      let contactList = try coreData.fetch(entity: ContactModel.self)
+//      for contact in contactList {
+//        print(contact)
+//      }
+//    } catch {
+//      print("No Data Contact")
+//
+//    }
+    
     //MARK: set coordinator
     let paymentDependency = PayRequestModule()
     let contactsDependency = ContactsModule(paymentDependency: paymentDependency)
@@ -60,15 +85,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       settingDependency: settingDependency,
       contactDependency: contactsDependency,
       onBoardingDependency: onboardingDependency,
-//        OnBoardingModule(authDependency: authenticationDependency),
+      //        OnBoardingModule(authDependency: authenticationDependency),
       homeDependency: homeDependency,
       payRequestDependency: paymentDependency,
       historyDependency: historyDependency,
       tabBarDependency: tabBarDependency,
       navigationController: nav)
-//    let coor = paymentDependency.midtransCoordinator(nav)
-//    coor.start()
+    //    let coor = paymentDependency.midtransCoordinator(nav)
+    //    coor.start()
     app?.start()
+  }
+  
+  func loadData() -> [[String: Any]] {
+    guard let path = Bundle.main.path(forResource: "contacts", ofType: "json") else {
+      return []
+    }
+    
+    do {
+      let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+      let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [[String: Any]]
+      return jsonResult ?? []
+    } catch {
+      // handle error
+      print(error.localizedDescription)
+    }
+    return []
+    
   }
   
   func sceneDidDisconnect(_ scene: UIScene) {
@@ -106,17 +148,17 @@ extension UIWindow {
   override open func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
     // code you want to implement
     
-//    if motion == .motionShake {
-//      guard let view = UIApplication.topViewController() else {
-//        return
-//      }
-//      
-//      if view.responds(to: Selector(("shouldForceLandscape"))) {
-//        // If the rootViewController should force landscape, do not handle shake
-//        return
-//      }
-//      showSimpleActionSheet(controller: view)
-//    }
+    //    if motion == .motionShake {
+    //      guard let view = UIApplication.topViewController() else {
+    //        return
+    //      }
+    //
+    //      if view.responds(to: Selector(("shouldForceLandscape"))) {
+    //        // If the rootViewController should force landscape, do not handle shake
+    //        return
+    //      }
+    //      showSimpleActionSheet(controller: view)
+    //    }
     
   }
   

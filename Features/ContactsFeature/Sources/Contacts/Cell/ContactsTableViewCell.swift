@@ -7,6 +7,8 @@
 
 import UIKit
 import TNUI
+import TheNorthCoreDataManager
+import TheNorthCoreDataModel
 
 
 class ContactsTableViewCell: UITableViewCell {
@@ -23,9 +25,9 @@ class ContactsTableViewCell: UITableViewCell {
 
     }
   
-  func populate(_ contact: Contact){
-    contactImage.image = UIImage(named: contact.image ?? "", in: .module, with: nil)
-    contactNameLabel.text = contact.name
+  func populate(_ contact: ContactModel){
+//    contactImage.image = UIImage(named: contact.image ?? "", in: .module, with: nil)
+    contactNameLabel.text = contact.username
   }
     
 }

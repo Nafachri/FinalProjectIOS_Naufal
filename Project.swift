@@ -22,7 +22,9 @@ let project = Project(
               .external(name: "netfox"),
               .external(name: "Lottie"),
               .external(name: "KeychainSwift"),
-              .external(name: "MidtransKit")
+              .external(name: "MidtransKit"),
+              .target(name: "TheNorthCoreDataModel"),
+              .target(name: "TheNorthCoreDataManager")
 ]),
     
     //MARK: Foundations
@@ -31,8 +33,7 @@ let project = Project(
                resources: [
                 "Foundations/TNUI/Sources/**/*.xib",
                 "Foundations/TNUI/Resources/**/*.xcassets",
-                "Foundations/TNUI/Resources/**/*.json"
-                          ],
+                ],
                dependencies: [
                 .target(name: "Utils"),
                 .external(name: "RxSwift")
@@ -61,6 +62,17 @@ let project = Project(
                dependencies: [
                 .external(name: "RxSwift"),
                ]
+              ),
+    .framework("TheNorthCoreDataModel",
+               sources: [],
+               resources: ["Foundations/TheNorthCoreDataModel/Resources/**/*.json",
+                           "Foundations/TheNorthCoreDataModel/Resources/**/*.xcdatamodeld"],
+               dependencies: []
+              ),
+    .framework("TheNorthCoreDataManager",
+               sources: ["Foundations/TheNorthCoreDataManager/**/*.swift"],
+               resources: [],
+               dependencies: []
               ),
     //MARK: Features
     .framework("Services",
@@ -135,6 +147,8 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
+                .target(name: "TheNorthCoreDataModel"),
+                .target(name: "TheNorthCoreDataManager")
                ]),
     .framework("OnBoardingFeature",
                sources: ["Features/OnBoardingFeature/Sources/**/*.swift"],
@@ -209,7 +223,9 @@ public extension ProjectDescription.Target {
       bundleId: "\(prefixBundleID).\(name.dashSeparator)",
       infoPlist: .file(path: .relativeToManifest("App/Info.plist")),
       sources: ["App/Sources/**"],
-      resources: ["App/Resources/**", "App/Resources/**/*.xcassets"],
+      resources: ["App/Resources/**", "App/Resources/**/*.xcassets", 
+//                  "App/Resources/Data/**/*/.xcdatamodeld", "App/Resources/Data/**/*/.json"
+                 ],
       dependencies: dependencies
     )
   }

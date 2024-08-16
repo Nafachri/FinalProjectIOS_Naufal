@@ -14,6 +14,7 @@ class HomeViewController: UIViewController {
   
   @IBOutlet weak var settingButton: UIButton!
   @IBOutlet weak var topView: UIView!
+  @IBOutlet weak var topUpBUtton: UIButton!
   @IBOutlet weak var requestButton: UIButton!
   @IBOutlet weak var payButton: UIButton!
   @IBOutlet weak var quickSendCollectionView: UICollectionView!
@@ -83,6 +84,7 @@ class HomeViewController: UIViewController {
 //    }
     
     // setting button corner radius
+    topUpBUtton.layer.cornerRadius = 8
     requestButton.layer.cornerRadius = 8
     payButton.layer.cornerRadius = 8
     
@@ -90,13 +92,14 @@ class HomeViewController: UIViewController {
   
   @IBAction func requestButtonTapped(_ sender: UIButton) {
     coordinator.goToGenerateQR()
-    print("button tapped")
   }
   @IBAction func payRequestButtonTapped(_ sender: UIButton) {
     coordinator.goToScanQR()
-
   }
   
+  @IBAction func topUpButtonTapped(_ sender: UIButton) {
+    coordinator.goToTopUp()
+  }
   @IBAction func quickSendViewAllButtonTapped(_ sender: UIButton) {
     coordinator.goToContacts()
   }

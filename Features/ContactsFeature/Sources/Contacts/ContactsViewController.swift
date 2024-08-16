@@ -7,6 +7,9 @@
 
 import UIKit
 import Dependency
+import TheNorthCoreDataModel
+import TheNorthCoreDataManager
+
 
 class ContactsViewController: UIViewController {
   
@@ -14,6 +17,9 @@ class ContactsViewController: UIViewController {
   
   weak var coordinator: ContactsCoordinator!
   var onSelect: ((any Dependency.Modelable) -> Void)?
+  
+  
+  
 
   
   
@@ -27,7 +33,9 @@ class ContactsViewController: UIViewController {
   }
   
   //  MARK: sample data array for cell
-  var dataArray: [Contact] = []
+  var dataArray: [ContactModel] = []
+  var coredata = CoreDataManager.shared
+
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -37,18 +45,32 @@ class ContactsViewController: UIViewController {
     
     tableView.dataSource = self
     tableView.delegate = self
-    tableView.reloadData()
+//    tableView.reloadData()
+    fetchContacts()
     
-    dataArray = [
-      Contact(image: "contact-profile", name: "Mas Amin"),
-      Contact(image: "contact-profile", name: "Mas Kholis"),
-      Contact(image: "contact-profile", name: "Mas Nabhan"),
-      Contact(image: "contact-profile", name: "Mas Halim"),
-      Contact(image: "contact-profile", name: "Zhafran"),
-      Contact(image: "contact-profile", name: "Rama"),
-      Contact(image: "contact-profile", name: "Andre"),
-    ]
+//    dataArray = [
+//      Contact(image: "contact-profile", name: "Mas Amin"),
+//      Contact(image: "contact-profile", name: "Mas Kholis"),
+//      Contact(image: "contact-profile", name: "Mas Nabhan"),
+//      Contact(image: "contact-profile", name: "Mas Halim"),
+//      Contact(image: "contact-profile", name: "Zhafran"),
+//      Contact(image: "contact-profile", name: "Rama"),
+//      Contact(image: "contact-profile", name: "Andre"),
+//    ]
+    
+//    do {
+//      let contactList = try coredata
+//      for contact in contactList {
+//        print(food.id)
+//      }
+//      
+//    } catch {
+//      
+//    }
+    
   }
+  
+  
 }
 extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
   
@@ -78,14 +100,23 @@ extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
     return UITableView.automaticDimension
   }
   
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if onSelect != nil {
-      onSelect?(dataArray[indexPath.row])
-    } else {
-      coordinator.goToContactDetail()
-    }
-    
-    
-    tableView.deselectRow(at: indexPath, animated: true)
+//  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    if onSelect != nil {
+//      onSelect?(dataArray[indexPath.row] as! Modelable)
+//    } else {
+//      coordinator.goToContactDetail()
+//    }
+//    
+//    
+//    tableView.deselectRow(at: indexPath, animated: true)
+//  }
+  
+  private func fetchContacts() {
+      do {
+          dataArray = try coredata.fetch(entity: ContactModel.self)
+          tableView.reloadData()
+      } catch {
+          print("Failed to fetch contacts: \(error.localizedDescription)")
+      }
   }
 }

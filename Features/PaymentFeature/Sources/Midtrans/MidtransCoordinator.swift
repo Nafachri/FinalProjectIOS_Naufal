@@ -21,6 +21,8 @@ class MidtransCoordinator: Coordinator {
   
   func start(){
     let midtransVC = MidtransViewController(coordinator: self)
-    navigationController.pushViewController(midtransVC, animated: true)
+    let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
+    tabBarCoordinator?.tabbarController
+      .present(midtransVC, animated: true)
   }
 }

@@ -12,9 +12,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+ 
+
+    
     // Override point for customization after application launch.
     
     return true
+  }
+  
+  func loadData() -> [[String: Any]] {
+    guard let path = Bundle.main.path(forResource: "contacts", ofType: "json") else {
+      return []
+    }
+    
+    do {
+      let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+      let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [[String: Any]]
+      return jsonResult ?? []
+    } catch {
+      // handle error
+      print(error.localizedDescription)
+    }
+    return []
+    
   }
 
   // MARK: UISceneSession Lifecycle

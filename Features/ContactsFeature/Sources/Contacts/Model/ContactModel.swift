@@ -10,5 +10,8 @@ import Dependency
 
 struct Contact: Modelable {
   let image: String?
-  let name: String
+  let username: String
+  let phoneNumber: String
+  let id : String
+  let email: String
 }

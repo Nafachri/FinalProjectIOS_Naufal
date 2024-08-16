@@ -61,6 +61,12 @@ class HomeCoordinator: Coordinator {
     coordinator.start()
   }
   
+  func goToTopUp() {
+    let coordinator = payRequestDependency.midtransCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start()
+  }
+  
   func goToContacts(){
     let nav = UINavigationController()
     let coordinator = contactsDependency.contactsCoordinator(nav){contact in

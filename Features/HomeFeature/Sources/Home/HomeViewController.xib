@@ -14,6 +14,7 @@
                 <outlet property="payButton" destination="Ybm-5V-eVh" id="Idc-hu-fuD"/>
                 <outlet property="quickSendCollectionView" destination="Jmy-vD-yky" id="bJO-33-40m"/>
                 <outlet property="requestButton" destination="gbB-43-CTh" id="eoz-gd-WFQ"/>
+                <outlet property="topUpBUtton" destination="IFQ-ba-zmy" id="hkn-ZH-QQh"/>
                 <outlet property="topView" destination="IkL-7o-rwj" id="cAC-8U-PSd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -53,8 +54,27 @@
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="jeC-QY-VTG" userLabel="Button Stack View">
                             <rect key="frame" x="24" y="251" width="345" height="70"/>
                             <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IFQ-ba-zmy">
+                                    <rect key="frame" x="0.0" y="0.0" width="101.66666666666667" height="70"/>
+                                    <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain">
+                                        <attributedString key="attributedTitle">
+                                            <fragment content="top up">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="16" name="HelveticaNeue-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                    </buttonConfiguration>
+                                    <connections>
+                                        <action selector="topUpButtonTapped:" destination="-1" eventType="touchUpInside" id="FwQ-RK-sg9"/>
+                                    </connections>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbB-43-CTh">
-                                    <rect key="frame" x="0.0" y="0.0" width="162.66666666666666" height="70"/>
+                                    <rect key="frame" x="121.66666666666666" y="0.0" width="101.66666666666666" height="70"/>
                                     <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain">
@@ -73,7 +93,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ybm-5V-eVh">
-                                    <rect key="frame" x="182.66666666666663" y="0.0" width="162.33333333333337" height="70"/>
+                                    <rect key="frame" x="243.33333333333329" y="0.0" width="101.66666666666666" height="70"/>
                                     <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="70" id="oia-Y0-Ygl"/>
