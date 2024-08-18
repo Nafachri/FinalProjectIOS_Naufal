@@ -49,6 +49,8 @@ public class SuccessScreenViewController: UIViewController {
   
   public override func viewDidLoad() {
     super.viewDidLoad()
+    NotificationCenter.default.post(name: SuccessScreenViewController.chekcoutNotification, object: nil)
+    
     if let path = Bundle.module.path(forResource: "success-animation", ofType: "json") {
       let animation = LottieAnimation.filepath(path)
       animationView.animation = animation
@@ -78,5 +80,10 @@ public class SuccessScreenViewController: UIViewController {
   }
   @IBAction func shareButtonTapped(_ sender: UIButton) {
     SharingUtility.shareCurrentView(from: self, view: self.view)
+  }
+}
+public extension SuccessScreenViewController {
+  static var chekcoutNotification: NSNotification.Name {
+    NSNotification.Name("")
   }
 }

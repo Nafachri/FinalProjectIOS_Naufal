@@ -20,13 +20,12 @@ public class ContactsModule: ContactsDependency {
     self.paymentDependency = paymentDependency
   }
   
-  public func contactsCoordinator(_ navigationController: UINavigationController, onSelect: ((any Dependency.Modelable) -> Void)?) -> any ContactsCoordinatorable {
+  public func contactsCoordinator(_ navigationController: UINavigationController) -> any ContactsCoordinatorable {
     let coordinator = ContactsCoordinator(navigationController: navigationController, paymentDependency: paymentDependency)
-    coordinator.onSelect = onSelect
     return coordinator
   }
   
-  public func contactDetailCoordinator(_ navigationController: UINavigationController) -> any ContactsCoordinatorable {
+  public func contactDetailCoordinator(_ navigationController: UINavigationController) -> any ContactDetailCoordinatorable {
     ContactDetailCoordinator(navigationController: navigationController, paymentDependency: paymentDependency)
   }
   

@@ -6,11 +6,18 @@
 //
 
 import UIKit
+import Dependency
+import TheNorthCoreDataManager
 
 class ContactDetailViewController: UIViewController {
   
   @IBOutlet weak var sendButton: UIButton!
+  @IBOutlet weak var avatar: UIImageView!
+  @IBOutlet weak var username: UILabel!
+  @IBOutlet weak var email: UITextField!
+  @IBOutlet weak var phoneNumber: UITextField!
   weak var coordinator: ContactDetailCoordinator!
+  var selectedData: ContactModel?
   
   init(coordinator: ContactDetailCoordinator!){
     self.coordinator = coordinator
@@ -25,12 +32,16 @@ class ContactDetailViewController: UIViewController {
         super.viewDidLoad()
       title = "contact detail"
       setupUI()
+      // TODO: Set Avatar
+      username.text = selectedData?.username
+      email.text = selectedData?.email
+      phoneNumber.text = selectedData?.phoneNumber
     }
   
   func setupUI() {
     sendButton.layer.cornerRadius = 8
   }
   @IBAction func sendButtonTapped(_ sender: UIButton) {
-    coordinator.goToPayment()
+    coordinator.goToPayment(with: selectedData!)
   }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import TheNorthCoreDataManager
 
 class AddQuickSendCollectionViewCell: UICollectionViewCell {
   
@@ -19,7 +20,7 @@ class AddQuickSendCollectionViewCell: UICollectionViewCell {
     super.layer.cornerRadius = 8
   }
   
-  func populate(_ quickSend: AddQuickSend){
-    uiImage.image = UIImage(named: quickSend.image, in: .module, with: nil)
+  func populate(_ quickSend: ContactModel){
+    uiImage.image = UIImage(named: quickSend.avatar ?? "home-contact-dummy", in: .module, with: nil)
   }
 }

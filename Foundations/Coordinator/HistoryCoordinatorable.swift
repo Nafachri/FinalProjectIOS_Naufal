@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import TheNorthCoreDataManager
 
 public protocol HistoryCoordinatorable: Coordinator {
+  func start()
   func startPresent()
 }

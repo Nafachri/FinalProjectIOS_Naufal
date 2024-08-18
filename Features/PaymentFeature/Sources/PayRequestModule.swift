@@ -22,7 +22,7 @@ public class PayRequestModule: PayRequestDependency {
     ScanQRCoordinator(navigationController: navigationController)
   }
   
-  public func payRequestCoordinator(_ navigationController: UINavigationController) ->  Coordinator {
+  public func payRequestCoordinator(_ navigationController: UINavigationController) ->  PaymentCoordinatorable {
     PaymentCoordinator(navigationController: navigationController)
   }
   

@@ -10,9 +10,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="HomeFeature" customModuleProvider="target">
             <connections>
+                <outlet property="contactCollectionView" destination="Jmy-vD-yky" id="H7p-Dp-U1Q"/>
                 <outlet property="historyCollectionView" destination="Xbg-tu-bI2" id="Qk1-O9-vPs"/>
                 <outlet property="payButton" destination="Ybm-5V-eVh" id="Idc-hu-fuD"/>
-                <outlet property="quickSendCollectionView" destination="Jmy-vD-yky" id="bJO-33-40m"/>
                 <outlet property="requestButton" destination="gbB-43-CTh" id="eoz-gd-WFQ"/>
                 <outlet property="topUpBUtton" destination="IFQ-ba-zmy" id="hkn-ZH-QQh"/>
                 <outlet property="topView" destination="IkL-7o-rwj" id="cAC-8U-PSd"/>

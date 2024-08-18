@@ -25,7 +25,12 @@ public extension ObservableType where Element == String {
       guard number != 0 else {
         return "IDR 0"
       }
-      return formatter.string(from: number) ?? "IDR 0"
+      
+      if let formattedString = formatter.string(from: number) {
+        return formattedString.replacingOccurrences(of: "Rp", with: "Rp ")
+      } else {
+        return "Rp 0"
+      }
     }
   }
 }

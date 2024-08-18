@@ -10,10 +10,13 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PaymentViewController" customModule="PaymentFeature" customModuleProvider="target">
             <connections>
                 <outlet property="amountTextField" destination="fsr-Ge-Atg" id="U9c-fp-k9M"/>
+                <outlet property="avatar" destination="JQJ-li-0xe" id="n8Q-aV-qiK"/>
                 <outlet property="contactView" destination="cj8-fR-X3c" id="aBU-QS-9LM"/>
                 <outlet property="deleteButton" destination="CIm-V5-zCS" id="YFP-YC-Bwq"/>
                 <outlet property="dotButton" destination="Y74-3S-XKo" id="KlN-SU-IG2"/>
                 <outlet property="payButton" destination="oyx-03-HQi" id="pfa-eO-fjJ"/>
+                <outlet property="phoneNumber" destination="dWc-s5-ZNn" id="tEG-YK-Kh6"/>
+                <outlet property="username" destination="UEQ-gP-Gxl" id="p0X-gK-NTp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="numberButtons" destination="GdJ-dh-Xhp" collectionClass="NSMutableArray" id="vLt-pB-Hq7"/>
                 <outletCollection property="numberButtons" destination="ffn-hl-6Cm" collectionClass="NSMutableArray" id="IUu-5h-PpL"/>

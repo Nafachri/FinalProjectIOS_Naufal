@@ -9,14 +9,13 @@ import Foundation
 import Coordinator
 import UIKit
 import Dependency
+import TheNorthCoreDataManager
 
 class ContactsCoordinator: ContactsCoordinatorable {
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let paymentDependency: PayRequestDependency
-  var onSelect: ((any Dependency.Modelable) -> Void)?
-  
   
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
@@ -41,9 +40,9 @@ class ContactsCoordinator: ContactsCoordinatorable {
     tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
   }
   
-  func goToContactDetail() {
+  func goToContactDetail(with selectedData: ContactModel) {
     let coordinator = ContactDetailCoordinator(navigationController: navigationController,paymentDependency: paymentDependency)
     addChildCoordinator(coordinator)
-    coordinator.start()
+    coordinator.start(with: selectedData)
   }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import TheNorthCoreDataManager
 
 public protocol ContactsCoordinatorable: Coordinator {
   func startPresent()

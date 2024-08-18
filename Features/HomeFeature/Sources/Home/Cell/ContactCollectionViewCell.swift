@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import TheNorthCoreDataManager
 
 class ContactCollectionViewCell: UICollectionViewCell {
   
@@ -19,7 +20,7 @@ class ContactCollectionViewCell: UICollectionViewCell {
     super.layer.cornerRadius = 8
   }
   
-  func populate(_ contact: Contact){
-    avatarImage.image =  UIImage(named: contact.image, in: .module, with: nil)
+  func populate(_ contact: ContactModel){
+    avatarImage.image =  UIImage(named: contact.avatar ?? "home-contact-dummy", in: .module, with: nil)
   }
 }

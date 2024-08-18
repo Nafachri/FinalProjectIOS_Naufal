@@ -8,7 +8,7 @@
 import Foundation
 import Dependency
 
-struct Contact: Modelable {
+struct Contact {
   let image: String?
   let username: String
   let phoneNumber: String

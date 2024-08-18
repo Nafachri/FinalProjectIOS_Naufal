@@ -10,7 +10,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactDetailViewController" customModule="ContactsFeature" customModuleProvider="target">
             <connections>
+                <outlet property="avatar" destination="tFJ-R3-nhP" id="coc-WO-lvA"/>
+                <outlet property="email" destination="kvD-R7-kvU" id="Rot-hQ-gib"/>
+                <outlet property="phoneNumber" destination="4Qq-Nt-zCQ" id="KME-Q4-aiY"/>
                 <outlet property="sendButton" destination="o2N-zv-xA3" id="iWF-zJ-jA7"/>
+                <outlet property="username" destination="Tqt-tV-Plm" id="nw7-50-nRg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

@@ -9,6 +9,7 @@ import Foundation
 import Coordinator
 import UIKit
 import Dependency
+import TheNorthCoreDataManager
 
 class HomeCoordinator: Coordinator {
   weak var navigationController: UINavigationController!
@@ -69,18 +70,19 @@ class HomeCoordinator: Coordinator {
   
   func goToContacts(){
     let nav = UINavigationController()
-    let coordinator = contactsDependency.contactsCoordinator(nav){contact in
-      print("contact : \(contact)")
-    }
+    let coordinator = contactsDependency.contactsCoordinator(nav)
+//    {contact in
+//      print("contact : \(contact)")
+//    }
     addChildCoordinator(coordinator)
     coordinator.startPresent()
   }
   
-  func goToContactDetail() {
+  func goToContactDetail(with selectedData: ContactModel) {
     let nav = UINavigationController()
     let coordinator = contactsDependency.contactDetailCoordinator(nav)
     addChildCoordinator(coordinator)
-    coordinator.startPresent()
+    coordinator.startPresent(with: selectedData)
   }
   
   func goToHistory() {
@@ -90,11 +92,11 @@ class HomeCoordinator: Coordinator {
     coordinator.startPresent()
   }
   
-  func goToHistoryDetail() {
+  func goToHistoryDetail(with selectedData: HistoryModel) {
     let nav = UINavigationController()
     let coordinator = historyDependency.historyDetailCoordinator(nav)
     addChildCoordinator(coordinator)
-    coordinator.startPresent()
+    coordinator.startPresent(with: selectedData)
   }
   
   func goToSetting() {

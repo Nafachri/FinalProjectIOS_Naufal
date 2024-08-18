@@ -7,6 +7,7 @@
 
 import UIKit
 import TNUI
+import TheNorthCoreDataManager
 
 class HistoryTableViewCell: UITableViewCell {
   
@@ -26,15 +27,15 @@ class HistoryTableViewCell: UITableViewCell {
     
   }
   
-  func populate(_ history: History){
-    avatarImage.image = UIImage(named: history.image ?? "", in: .module, with: nil)
-    nameLabel.text = history.name
-    dateLabel.text = history.date
+  func populate(_ history: HistoryModel){
+    avatarImage.image = UIImage(named: history.contact?.avatar ?? "", in: .module, with: nil)
+    nameLabel.text = history.contact?.username
+    dateLabel.text = history.created_date
     amountLabel.text = history.amount
     
-    if history.amount.hasPrefix("-") {
+    if ((history.amount?.hasPrefix("-")) != nil) {
       containerView.backgroundColor = UIColor.red.withAlphaComponent(0.2)
-    } else if history.amount.hasPrefix("+") {
+    } else if ((history.amount?.hasPrefix("+")) != nil) {
       containerView.backgroundColor = UIColor.green.withAlphaComponent(0.2)
     } else {
       containerView.backgroundColor = .clear

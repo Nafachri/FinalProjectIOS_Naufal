@@ -23,7 +23,6 @@ let project = Project(
               .external(name: "Lottie"),
               .external(name: "KeychainSwift"),
               .external(name: "MidtransKit"),
-              .target(name: "TheNorthCoreDataModel"),
               .target(name: "TheNorthCoreDataManager")
 ]),
     
@@ -33,6 +32,7 @@ let project = Project(
                resources: [
                 "Foundations/TNUI/Sources/**/*.xib",
                 "Foundations/TNUI/Resources/**/*.xcassets",
+                "Foundations/TNUI/Resources/**/*.json",
                 ],
                dependencies: [
                 .target(name: "Utils"),
@@ -63,15 +63,11 @@ let project = Project(
                 .external(name: "RxSwift"),
                ]
               ),
-    .framework("TheNorthCoreDataModel",
-               sources: [],
-               resources: ["Foundations/TheNorthCoreDataModel/Resources/**/*.json",
-                           "Foundations/TheNorthCoreDataModel/Resources/**/*.xcdatamodeld"],
-               dependencies: []
-              ),
+
     .framework("TheNorthCoreDataManager",
                sources: ["Foundations/TheNorthCoreDataManager/**/*.swift"],
-               resources: [],
+               resources: ["Foundations/TheNorthCoreDataManager/Resources/**/*.json",
+                           "Foundations/TheNorthCoreDataManager/Resources/**/*.xcdatamodeld"],
                dependencies: []
               ),
     //MARK: Features
@@ -147,7 +143,6 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
-                .target(name: "TheNorthCoreDataModel"),
                 .target(name: "TheNorthCoreDataManager")
                ]),
     .framework("OnBoardingFeature",
@@ -170,7 +165,8 @@ let project = Project(
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
                 .target(name: "Services"),
-                .external(name: "SnapKit"),
+                .target(name: "TheNorthCoreDataManager"),
+                .external(name: "SnapKit")
                ]),
     .framework("HistoryFeature",
                sources: ["Features/HistoryFeature/Sources/**/*.swift"],
@@ -185,9 +181,7 @@ let project = Project(
                ]),
     .framework("TabBarFeature",
                sources: ["Features/TabBarFeature/Sources/**/*.swift"],
-               resources: ["Features/TabBarFeature/Sources/**/*.xib",
-                           "Features/TabBarFeature/Resources/**/*.xcassets"
-                          ],
+               resources: [],
                dependencies: [
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),

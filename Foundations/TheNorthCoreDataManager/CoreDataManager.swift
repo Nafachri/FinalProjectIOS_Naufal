@@ -20,7 +20,9 @@ public class CoreDataManager {
   
   
   lazy var persistentContainer: NSPersistentContainer = {
-    let container = NSPersistentContainer(name: persistanceName)
+    let url = Bundle.module.url(forResource: persistanceName, withExtension: "momd")!
+    let model = NSManagedObjectModel(contentsOf: url)!
+    let container = NSPersistentContainer(name: persistanceName, managedObjectModel: model)
     container.loadPersistentStores { storeDescription, error in
       if let error = error as NSError? {
         print("Unresolved error \\(error), \\(error.userInfo)")
@@ -72,10 +74,14 @@ public extension CoreDataManager {
   }
   
   @discardableResult
-  func fetch<T: NSManagedObject>(entity: T.Type, predicate: NSPredicate? = nil) throws -> [T] {
+  func fetch<T: NSManagedObject>(entity: T.Type, predicate: NSPredicate? = nil,  fetchLimit: Int? = nil) throws -> [T] {
+    
     let entityName = String(describing: entity)
     let fetchRequest = NSFetchRequest<T>(entityName: entityName)
     fetchRequest.predicate = predicate
+    if let limit = fetchLimit {
+        fetchRequest.fetchLimit = limit
+    }
     return try context.fetch(fetchRequest)
   }
   

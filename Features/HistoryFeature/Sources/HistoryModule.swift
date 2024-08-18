@@ -15,10 +15,12 @@ public class HistoryModule: HistoryDependency {
     HistoryCoordinator(navigationController: navigationController)
   }
   
-  
-  public func historyDetailCoordinator(_ navigationController: UINavigationController) -> HistoryCoordinatorable {
+  public func historyDetailCoordinator(_ navigationController: UINavigationController) -> any HistoryDetailCoordinatorable {
     HistoryDetailCoordinator(navigationController: navigationController)
   }
+  
+  
+
   
   public init() {}
 }

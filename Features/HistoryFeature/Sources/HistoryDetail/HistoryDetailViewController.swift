@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import TheNorthCoreDataManager
 
 
 class HistoryDetailViewController: UIViewController {
@@ -15,6 +16,7 @@ class HistoryDetailViewController: UIViewController {
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
+  var selectedData: HistoryModel?
   
   weak var coordinator: HistoryDetailCoordinator!
   

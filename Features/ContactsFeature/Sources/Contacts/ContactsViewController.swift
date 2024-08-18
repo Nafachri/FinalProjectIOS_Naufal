@@ -7,7 +7,6 @@
 
 import UIKit
 import Dependency
-import TheNorthCoreDataModel
 import TheNorthCoreDataManager
 
 
@@ -16,12 +15,8 @@ class ContactsViewController: UIViewController {
   @IBOutlet weak var tableView: UITableView!
   
   weak var coordinator: ContactsCoordinator!
-  var onSelect: ((any Dependency.Modelable) -> Void)?
-  
-  
-  
+//  var onSelect: ((any Dependency.Modelable) -> Void)?
 
-  
   
   init(coordinator: ContactsCoordinator!){
     self.coordinator = coordinator
@@ -45,32 +40,8 @@ class ContactsViewController: UIViewController {
     
     tableView.dataSource = self
     tableView.delegate = self
-//    tableView.reloadData()
     fetchContacts()
-    
-//    dataArray = [
-//      Contact(image: "contact-profile", name: "Mas Amin"),
-//      Contact(image: "contact-profile", name: "Mas Kholis"),
-//      Contact(image: "contact-profile", name: "Mas Nabhan"),
-//      Contact(image: "contact-profile", name: "Mas Halim"),
-//      Contact(image: "contact-profile", name: "Zhafran"),
-//      Contact(image: "contact-profile", name: "Rama"),
-//      Contact(image: "contact-profile", name: "Andre"),
-//    ]
-    
-//    do {
-//      let contactList = try coredata
-//      for contact in contactList {
-//        print(food.id)
-//      }
-//      
-//    } catch {
-//      
-//    }
-    
   }
-  
-  
 }
 extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
   
@@ -100,16 +71,11 @@ extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
     return UITableView.automaticDimension
   }
   
-//  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    if onSelect != nil {
-//      onSelect?(dataArray[indexPath.row] as! Modelable)
-//    } else {
-//      coordinator.goToContactDetail()
-//    }
-//    
-//    
-//    tableView.deselectRow(at: indexPath, animated: true)
-//  }
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let selectedData = dataArray[indexPath.row]
+    coordinator.goToContactDetail(with: selectedData)
+    tableView.deselectRow(at: indexPath, animated: true)
+  }
   
   private func fetchContacts() {
       do {

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 import TNUI
-
+import TheNorthCoreDataManager
 
 class HomeViewController: UIViewController {
   
@@ -17,10 +17,15 @@ class HomeViewController: UIViewController {
   @IBOutlet weak var topUpBUtton: UIButton!
   @IBOutlet weak var requestButton: UIButton!
   @IBOutlet weak var payButton: UIButton!
-  @IBOutlet weak var quickSendCollectionView: UICollectionView!
+  @IBOutlet weak var contactCollectionView: UICollectionView!
   @IBOutlet weak var historyCollectionView: UICollectionView!
   weak var coordinator: HomeCoordinator!
   var viewModel: HomeViewModel
+  //  var dataArray: [ContactModel] = []
+  var contactDataArray: [ContactModel] = []
+  var historyDataArray: [HistoryModel] = []
+  var coredata = CoreDataManager.shared
+  
   
   init(coordinator: HomeCoordinator, viewModel: HomeViewModel = HomeViewModel()){
     self.coordinator = coordinator
@@ -35,24 +40,31 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    fetchQuickSendContacts()
+    fetchHistory()
     
-    quickSendCollectionView.register(UINib(nibName: "ContactCollectionViewCell", bundle: .module), forCellWithReuseIdentifier: "contact_cell")
-    quickSendCollectionView.register(UINib(nibName: "AddQuickSendCollectionViewCell", bundle: .module), forCellWithReuseIdentifier: "add_quick_send_cell")
+    NotificationCenter.default.addObserver(forName: SuccessScreenViewController.chekcoutNotification, object: nil, queue: .main) { [weak self] _ in
+      self?.fetchHistory()
+    }
+    
+    //    fetchContacts()
+    
+    contactCollectionView.register(UINib(nibName: "ContactCollectionViewCell", bundle: .module), forCellWithReuseIdentifier: "contact_cell")
     historyCollectionView.register(UINib(nibName: "HistoryCollectionViewCell", bundle: .module), forCellWithReuseIdentifier: "history_cell")
     
-    quickSendCollectionView.dataSource = self
-    quickSendCollectionView.delegate = self
-    quickSendCollectionView.reloadData()
-
-    
+    contactCollectionView.dataSource = self
+    contactCollectionView.delegate = self
     historyCollectionView.dataSource = self
     historyCollectionView.delegate = self
-    historyCollectionView.reloadData()
     
     navigationController?.setNavigationBarHidden(true, animated: false)
-    
-    
   }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self, name: SuccessScreenViewController.chekcoutNotification, object: self)
+  }
+  
+  
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
@@ -72,17 +84,6 @@ class HomeViewController: UIViewController {
   }
   
   func setupUI() {
-    // setting height
-//    topView.snp.makeConstraints { make in
-//      make.height.equalTo(350)
-//    }
-//    requestButton.snp.makeConstraints { make in
-//      make.height.equalTo(70)
-//    }
-//    payButton.snp.makeConstraints { make in
-//      make.height.equalTo(70)
-//    }
-    
     // setting button corner radius
     topUpBUtton.layer.cornerRadius = 8
     requestButton.layer.cornerRadius = 8
@@ -113,10 +114,20 @@ class HomeViewController: UIViewController {
   }
 }
 
-extension HomeViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    if collectionView === contactCollectionView {
+      let selectedData = contactDataArray[indexPath.row]
+      coordinator.goToContactDetail(with: selectedData)
+    } else if  collectionView === historyCollectionView {
+      let selectedData = historyDataArray[indexPath.row]
+      coordinator.goToHistoryDetail(with: selectedData)
+    }
+  }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    if collectionView === quickSendCollectionView {
+    if collectionView === contactCollectionView {
       return CGSize(width: 60, height: 60)
     } else if collectionView === historyCollectionView {
       return CGSize(width: 180, height: 110)
@@ -125,87 +136,55 @@ extension HomeViewController : UICollectionViewDataSource, UICollectionViewDeleg
     }
   }
   
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    if collectionView === quickSendCollectionView {
-      if indexPath.row == 0 {
-        coordinator.goToContacts()
-      } else {
-        coordinator.goToContactDetail()
-      }
-    } else {
-      coordinator.goToHistoryDetail()
-    }
-  }
-  
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    if collectionView === quickSendCollectionView {
-      return viewModel.quickSendCount
+    if collectionView === contactCollectionView {
+      return contactDataArray.count
     } else if collectionView === historyCollectionView {
-      return viewModel.historyData.count
+      return historyDataArray.count
     } else {
       return 0
     }
+    
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    if collectionView === quickSendCollectionView {
-      if indexPath.row == 0 {
-        let data = viewModel.addQuickSendData[indexPath.row]
-        let addQuickSendCell = collectionView.dequeueReusableCell(withReuseIdentifier: "add_quick_send_cell", for: indexPath) as! AddQuickSendCollectionViewCell
-        addQuickSendCell.populate(data)
-        return addQuickSendCell
-      } else {
-        let data = viewModel.quickSendData[indexPath.row - 1]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "contact_cell", for: indexPath) as! ContactCollectionViewCell
-        cell.populate(data)
-        return cell
-      }
+    if collectionView === contactCollectionView {
+      let data = contactDataArray[indexPath.row]
+      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "contact_cell", for: indexPath) as! ContactCollectionViewCell
+      cell.populate(data)
+      return cell
     } else if collectionView === historyCollectionView {
-      let data = viewModel.historyData[indexPath.row]
+      let data = historyDataArray[indexPath.item]
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "history_cell", for: indexPath) as! HistoryCollectionViewCell
       cell.populate(data)
       
-      if data.amount.hasPrefix("-") {
+      if data.type == "pay" {
         cell.backgroundColor = UIColor(hex: "#C20000")
-      } else if data.amount.hasPrefix("+") {
-        cell.backgroundColor = UIColor(hex: "#266A61")
       } else {
-        cell.backgroundColor = .clear
+        cell.backgroundColor = UIColor(hex: "#266A61")
       }
+      
       return cell
-    } else {
-      return .init()
+    }
+    return UICollectionViewCell()
+  }
+  
+  
+  private func fetchQuickSendContacts() {
+    do {
+      contactDataArray = try coredata.fetch(entity: ContactModel.self, fetchLimit: 3)
+      contactCollectionView.reloadData()
+    } catch {
+      print("Failed to fetch contacts: \(error.localizedDescription)")
     }
   }
+  
+  private func fetchHistory() {
+    do {
+      historyDataArray = try coredata.fetch(entity: HistoryModel.self)
+      historyCollectionView.reloadData()
+    } catch {
+      print("Failed to fetch contacts: \(error.localizedDescription)")
+    }
+  } 
 }
-//extension UIColor {
-//    /// Initialize UIColor with a hex string
-//    ///
-//    /// - Parameter hex: The hex string representation of the color. Supports `#RRGGBB` and `#RRGGBBAA` formats.
-//    convenience init?(hex: String) {
-//        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-//        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
-//
-//        var rgb: UInt64 = 0
-//        var r: CGFloat = 0.0, g: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 1.0
-//
-//        let length = hexSanitized.count
-//
-//        guard Scanner(string: hexSanitized).scanHexInt64(&rgb) else { return nil }
-//
-//        if length == 6 {
-//            r = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
-//            g = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
-//            b = CGFloat(rgb & 0x0000FF) / 255.0
-//        } else if length == 8 {
-//            r = CGFloat((rgb & 0xFF000000) >> 24) / 255.0
-//            g = CGFloat((rgb & 0x00FF0000) >> 16) / 255.0
-//            b = CGFloat((rgb & 0x0000FF00) >> 8) / 255.0
-//            a = CGFloat(rgb & 0x000000FF) / 255.0
-//        } else {
-//            return nil
-//        }
-//
-//        self.init(red: r, green: g, blue: b, alpha: a)
-//    }
-//}

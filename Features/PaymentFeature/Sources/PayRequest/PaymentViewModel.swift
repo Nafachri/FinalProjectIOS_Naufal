@@ -23,20 +23,18 @@ class PaymentViewModel {
   let payButtonOutput: Observable<String>
   
   init() {
-    // Merge number, dot, and delete taps
     let buttonTaps = Observable.merge(
       numberTapped,
       dotTapped.map { "." },
       deleteTapped.map { "" }
     )
     
-    // Accumulate text input and format it as a currency
     inputText = buttonTaps.scan("") { currentText, tappedValue in
-      if tappedValue.isEmpty { // Handle delete
+      if tappedValue.isEmpty {
         return String(currentText.dropLast())
-      } else if tappedValue == "." { // Handle dot
+      } else if tappedValue == "." {
         return currentText.contains(".") ? currentText : currentText + tappedValue
-      } else { // Handle numbers
+      } else {
         return currentText + tappedValue
       }
     }
@@ -48,8 +46,8 @@ class PaymentViewModel {
       
     }
         payButtonOutput = payButtonTapped
-          .withLatestFrom(inputText) // Combine with the latest inputText
-          .map { "Final Input: \($0)" } // Format the message
+          .withLatestFrom(inputText)
+          .map {$0}
           .observe(on: MainScheduler.instance)
   }
 }

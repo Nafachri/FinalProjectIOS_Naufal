@@ -9,9 +9,14 @@ import UIKit
 import RxSwift
 import RxRelay
 import TNUI
+import TheNorthCoreDataManager
+import Utils
 
 class PaymentViewController: UIViewController {
   
+  @IBOutlet weak var phoneNumber: UILabel!
+  @IBOutlet weak var username: UILabel!
+  @IBOutlet weak var avatar: UIImageView!
   @IBOutlet weak var contactView: UIView!
   @IBOutlet var numberButtons: [UIButton]!
   @IBOutlet weak var dotButton: UIButton!
@@ -22,6 +27,8 @@ class PaymentViewController: UIViewController {
   weak var coordinator: PaymentCoordinator!
   let disposeBag = DisposeBag()
   var viewModel = PaymentViewModel()
+  var selectedData: ContactModel?
+  var coredata = CoreDataManager.shared
   
   
   init(coordinator: PaymentCoordinator!, viewModel: PaymentViewModel = .init()){
@@ -43,10 +50,11 @@ class PaymentViewController: UIViewController {
   func setupUI() {
     contactView.layer.cornerRadius = 10
     payButton.layer.cornerRadius = 10
+    phoneNumber.text = selectedData?.phoneNumber
+    username.text = selectedData?.username
   }
   
   func setupBinding() {
-    // Bind number buttons
     numberButtons.forEach { button in
       button.rx.tap
         .map { button.titleLabel?.text ?? "" }
@@ -54,51 +62,65 @@ class PaymentViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
-    // Bind dot button
     dotButton.rx.tap
       .bind(to: viewModel.dotTapped)
       .disposed(by: disposeBag)
     
-    // Bind delete button
     deleteButton.rx.tap
       .bind(to: viewModel.deleteTapped)
       .disposed(by: disposeBag)
     
-    // Bind Pay button
     payButton.rx.tap
       .bind(to: viewModel.payButtonTapped)
       .disposed(by: disposeBag)
     
-    // Bind input text to label
     viewModel.inputText
       .bind(to: amountTextField.rx.text)
       .disposed(by: disposeBag)
     
-    // Handle pay button output
     viewModel.payButtonOutput
-      .subscribe(onNext: { [weak self] message in
-        self?.showAlert(message: message)
+      .subscribe(onNext: { [weak self] value in
+        let transactionDate = Date.now.formatted(.dateTime.year().month().day())
+        let transactionTitle = "Payment Success"
+        let transactionType = "pay"
+        let transactionName = self?.selectedData?.username
+        let transactionId = generateTransactionID()
+        let message = "confirm the payment of \(value) ?"
+        
+        self?.showAlert(message: message, transactionName: transactionName ?? "", transactionAmount: value, transactionDate: transactionDate, transactionTitle: transactionTitle, transactionId: transactionId, transactionType: transactionType)
       })
       .disposed(by: disposeBag)
   }
   
-  func showAlert(message: String) {
-    let alert = UIAlertController(title: "Payment", message: message, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "OK", style: .default))
+  func showAlert(message: String, transactionName: String, transactionAmount: String, transactionDate: String, transactionTitle: String, transactionId: String, transactionType: String) {
+    let alert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .alert)
+    let action = UIAlertAction(title: "Confirm", style: .default) { _ in
+      self.dismiss(animated: true) { [self] in
+        
+        guard let selectedContact = self.selectedData else {
+          print("Selected contact data is missing")
+          return
+        }
+        
+        let properties: [String: Any] = [
+          "amount": transactionAmount,
+          "created_date": transactionDate,
+          "id": transactionId,
+          "type": transactionType,
+          "contact": selectedContact
+        ]
+        
+        do {
+          try coredata.create(entity: HistoryModel.self, properties: properties)
+        } catch {
+          print("Failed to save history entry: \(error)")
+        }
+        self.coordinator.showSuccess(transactionName: transactionName, transactionAmount: transactionAmount, transactionDate: transactionDate, transactionTitle: transactionTitle, transactionId: transactionId, transactionType: transactionType)
+      }
+    }
+    alert.addAction(action)
     present(alert, animated: true)
   }
-  
-  //  MARK: show success view controller
-  
-  //  func showSuccessViewController() {
-  //    let successScreenViewController = TNUI.SuccessScreenViewController()
-  //    if let sheet = successScreenViewController.sheetPresentationController {
-  //      sheet.detents = [.medium(), .large()] // Adjust the sizes as needed
-  //      sheet.prefersGrabberVisible = true
-  //    }
-  //
-  //    present(successScreenViewController, animated: true, completion: nil)
-  //
-  //  }
 }
+
 

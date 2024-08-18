@@ -25,7 +25,7 @@ class MidtransViewController: UIViewController, MidtransUIPaymentViewControllerD
   
   @IBAction func buttonTapped(_ sender: UIButton) {
       
-    MidtransMerchantClient.shared().requestTransacation(withCurrentToken: "ad895074-8a1e-4c8d-b06a-e3d11766015f") { (response, error) in
+    MidtransMerchantClient.shared().requestTransacation(withCurrentToken: "2b72ac20-d51f-4319-859b-bdd86da83336") { (response, error) in
         if (response != nil){
             //initialize MidtransUIPaymentViewController
             let vc = MidtransUIPaymentViewController.init(token: response)

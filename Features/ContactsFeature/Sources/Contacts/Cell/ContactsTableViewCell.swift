@@ -8,7 +8,7 @@
 import UIKit
 import TNUI
 import TheNorthCoreDataManager
-import TheNorthCoreDataModel
+
 
 
 class ContactsTableViewCell: UITableViewCell {

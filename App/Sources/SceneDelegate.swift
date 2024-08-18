@@ -20,14 +20,13 @@ import netfox
 import TNUI
 import MidtransKit
 import TheNorthCoreDataManager
-import TheNorthCoreDataModel
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
   var app: AppCoordinator?
   
-//  let coreData = CoreDataManager.shared
+  //  let coreData = CoreDataManager.shared
   
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -38,8 +37,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.rootViewController = nav
     UITabBar.appearance().unselectedItemTintColor = .gray
     UITabBar.appearance().tintColor = .label
-    MidtransConfig.shared().setClientKey("SB-Mid-client-4zX2hEwOqCgsOpUX", environment: .sandbox, merchantServerURL: "https://merchant-url-sandbox.com")
+    MidtransConfig.shared().setClientKey("SB-Mid-client-vyQWn0s0GlP-L_22", environment: .sandbox, merchantServerURL: "http://loalhost:3030")
     window?.makeKeyAndVisible()
+    let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+    print(paths[0])
     
     //MARK: set theme
     
@@ -47,27 +48,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let style: UIUserInterfaceStyle = darkModeEnabled ? .dark : .light
     
     window?.overrideUserInterfaceStyle = style
-    
-//    do {
-//      let contactList = try coreData.fetch(entity: ContactModel.self)
-//      if contactList.count <= 0 {
-//        let contactJson = loadData()
-//        for contactJson in contactJson {
-//          try coreData.create(entity: ContactModel.self, properties: contactJson)
-//        }
-//      }
-//    } catch {
-//      print("Cannot added data to the contact model")
-//    }
-//    do {
-//      let contactList = try coreData.fetch(entity: ContactModel.self)
-//      for contact in contactList {
-//        print(contact)
-//      }
-//    } catch {
-//      print("No Data Contact")
-//
-//    }
     
     //MARK: set coordinator
     let paymentDependency = PayRequestModule()
@@ -94,24 +74,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     //    let coor = paymentDependency.midtransCoordinator(nav)
     //    coor.start()
     app?.start()
-  }
-  
-  func loadData() -> [[String: Any]] {
-    guard let path = Bundle.main.path(forResource: "contacts", ofType: "json") else {
-      return []
+    for contact in loadDataContact() {
+      try! CoreDataManager.shared.create(entity: ContactModel.self, properties: contact)
     }
     
+    //    let contacts = try! CoreDataManager.shared.fetch(entity: ContactModel.self)
+    //    contacts.forEach { contact in
+    //      print("contact", contact.username)
+    //    }
+    
+  }
+  
+  func loadDataContact() -> [[String: Any]] {
+    let bundle = Bundle(for: TheNorthCoreDataManager.ContactModel.self)
+    
+    guard let path = bundle.path(forResource: "contacts", ofType: "json") else {
+      return []
+    }
     do {
       let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
       let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [[String: Any]]
       return jsonResult ?? []
     } catch {
-      // handle error
       print(error.localizedDescription)
     }
     return []
-    
   }
+  
   
   func sceneDidDisconnect(_ scene: UIScene) {
     // Called as the scene is being released by the system.
@@ -186,34 +175,42 @@ extension UIWindow {
 
 
 extension UIApplication {
-  class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-    if let nav = base as? UINavigationController {
-      return topViewController(base: nav.visibleViewController)
-    }
-    if let tab = base as? UITabBarController {
-      if let selected = tab.selectedViewController {
-        return topViewController(base: selected)
+  class func topViewController(base: UIViewController? = UIApplication.shared.connectedScenes
+    .filter({ $0.activationState == .foregroundActive })
+    .compactMap({ $0 as? UIWindowScene })
+    .first?.windows
+    .filter({ $0.isKeyWindow }).first?.rootViewController) -> UIViewController? {
+      if let nav = base as? UINavigationController {
+        return topViewController(base: nav.visibleViewController)
       }
+      if let tab = base as? UITabBarController {
+        if let selected = tab.selectedViewController {
+          return topViewController(base: selected)
+        }
+      }
+      if let presented = base?.presentedViewController {
+        return topViewController(base: presented)
+      }
+      return base
     }
-    if let presented = base?.presentedViewController {
-      return topViewController(base: presented)
-    }
-    return base
-  }
   
-  class func currentViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-    if let nav = base as? UINavigationController {
-      return topViewController(base: nav.viewControllers.last)
-    }
-    if let tab = base as? UITabBarController {
-      if let selected = tab.selectedViewController {
-        return topViewController(base: selected)
+  class func currentViewController(base: UIViewController? = UIApplication.shared.connectedScenes
+    .filter({ $0.activationState == .foregroundActive })
+    .compactMap({ $0 as? UIWindowScene })
+    .first?.windows
+    .filter({ $0.isKeyWindow }).first?.rootViewController) -> UIViewController? {
+      if let nav = base as? UINavigationController {
+        return currentViewController(base: nav.viewControllers.last)
       }
+      if let tab = base as? UITabBarController {
+        if let selected = tab.selectedViewController {
+          return currentViewController(base: selected)
+        }
+      }
+      if let presented = base?.presentedViewController {
+        return currentViewController(base: presented)
+      }
+      return base
     }
-    if let presented = base?.presentedViewController {
-      return topViewController(base: presented)
-    }
-    return base
-  }
 }
 

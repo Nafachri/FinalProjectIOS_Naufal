@@ -9,14 +9,15 @@ import Foundation
 import Coordinator
 import Dependency
 import UIKit
+import TheNorthCoreDataManager
 
-class ContactDetailCoordinator: ContactsCoordinatorable {
+class ContactDetailCoordinator: ContactDetailCoordinatorable {
+  
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let paymentDependency: PayRequestDependency
-  
-  
+    
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
        parentCoordinator: Coordinator? = nil,
@@ -28,21 +29,28 @@ class ContactDetailCoordinator: ContactsCoordinatorable {
     self.paymentDependency = paymentDependency
   }
   
-  func start(){
-    let contactDetailVC = ContactDetailViewController(coordinator: self)
-    navigationController.pushViewController(contactDetailVC, animated: true)
+  func start() {
+      let contactDetailVC = ContactDetailViewController(coordinator: self)
+      navigationController.pushViewController(contactDetailVC, animated: true)
   }
   
-  func startPresent() {
+  func start(with selectedData: ContactModel){
     let contactDetailVC = ContactDetailViewController(coordinator: self)
+    contactDetailVC.selectedData = selectedData
+    navigationController.pushViewController(contactDetailVC, animated: true)
+  }
+  func startPresent(with selectedData: ContactModel) {
+    let contactDetailVC = ContactDetailViewController(coordinator: self)
+    contactDetailVC.selectedData = selectedData
     navigationController.setViewControllers([contactDetailVC], animated: false)
     let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
     tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
   }
   
-  func goToPayment(){
+  
+  func goToPayment(with selectedData: ContactModel){
     let coordinator = paymentDependency.payRequestCoordinator(navigationController)
     addChildCoordinator(coordinator)
-    coordinator.start()
+    coordinator.start(with: selectedData)
   }
 }
