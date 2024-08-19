@@ -26,9 +26,17 @@ class PaymentCoordinator: PaymentCoordinatorable {
     navigationController.pushViewController(paymentVC, animated: true)
   }  
   
-  func start(with selectedData: ContactModel){
+  func start(with selectedData: ContactModel) {
+    // Implement the flow for ContactModel
     let paymentVC = PaymentViewController(coordinator: self)
     paymentVC.selectedData = selectedData
+    navigationController.pushViewController(paymentVC, animated: true)
+  }
+  
+  func start(quickSendData: QuickSendModel) {
+    // Implement the flow for QuickSendModel
+    let paymentVC = PaymentViewController(coordinator: self)
+    paymentVC.quickSendData = quickSendData
     navigationController.pushViewController(paymentVC, animated: true)
   }
   

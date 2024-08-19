@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactDetailViewController" customModule="ContactsFeature" customModuleProvider="target">
             <connections>
+                <outlet property="addToQuickSendButton" destination="CwY-30-k11" id="ITZ-17-CTw"/>
                 <outlet property="avatar" destination="tFJ-R3-nhP" id="coc-WO-lvA"/>
                 <outlet property="email" destination="kvD-R7-kvU" id="Rot-hQ-gib"/>
                 <outlet property="phoneNumber" destination="4Qq-Nt-zCQ" id="KME-Q4-aiY"/>
@@ -26,12 +27,26 @@
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact-profile" translatesAutoresizingMaskIntoConstraints="NO" id="tFJ-R3-nhP">
                     <rect key="frame" x="75.666666666666686" y="123" width="242" height="238"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Faris" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tqt-tV-Plm">
-                    <rect key="frame" x="140.66666666666666" y="409" width="112" height="60"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="sC9-Vy-hCa">
+                    <rect key="frame" x="111.00000000000001" y="409" width="171.33333333333337" height="60"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Faris" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tqt-tV-Plm">
+                            <rect key="frame" x="0.0" y="0.0" width="111.33333333333333" height="60"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-30-k11" userLabel="Add to quick send">
+                            <rect key="frame" x="118.33333333333334" y="0.0" width="53" height="60"/>
+                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="plus.bubble.fill" catalog="system"/>
+                            <connections>
+                                <action selector="addToQuickSendButtonTapped:" destination="-1" eventType="touchUpInside" id="TJX-wX-rjV"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="faris@mail.com" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kvD-R7-kvU">
                     <rect key="frame" x="24" y="493" width="345" height="44"/>
                     <constraints>
@@ -68,14 +83,14 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="kvD-R7-kvU" secondAttribute="trailing" constant="24" id="30a-5u-Wjg"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="o2N-zv-xA3" secondAttribute="trailing" constant="24" id="8AG-ka-Ggm"/>
                 <constraint firstItem="tFJ-R3-nhP" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="64" id="CYN-D1-awC"/>
-                <constraint firstItem="kvD-R7-kvU" firstAttribute="top" secondItem="Tqt-tV-Plm" secondAttribute="bottom" constant="24" id="DRb-fS-vZf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4Qq-Nt-zCQ" secondAttribute="trailing" constant="24" id="ERS-MF-v8G"/>
-                <constraint firstItem="Tqt-tV-Plm" firstAttribute="top" secondItem="tFJ-R3-nhP" secondAttribute="bottom" constant="48" id="RGH-RL-Wqk"/>
+                <constraint firstItem="sC9-Vy-hCa" firstAttribute="top" secondItem="tFJ-R3-nhP" secondAttribute="bottom" constant="48" id="LY6-7r-Y6B"/>
                 <constraint firstItem="kvD-R7-kvU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="b0s-PD-iIi"/>
                 <constraint firstItem="4Qq-Nt-zCQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="dK2-oi-gOY"/>
                 <constraint firstItem="tFJ-R3-nhP" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eIZ-NU-Ikg"/>
                 <constraint firstItem="4Qq-Nt-zCQ" firstAttribute="top" secondItem="kvD-R7-kvU" secondAttribute="bottom" constant="24" id="ez5-CL-SlC"/>
-                <constraint firstItem="Tqt-tV-Plm" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="rHT-Hc-7Nt"/>
+                <constraint firstItem="kvD-R7-kvU" firstAttribute="top" secondItem="sC9-Vy-hCa" secondAttribute="bottom" constant="24" id="fCT-7Z-wv3"/>
+                <constraint firstItem="sC9-Vy-hCa" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="jz5-gH-cjH"/>
                 <constraint firstItem="o2N-zv-xA3" firstAttribute="top" secondItem="4Qq-Nt-zCQ" secondAttribute="bottom" constant="24" id="rho-zC-idd"/>
                 <constraint firstItem="o2N-zv-xA3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="tum-7o-CP8"/>
             </constraints>
@@ -84,6 +99,7 @@
     </objects>
     <resources>
         <image name="contact-profile" width="242" height="238"/>
+        <image name="plus.bubble.fill" catalog="system" width="128" height="110"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

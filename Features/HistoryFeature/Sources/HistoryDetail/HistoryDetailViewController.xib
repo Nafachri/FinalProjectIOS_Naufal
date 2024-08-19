@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HistoryDetailViewController" customModule="HistoryFeature" customModuleProvider="target">
             <connections>
                 <outlet property="amountLabel" destination="lIg-TB-Fhf" id="iba-8b-zFe"/>
+                <outlet property="avatar" destination="ugS-vH-x3r" id="5HT-Xx-itB"/>
                 <outlet property="dateLabel" destination="a72-5t-gB5" id="fxN-Kd-JZf"/>
                 <outlet property="nameLabel" destination="oVb-Br-cvj" id="LOs-Bu-bui"/>
                 <outlet property="uiView" destination="rbf-ng-HCW" id="sqE-Ih-GLI"/>

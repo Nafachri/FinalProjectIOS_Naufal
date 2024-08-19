@@ -39,9 +39,17 @@ class ContactDetailCoordinator: ContactDetailCoordinatorable {
     contactDetailVC.selectedData = selectedData
     navigationController.pushViewController(contactDetailVC, animated: true)
   }
+  
   func startPresent(with selectedData: ContactModel) {
     let contactDetailVC = ContactDetailViewController(coordinator: self)
     contactDetailVC.selectedData = selectedData
+    navigationController.setViewControllers([contactDetailVC], animated: false)
+    let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
+    tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
+  }
+  func startPresent(quickSendData : QuickSendModel) {
+    let contactDetailVC = ContactDetailViewController(coordinator: self)
+    contactDetailVC.quickSendData = quickSendData
     navigationController.setViewControllers([contactDetailVC], animated: false)
     let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
     tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
@@ -52,5 +60,11 @@ class ContactDetailCoordinator: ContactDetailCoordinatorable {
     let coordinator = paymentDependency.payRequestCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start(with: selectedData)
+  }
+  
+  func goToPayment(quickSendData: QuickSendModel){
+    let coordinator = paymentDependency.payRequestCoordinator(navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start(quickSendData: quickSendData)
   }
 }

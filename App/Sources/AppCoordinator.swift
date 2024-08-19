@@ -55,13 +55,7 @@ class AppCoordinator: AppCoordinatorable, NavigationCoordinator {
 //    } else {
 //      showTabBar()
 //    }
-    //    showProfile()
-    //    showSetting()
-    //    showContacts()
-    //    showOnBoarding()
-    //    showHome()
-    //    showHistory()
-        showTabBar()
+    showTabBar()
   }
   
   func showLogin() {

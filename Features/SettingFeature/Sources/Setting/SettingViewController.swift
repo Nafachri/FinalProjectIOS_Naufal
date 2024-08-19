@@ -7,14 +7,18 @@
 
 import UIKit
 import KeychainSwift
+import TheNorthCoreDataManager
 
 class SettingViewController: UIViewController {
-
+  
+  // MARK: - Properties
   @IBOutlet weak var tableView: UITableView!
   weak var coordinator: SettingCoordinator!
-  var keychain = KeychainSwift()
+  private let keychain = KeychainSwift()
+  private let coreData = CoreDataManager.shared
   
-  init(coordinator: SettingCoordinator!){
+  // MARK: - Initializer
+  init(coordinator: SettingCoordinator!) {
     self.coordinator = coordinator
     super.init(nibName: "SettingViewController", bundle: .module)
   }
@@ -23,59 +27,79 @@ class SettingViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  // MARK: - Lifecycle
   override func viewDidLoad() {
-        super.viewDidLoad()
-      
+    super.viewDidLoad()
+    setupTableView()
+    title = "Settings"
+  }
+  
+  // MARK: - Private Methods
+  private func setupTableView() {
     tableView.register(UINib(nibName: "SettingTableViewCell", bundle: .module), forCellReuseIdentifier: "setting_cell")
     tableView.register(UINib(nibName: "SignOutTableViewCell", bundle: .module), forCellReuseIdentifier: "signout_cell")
-      tableView.dataSource = self
-      tableView.delegate = self
-      
-    title = "settings"
+    tableView.dataSource = self
+    tableView.delegate = self
+  }
+  
+  private func showSignOutAlert() {
+    let alert = UIAlertController(title: "Are you sure?", message: "Are you sure you want to sign out?", preferredStyle: .alert)
+    let confirmAction = UIAlertAction(title: "Confirm", style: .destructive) { [weak self] _ in
+      self?.signOut()
     }
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    alert.addAction(confirmAction)
+    alert.addAction(cancelAction)
+    present(alert, animated: true)
+  }
+  
+  private func signOut() {
+    do {
+      try deleteUserData()
+      removeTokenFromKeychain()
+      coordinator.showOnBoarding()
+    } catch {
+      print("Failed to sign out: \(error.localizedDescription)")
+    }
+  }
+  
+  private func deleteUserData() throws {
+    let users = try coreData.fetch(entity: UserModel.self)
+    for user in users {
+      try coreData.delete(entity: user)
+    }
+  }
+  
+  private func removeTokenFromKeychain() {
+    keychain.delete("userToken")
+  }
 }
 
+// MARK: - UITableViewDataSource & UITableViewDelegate
 extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 2
+  }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//    return UITableView.automaticDimension
     return 100
   }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      if indexPath.row == 0 {
-        let settingCell = tableView.dequeueReusableCell(withIdentifier: "setting_cell", for: indexPath) as! SettingTableViewCell
-        return settingCell
-
-      }
-      else {
-        let signOutCell = tableView.dequeueReusableCell(withIdentifier: "signout_cell", for: indexPath) as! SignOutTableViewCell
-      
-        return signOutCell
-      }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if indexPath.row == 0 {
+      let settingCell = tableView.dequeueReusableCell(withIdentifier: "setting_cell", for: indexPath) as! SettingTableViewCell
+      return settingCell
+    } else {
+      let signOutCell = tableView.dequeueReusableCell(withIdentifier: "signout_cell", for: indexPath) as! SignOutTableViewCell
+      return signOutCell
     }
+  }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row == 1 {
-      showAlert(message: "are you sure want to to sign out?")
+      showSignOutAlert()
     }
     tableView.deselectRow(at: indexPath, animated: true)
-  }
-  
-  func showAlert(message: String) {
-    let alert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .alert)
-    let action = UIAlertAction(title: "Confirm", style: .default) {_ in
-      self.dismiss(animated: true) { [weak self] in
-        guard let self else { return }
-        coordinator.showOnBoarding()
-        keychain.delete("userToken")
-      }
-    }
-    alert.addAction(action)
-    present(alert, animated: true)
   }
 }

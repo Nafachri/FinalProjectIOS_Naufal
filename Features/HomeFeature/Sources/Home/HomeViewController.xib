@@ -14,8 +14,10 @@
                 <outlet property="historyCollectionView" destination="Xbg-tu-bI2" id="Qk1-O9-vPs"/>
                 <outlet property="payButton" destination="Ybm-5V-eVh" id="Idc-hu-fuD"/>
                 <outlet property="requestButton" destination="gbB-43-CTh" id="eoz-gd-WFQ"/>
-                <outlet property="topUpBUtton" destination="IFQ-ba-zmy" id="hkn-ZH-QQh"/>
+                <outlet property="topUpButton" destination="IFQ-ba-zmy" id="3c0-sq-imL"/>
                 <outlet property="topView" destination="IkL-7o-rwj" id="cAC-8U-PSd"/>
+                <outlet property="userBalanceLabel" destination="44l-Sv-9YY" id="mzF-vU-hMf"/>
+                <outlet property="usernameLabel" destination="kIL-vU-wwz" id="8y4-1W-IiT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

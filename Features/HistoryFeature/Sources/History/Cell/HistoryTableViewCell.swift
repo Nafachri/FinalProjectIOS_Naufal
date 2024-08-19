@@ -19,7 +19,6 @@ class HistoryTableViewCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     selectionStyle = .none
-    // Initialization code
   }
   
   override func setSelected(_ selected: Bool, animated: Bool) {
@@ -27,18 +26,23 @@ class HistoryTableViewCell: UITableViewCell {
     
   }
   
-  func populate(_ history: HistoryModel){
-    avatarImage.image = UIImage(named: history.contact?.avatar ?? "", in: .module, with: nil)
-    nameLabel.text = history.contact?.username
-    dateLabel.text = history.created_date
-    amountLabel.text = history.amount
+  func populate(_ history: HistoryModel) {
+    let avatarName = history.contact?.avatar ?? "avatar-dummy"
+    let username = history.contact?.username ?? "Unknown"
+    let createdDate = history.created_date ?? "Unknown Date"
+    let amount = history.amount ?? "0"
+    let transactionType = history.type ?? "pay"
     
-    if ((history.amount?.hasPrefix("-")) != nil) {
+    avatarImage.image = UIImage(named: avatarName, in: .module, with: nil)
+    nameLabel.text = username
+    dateLabel.text = createdDate
+    
+    if transactionType == "pay" {
+      amountLabel.text = "- \(amount)"
       containerView.backgroundColor = UIColor.red.withAlphaComponent(0.2)
-    } else if ((history.amount?.hasPrefix("+")) != nil) {
-      containerView.backgroundColor = UIColor.green.withAlphaComponent(0.2)
     } else {
-      containerView.backgroundColor = .clear
+      amountLabel.text = "+ \(amount)"
+      containerView.backgroundColor = UIColor.green.withAlphaComponent(0.2)
     }
   }
   

@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import TheNorthCoreDataManager
 
 public protocol PayRequestCoordinatorable: Coordinator {
   func startPresent()
+  func start(quickSendData: QuickSendModel)
+  func start(with selectedData: ContactModel)
 }

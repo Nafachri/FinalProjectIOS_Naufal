@@ -15,4 +15,18 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ContactModel" inverseName="history" inverseEntity="ContactModel"/>
     </entity>
+    <entity name="QuickSendModel" representedClassName="QuickSendModel" syncable="YES" codeGenerationType="class">
+        <attribute name="avatar" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="UserModel" representedClassName="UserModel" syncable="YES" codeGenerationType="class">
+        <attribute name="balance" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+    </entity>
 </model>

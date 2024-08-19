@@ -34,10 +34,10 @@ class SignUpViewModel {
   
   init(authentication: AuthenticationServiceable) {
     self.authentication = authentication
-    setupSigninBinding()
+    setupSignupBinding()
   }
   
-  func setupSigninBinding() {
+  func setupSignupBinding() {
     signUp.subscribe { [weak self] _ in
       guard let self = self else { return }
       let username = username.value

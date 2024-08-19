@@ -10,5 +10,6 @@ import TheNorthCoreDataManager
 
 public protocol PaymentCoordinatorable: Coordinator {
   func start(with selectedData: ContactModel)
+  func start(quickSendData: QuickSendModel)
 }
 

@@ -66,9 +66,14 @@
 	</array>
 	<key>CFBundleDisplayName</key>
 	<string></string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>instagram-stories</string>
-	</array>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+      <string>fb</string>
+      <string>twitter</string>
+      <string>instagram-stories</string>
+  </array>
+  <key>LSSupportsOpeningDocumentsInPlace</key>
+  <true/>
+
 </dict>
 </plist>

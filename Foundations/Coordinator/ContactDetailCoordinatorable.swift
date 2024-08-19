@@ -9,7 +9,9 @@ import Foundation
 import TheNorthCoreDataManager
 
 public protocol ContactDetailCoordinatorable: Coordinator {
-//  func startPresent()
-  func startPresent(with selectedData: ContactModel)
   func start(with selectedData: ContactModel)
+  func startPresent(with selectedData: ContactModel)
+  func startPresent(quickSendData: QuickSendModel)
+  
+  
 }

@@ -13,11 +13,9 @@ public enum CoreDataManagerError: Error {
 }
 
 public class CoreDataManager {
-  
   public static let shared = CoreDataManager()
   private init() {}
   private let persistanceName: String = "TheNorthCoreData"
-  
   
   lazy var persistentContainer: NSPersistentContainer = {
     let url = Bundle.module.url(forResource: persistanceName, withExtension: "momd")!
@@ -25,17 +23,17 @@ public class CoreDataManager {
     let container = NSPersistentContainer(name: persistanceName, managedObjectModel: model)
     container.loadPersistentStores { storeDescription, error in
       if let error = error as NSError? {
-        print("Unresolved error \\(error), \\(error.userInfo)")
+        print("Unresolved error \(error), \(error.userInfo)")
       }
     }
     return container
   }()
   
-  var context: NSManagedObjectContext {
+  public var context: NSManagedObjectContext {
     return persistentContainer.viewContext
   }
   
-  func saveContext() throws {
+  public func saveContext() throws {
     if context.hasChanges {
       try context.save()
     }

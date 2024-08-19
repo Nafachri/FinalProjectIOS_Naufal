@@ -85,6 +85,13 @@ class HomeCoordinator: Coordinator {
     coordinator.startPresent(with: selectedData)
   }
   
+  func  goToContactDetailQuickSend(quickSendData: QuickSendModel){
+    let nav = UINavigationController()
+    let coordinator = contactsDependency.contactDetailCoordinator(nav)
+    addChildCoordinator(coordinator)
+    coordinator.startPresent(quickSendData: quickSendData)
+  }
+  
   func goToHistory() {
     let nav = UINavigationController()
     let coordinator = historyDependency.historyCoordinator(nav)

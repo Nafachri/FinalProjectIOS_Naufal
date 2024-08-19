@@ -1,92 +1,62 @@
 [
   {
-    "id": "1234567890",
-    "email": "johndoe@example.com",
-    "username": "johndoe",
-    "phoneNumber": "+6281234567890",
-  },
-  {
-    "id": "2345678901",
-    "email": "janedoe@example.com",
-    "username": "janedoe",
-    "phoneNumber": "+6281323456789",
-  },
-  {
-    "id": "3456789012",
-    "email": "alice@example.com",
-    "username": "alice123",
-    "phoneNumber": "+6281412345678",
-  },
-  {
-    "id": "4567890123",
-    "email": "bob@example.com",
-    "username": "bobby",
-    "phoneNumber": "+6281598765432",
-  },
-  {
-    "id": "5678901234",
-    "email": "charlie@example.com",
-    "username": "charlie_brown",
-    "phoneNumber": "+6281654321098",
-  },
-  {
-    "id": "6789012345",
-    "email": "dave@example.com",
-    "username": "dave_88",
-    "phoneNumber": "+6281765432109",
-  },
-  {
-    "id": "7890123456",
-    "email": "eve@example.com",
-    "username": "eve007",
-    "phoneNumber": "+6281876543210",
-  },
-  {
-    "id": "8901234567",
-    "email": "frank@example.com",
-    "username": "frank_the_tank",
-    "phoneNumber": "+6281987654321",
-  },
-  {
-    "id": "9012345678",
-    "email": "grace@example.com",
-    "username": "graceful",
-    "phoneNumber": "+6281198765432",
-  },
-  {
-    "id": "0123456789",
-    "email": "henry@example.com",
-    "username": "henry123",
-    "phoneNumber": "+6281209876543",
-  },
-  {
-    "id": "1123456789",
-    "email": "isabel@example.com",
-    "username": "isabel_wonder",
-    "phoneNumber": "+6281310987654",
-  },
-  {
-    "id": "2234567890",
-    "email": "jack@example.com",
-    "username": "jack_sparrow",
-    "phoneNumber": "+6281421098765",
-  },
-  {
-    "id": "3345678901",
-    "email": "kate@example.com",
-    "username": "kate_b",
-    "phoneNumber": "+6281532109876",
-  },
-  {
-    "id": "4456789012",
-    "email": "leo@example.com",
-    "username": "leo_the_lion",
-    "phoneNumber": "+6281643210987",
-  },
-  {
     "id": "5567890123",
-    "email": "mike@example.com",
-    "username": "mike123",
-    "phoneNumber": "+6281754321098",
+    "email": "andi.sutrisno@example.com",
+    "username": "andi123",
+    "phoneNumber": "+6281754321098"
+  },
+  {
+    "id": "5567890124",
+    "email": "sari.wulandari@example.com",
+    "username": "sari_wulan",
+    "phoneNumber": "+6281754321099"
+  },
+  {
+    "id": "5567890125",
+    "email": "budi.prasetyo@example.com",
+    "username": "budi456",
+    "phoneNumber": "+6281754321100"
+  },
+  {
+    "id": "5567890126",
+    "email": "fitriani.nur@example.com",
+    "username": "fitriani789",
+    "phoneNumber": "+6281754321101"
+  },
+  {
+    "id": "5567890127",
+    "email": "joko.wibowo@example.com",
+    "username": "joko_wibowo",
+    "phoneNumber": "+6281754321102"
+  },
+  {
+    "id": "5567890128",
+    "email": "dina.setiawan@example.com",
+    "username": "dina_setiawan",
+    "phoneNumber": "+6281754321103"
+  },
+  {
+    "id": "5567890129",
+    "email": "arif.hidayat@example.com",
+    "username": "arif123",
+    "phoneNumber": "+6281754321104"
+  },
+  {
+    "id": "5567890130",
+    "email": "yani.susanti@example.com",
+    "username": "yani_susanti",
+    "phoneNumber": "+6281754321105"
+  },
+  {
+    "id": "5567890131",
+    "email": "rahmat.purwanto@example.com",
+    "username": "rahmat987",
+    "phoneNumber": "+6281754321106"
+  },
+  {
+    "id": "5567890132",
+    "email": "nina.yuliana@example.com",
+    "username": "nina_yuliana",
+    "phoneNumber": "+6281754321107"
   }
 ]

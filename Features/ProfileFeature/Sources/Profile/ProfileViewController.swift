@@ -9,16 +9,19 @@ import UIKit
 import Services
 import RxSwift
 import RxRelay
+import TheNorthCoreDataManager
 
 class ProfileViewController: UIViewController {
   var disposeBag = DisposeBag()
   var viewModel: ProfileViewModel
-  @IBOutlet weak var topUpButton: UIButton!
+  @IBOutlet weak var usernameLabel: UILabel!
   @IBOutlet weak var emailField: UITextField!
   @IBOutlet weak var phoneNumberField: UITextField!
   @IBOutlet weak var editButton: UIButton!
   @IBOutlet weak var confirmButton: UIButton!
   weak var coordinator: ProfileCoordinator!
+  let coreDataManager = CoreDataManager.shared
+  var userData: [UserModel] = []
   
   
   init(coordinator: ProfileCoordinator!, viewModel: ProfileViewModel = ProfileViewModel(profile: ProfileService())) {
@@ -34,11 +37,11 @@ class ProfileViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    fetchUser()
     title = "profiles"
   }
   
   func setupUI() {
-    topUpButton.layer.cornerRadius = 10
     emailField.isEnabled = false
     phoneNumberField.isEnabled = false
     editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
@@ -55,4 +58,23 @@ class ProfileViewController: UIViewController {
     phoneNumberField.isEnabled = false
     confirmButton.isHidden = true
   }
+  
+  private func fetchUser() {
+
+      do {
+          // Fetch the data from Core Data
+        userData = try coreDataManager.fetch(entity: UserModel.self)
+          
+          // Print the fetched user data for debugging
+          for user in userData {
+            emailField.text = user.email
+            phoneNumberField.text = user.phoneNumber
+            usernameLabel.text = user.username
+          }
+          
+      } catch {
+          print("Failed to fetch users: \(error.localizedDescription)")
+      }
+  }
+
 }

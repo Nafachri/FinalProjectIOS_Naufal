@@ -16,40 +16,49 @@ import HomeFeature
 import HistoryFeature
 import TabBarFeature
 import Dependency
-import netfox
 import TNUI
 import MidtransKit
 import TheNorthCoreDataManager
+import netfox
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
   var app: AppCoordinator?
-  
-  //  let coreData = CoreDataManager.shared
-  
+  let coreData = CoreDataManager.shared
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     
     guard let windowScene = (scene as? UIWindowScene) else { return }
+    
     window = UIWindow(windowScene: windowScene)
-    let nav = UINavigationController()
-    window?.rootViewController = nav
-    UITabBar.appearance().unselectedItemTintColor = .gray
-    UITabBar.appearance().tintColor = .label
-    MidtransConfig.shared().setClientKey("SB-Mid-client-vyQWn0s0GlP-L_22", environment: .sandbox, merchantServerURL: "http://loalhost:3030")
-    window?.makeKeyAndVisible()
+    setupAppearance()
+    setupMidtransConfig()
     let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
     print(paths[0])
+
     
-    //MARK: set theme
+    let nav = UINavigationController()
+    window?.rootViewController = nav
+    window?.makeKeyAndVisible()
+    
+    setupCoordinator(navigationController: nav)
+    loadContactsData()
     
     let darkModeEnabled = UserDefaults.standard.bool(forKey: "darkModeEnabled")
-    let style: UIUserInterfaceStyle = darkModeEnabled ? .dark : .light
-    
-    window?.overrideUserInterfaceStyle = style
-    
-    //MARK: set coordinator
+    window?.overrideUserInterfaceStyle = darkModeEnabled ? .dark : .light
+  }
+  
+  private func setupAppearance() {
+    UITabBar.appearance().unselectedItemTintColor = .gray
+    UITabBar.appearance().tintColor = .label
+  }
+  
+  private func setupMidtransConfig() {
+    MidtransConfig.shared().setClientKey("SB-Mid-client-vyQWn0s0GlP-L_22", environment: .sandbox, merchantServerURL: "http://localhost:3030")
+  }
+  
+  private func setupCoordinator(navigationController: UINavigationController) {
     let paymentDependency = PayRequestModule()
     let contactsDependency = ContactsModule(paymentDependency: paymentDependency)
     let historyDependency = HistoryModule()
@@ -58,123 +67,90 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let profileDependency = ProfileModule()
     let tabBarDependency = TabBarModule(homeDependency: homeDependency, contactsDependency: contactsDependency, historyDependency: historyDependency, profileDependency: profileDependency)
     let authenticationDependency = AuthenticationModule(tabBarDependency: tabBarDependency)
-    let onboardingDependency =  OnBoardingModule(authDependency: authenticationDependency)
+    let onboardingDependency = OnBoardingModule(authDependency: authenticationDependency)
+    
     app = AppCoordinator(
       profileDependency: profileDependency,
       authDependency: authenticationDependency,
       settingDependency: settingDependency,
       contactDependency: contactsDependency,
       onBoardingDependency: onboardingDependency,
-      //        OnBoardingModule(authDependency: authenticationDependency),
       homeDependency: homeDependency,
       payRequestDependency: paymentDependency,
       historyDependency: historyDependency,
       tabBarDependency: tabBarDependency,
-      navigationController: nav)
-    //    let coor = paymentDependency.midtransCoordinator(nav)
-    //    coor.start()
+      navigationController: navigationController
+    )
     app?.start()
-    for contact in loadDataContact() {
-      try! CoreDataManager.shared.create(entity: ContactModel.self, properties: contact)
-    }
-    
-    //    let contacts = try! CoreDataManager.shared.fetch(entity: ContactModel.self)
-    //    contacts.forEach { contact in
-    //      print("contact", contact.username)
-    //    }
-    
   }
   
-  func loadDataContact() -> [[String: Any]] {
-    let bundle = Bundle(for: TheNorthCoreDataManager.ContactModel.self)
+  private func loadContactsData() {
+    deleteAllContacts()
     
-    guard let path = bundle.path(forResource: "contacts", ofType: "json") else {
+    for contact in loadDataContact() {
+      do {
+        try coreData.create(entity: ContactModel.self, properties: contact)
+      } catch {
+        print("Failed to create contact: \(error.localizedDescription)")
+      }
+      
+    }
+  }
+  
+  private func deleteAllContacts() {
+    do {
+      let contacts = try coreData.fetch(entity: ContactModel.self)
+      for contact in contacts {
+        try CoreDataManager.shared.delete(entity: contact)
+      }
+    } catch {
+      print("Error deleting contacts: \(error.localizedDescription)")
+    }
+  }
+  
+  private func loadDataContact() -> [[String: Any]] {
+    guard let path = Bundle(for: TheNorthCoreDataManager.ContactModel.self).path(forResource: "contacts", ofType: "json") else {
       return []
     }
+    
     do {
-      let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+      let data = try Data(contentsOf: URL(fileURLWithPath: path))
       let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [[String: Any]]
       return jsonResult ?? []
     } catch {
-      print(error.localizedDescription)
+      print("Error loading contacts data: \(error.localizedDescription)")
+      return []
     }
-    return []
   }
   
-  
-  func sceneDidDisconnect(_ scene: UIScene) {
-    // Called as the scene is being released by the system.
-    // This occurs shortly after the scene enters the background, or when its session is discarded.
-    // Release any resources associated with this scene that can be re-created the next time the scene connects.
-    // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
-  }
-  
-  func sceneDidBecomeActive(_ scene: UIScene) {
-    // Called when the scene has moved from an inactive state to an active state.
-    // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-  }
-  
-  func sceneWillResignActive(_ scene: UIScene) {
-    // Called when the scene will move from an active state to an inactive state.
-    // This may occur due to temporary interruptions (ex. an incoming phone call).
-  }
-  
-  func sceneWillEnterForeground(_ scene: UIScene) {
-    // Called as the scene transitions from the background to the foreground.
-    // Use this method to undo the changes made on entering the background.
-  }
-  
-  func sceneDidEnterBackground(_ scene: UIScene) {
-    // Called as the scene transitions from the foreground to the background.
-    // Use this method to save data, release shared resources, and store enough scene-specific state information
-    // to restore the scene back to its current state.
-  }
-  
-  
+  func sceneDidDisconnect(_ scene: UIScene) { }
+  func sceneDidBecomeActive(_ scene: UIScene) { }
+  func sceneWillResignActive(_ scene: UIScene) { }
+  func sceneWillEnterForeground(_ scene: UIScene) { }
+  func sceneDidEnterBackground(_ scene: UIScene) { }
 }
+
+// Debugging Extensions
 #if DEBUG
 extension UIWindow {
+  
   override open func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-    // code you want to implement
-    
-    //    if motion == .motionShake {
-    //      guard let view = UIApplication.topViewController() else {
-    //        return
-    //      }
-    //
-    //      if view.responds(to: Selector(("shouldForceLandscape"))) {
-    //        // If the rootViewController should force landscape, do not handle shake
-    //        return
-    //      }
-    //      showSimpleActionSheet(controller: view)
-    //    }
-    
+    // Implement if needed
   }
   
   func showSimpleActionSheet(controller: UIViewController) {
-    let alert = UIAlertController(title: "debug", message: "sub", preferredStyle: .actionSheet)
-    alert.addAction(UIAlertAction(title: "Network", style: .default, handler: { _ in
+    let alert = UIAlertController(title: "Debug", message: "Choose an option", preferredStyle: .actionSheet)
+    alert.addAction(UIAlertAction(title: "Network", style: .default) { _ in
       NFX.sharedInstance().show()
-    }))
-    
-    
-    // show FLEX
-    
-    alert.addAction(UIAlertAction(title: "UI DEBUGGING 😮‍💨", style: .default, handler: { _ in
-      //      FLEXManager.shared.showExplorer()
-    }))
-    
-    controller.present(alert, animated: true, completion: {})
-    
-    
+    })
+    alert.addAction(UIAlertAction(title: "UI Debugging", style: .default) { _ in
+    })
+    controller.present(alert, animated: true)
   }
-  
 }
 
-#endif
-
-
 extension UIApplication {
+  
   class func topViewController(base: UIViewController? = UIApplication.shared.connectedScenes
     .filter({ $0.activationState == .foregroundActive })
     .compactMap({ $0 as? UIWindowScene })
@@ -184,33 +160,12 @@ extension UIApplication {
         return topViewController(base: nav.visibleViewController)
       }
       if let tab = base as? UITabBarController {
-        if let selected = tab.selectedViewController {
-          return topViewController(base: selected)
-        }
+        return topViewController(base: tab.selectedViewController)
       }
       if let presented = base?.presentedViewController {
         return topViewController(base: presented)
       }
       return base
     }
-  
-  class func currentViewController(base: UIViewController? = UIApplication.shared.connectedScenes
-    .filter({ $0.activationState == .foregroundActive })
-    .compactMap({ $0 as? UIWindowScene })
-    .first?.windows
-    .filter({ $0.isKeyWindow }).first?.rootViewController) -> UIViewController? {
-      if let nav = base as? UINavigationController {
-        return currentViewController(base: nav.viewControllers.last)
-      }
-      if let tab = base as? UITabBarController {
-        if let selected = tab.selectedViewController {
-          return currentViewController(base: selected)
-        }
-      }
-      if let presented = base?.presentedViewController {
-        return currentViewController(base: presented)
-      }
-      return base
-    }
 }
-
+#endif
