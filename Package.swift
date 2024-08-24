@@ -10,7 +10,8 @@ let package = Package(
         .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.1"),
         .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.5.0"),
         .package(url: "https://github.com/evgenyneu/keychain-swift.git", from: "24.0.0"),
-        .package(url: "https://github.com/veritrans/Veritrans-ios-sdk.git", from: "1.27.0")
+        .package(url: "https://github.com/veritrans/Veritrans-ios-sdk.git", from: "1.27.0"),
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.12.0")
     ]
 )
 

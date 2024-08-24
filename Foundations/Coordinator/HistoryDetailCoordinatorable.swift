@@ -7,8 +7,9 @@
 
 import Foundation
 import TheNorthCoreDataManager
+import NetworkManager
 
 public protocol HistoryDetailCoordinatorable: Coordinator {
-  func startPresent(with selectedData: HistoryModel)
-  func start(with selectedData: HistoryModel)
+  func startPresent(with selectedData: TransactionResponse)
+  func start(with selectedData: TransactionResponse)
 }

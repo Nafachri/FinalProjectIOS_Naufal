@@ -7,9 +7,11 @@
 
 import Foundation
 import TheNorthCoreDataManager
+import NetworkManager
 
 public protocol PaymentCoordinatorable: Coordinator {
-  func start(with selectedData: ContactModel)
+  func startPresent(userData: ProfileResponse)
+  func start(with selectedData: ListContactResponseData)
   func start(quickSendData: QuickSendModel)
 }
 

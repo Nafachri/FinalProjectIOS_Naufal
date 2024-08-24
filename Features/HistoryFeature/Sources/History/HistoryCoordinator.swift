@@ -9,6 +9,7 @@ import Foundation
 import Coordinator
 import UIKit
 import TheNorthCoreDataManager
+import NetworkManager
 
 class HistoryCoordinator: HistoryCoordinatorable {
   
@@ -37,7 +38,7 @@ class HistoryCoordinator: HistoryCoordinatorable {
       .present(navigationController, animated: true)
   }
   
-  func goToHistoryDetail(with selectedData: HistoryModel) {
+  func goToHistoryDetail(with selectedData: TransactionResponse) {
     let coordinator = HistoryDetailCoordinator(navigationController: navigationController)
     addChildCoordinator(coordinator)
     coordinator.start(with: selectedData)

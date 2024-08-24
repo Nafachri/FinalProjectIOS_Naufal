@@ -7,6 +7,7 @@
 
 import Foundation
 import TheNorthCoreDataManager
+import NetworkManager
 
 public protocol HistoryCoordinatorable: Coordinator {
   func start()

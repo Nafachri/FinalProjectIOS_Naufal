@@ -11,6 +11,7 @@ import Coordinator
 import UIKit
 import Dependency
 import TheNorthCoreDataManager
+import NetworkManager
 
 class HistoryDetailCoordinator: HistoryDetailCoordinatorable {
   weak var navigationController: UINavigationController!
@@ -31,13 +32,13 @@ class HistoryDetailCoordinator: HistoryDetailCoordinatorable {
     navigationController.pushViewController(historyDetailVC, animated: true)
   }
   
-  func start(with selectedData: HistoryModel){
+  func start(with selectedData: TransactionResponse){
     let historyDetailVC = HistoryDetailViewController(coordinator: self)
     historyDetailVC.selectedData = selectedData
     navigationController.pushViewController(historyDetailVC, animated: true)
   }
   
-  func startPresent(with selectedData: HistoryModel) {
+  func startPresent(with selectedData: TransactionResponse) {
     let historyDetailVC =
     HistoryDetailViewController(coordinator: self)
     historyDetailVC.selectedData = selectedData

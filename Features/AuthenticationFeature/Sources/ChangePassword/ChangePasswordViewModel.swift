@@ -8,11 +8,8 @@
 import RxSwift
 import RxRelay
 import RxCocoa
-import Services
 
 class ChangePasswordViewModel {
-  private let authentication: AuthenticationServiceable
-  
   let email = BehaviorRelay<String>(value: "")
   let phoneNumber = BehaviorRelay<String>(value: "")
   let password = BehaviorRelay<String>(value: "")
@@ -31,8 +28,7 @@ class ChangePasswordViewModel {
   
   private let disposeBag = DisposeBag()
   
-  init(authentication: AuthenticationServiceable = AuthenticationService()) {
-    self.authentication = authentication
+  init() {
     setupChangePasswordBinding()
   }
   
@@ -51,16 +47,16 @@ class ChangePasswordViewModel {
         return
       }
       self.isLoading.accept(true)
-      authentication.changePassword(email: email, phoneNumber: phoneNumber, password: password, confirmPassword: confirmPassword){result in
-      self.isLoading.accept(false)
-
-        switch result {
-        case .success(let value):
-          print(value.data!)
-        case .failure(let error):
-          print(error.localizedDescription)
-        }
-      }
+//      authentication.changePassword(email: email, phoneNumber: phoneNumber, password: password, confirmPassword: confirmPassword){result in
+//      self.isLoading.accept(false)
+//
+//        switch result {
+//        case .success(let value):
+//          print(value.data!)
+//        case .failure(let error):
+//          print(error.localizedDescription)
+//        }
+//      }
     }
     .disposed(by: disposeBag)
   }

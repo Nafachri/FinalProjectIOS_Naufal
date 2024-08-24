@@ -7,34 +7,55 @@
 
 import RxSwift
 import RxRelay
+import RxCocoa
+import NetworkManager
 
 class HomeViewModel {
+  private let APIService = APIManager.shared
+  private let disposeBag = DisposeBag()
   
-//  var addQuickSendData: [AddQuickSend] = [
-//    AddQuickSend(image: "plus")
-//  ]
-//  
-//  var quickSendData: [Contact] = [
-//    Contact(image: "home-contact-dummy"),
-//    Contact(image: "home-contact-dummy2"),
-//    Contact(image: "home-contact-dummy3"),
-//    Contact(image: "home-contact-dummy2"),
-//    Contact(image: "home-contact-dummy3"),
-//  ]
-//  var historyData: [History] = [
-//    History(image: "home-history-dummy", name: "Naufal", date: "08/08/2024", amount: "+ IDR 50.000.000"),
-//    History(image: "home-history-dummy", name: "Bill Gates", date: "08/08/2024", amount: "- IDR 10.000.000"),
-//    History(image: "home-history-dummy", name: "Steve Jobs", date: "08/08/2024", amount: "+ IDR 15.000"),
-//  ]
-//  
-//  var quickSendDataLoaded = PublishSubject<Void>()
-//  var historyDataLoaded = PublishSubject<Void>()
-//  
-//  var quickSendCount: Int {
-//    if quickSendData.count < 4 {
-//      return quickSendData.count
-//    } else {
-//      return 5
-//    }
-//  }
+  var fullname = BehaviorRelay<String>(value: "")
+  var userBalance = BehaviorRelay<String>(value: "")
+  
+  let topup = PublishSubject<Void>()
+  let isSuccess = PublishSubject<Bool>()
+  let isLoading = BehaviorRelay<Bool>(value: false)
+  let errorMessage = PublishSubject<String?>()
+  
+  var profileData = BehaviorRelay<ProfileResponse?>(value: nil)
+  var historyData = BehaviorRelay<HistoryResponse?>(value: nil)
+  
+  
+  init(){
+//    fetchHistory()
+//    fetchProfile()
+  }
+  
+    func fetchProfile() {
+      isLoading.accept(true)
+      APIService.fetchRequest(endpoint: .profile, expecting: ProfileResponse.self) { [weak self] result in
+        guard let self else { return }
+        isLoading.accept(false)
+        switch result {
+        case .success(let response):
+          profileData.accept(response)
+        case .failure(let error):
+          errorMessage.onNext(error.localizedDescription)
+        }
+      }
+    }
+  
+  func fetchHistory() {
+    isLoading.accept(true)
+    APIService.fetchRequest(endpoint: .history, expecting: HistoryResponse.self) { [weak self] result in
+      guard let self else { return }
+      isLoading.accept(false)
+      switch result {
+      case .success(let response):
+        historyData.accept(response)
+      case .failure(let error):
+        errorMessage.onNext(error.localizedDescription)
+      }
+    }
+  }
 }

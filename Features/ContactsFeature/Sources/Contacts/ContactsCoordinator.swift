@@ -10,6 +10,7 @@ import Coordinator
 import UIKit
 import Dependency
 import TheNorthCoreDataManager
+import NetworkManager
 
 class ContactsCoordinator: ContactsCoordinatorable {
   weak var navigationController: UINavigationController!
@@ -40,7 +41,7 @@ class ContactsCoordinator: ContactsCoordinatorable {
     tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
   }
   
-  func goToContactDetail(with selectedData: ContactModel) {
+  func goToContactDetail(with selectedData: ListContactResponseData) {
     let coordinator = ContactDetailCoordinator(navigationController: navigationController,paymentDependency: paymentDependency)
     addChildCoordinator(coordinator)
     coordinator.start(with: selectedData)

@@ -50,12 +50,12 @@ class AppCoordinator: AppCoordinatorable, NavigationCoordinator {
     }
   
   func start() {
-//    if keychain.get("userToken") == nil {
-//      showOnBoarding()
-//    } else {
-//      showTabBar()
-//    }
-    showTabBar()
+    if keychain.get("userToken") == nil {
+      showOnBoarding()
+    } else {
+      showTabBar()
+    }
+//    showTabBar()
   }
   
   func showLogin() {
@@ -95,7 +95,7 @@ class AppCoordinator: AppCoordinatorable, NavigationCoordinator {
   }
   
   func showPayRequest() {
-    let coordinator = payRequestDependency.payRequestCoordinator(navigationController)
+    let coordinator = payRequestDependency.paymentCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start()
   }

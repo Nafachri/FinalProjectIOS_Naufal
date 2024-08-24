@@ -8,7 +8,8 @@
 import UIKit
 import TNUI
 import TheNorthCoreDataManager
-
+import NetworkManager
+import Kingfisher
 
 
 class ContactsTableViewCell: UITableViewCell {
@@ -27,14 +28,11 @@ class ContactsTableViewCell: UITableViewCell {
     
   }
   
-  func populate(with contact: ContactModel) {
-    if let avatarName = contact.avatar, !avatarName.isEmpty {
-      contactImage.image = UIImage(named: avatarName, in: .module, with: nil)
-    } else {
-      contactImage.image = UIImage(named: "contact-profile", in: .module, with: nil)
-    }
-    contactNameLabel.text = contact.username
+  func populate(with contact: ListContactResponseData) {
+    contactImage.layer.cornerRadius = 24
+    contactNameLabel.text = contact.name
+    let url = URL(string: contact.avatar)
+    contactImage.kf.setImage(with: url)
     containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
   }
-  
 }

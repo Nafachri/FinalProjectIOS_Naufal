@@ -72,15 +72,15 @@ public extension CoreDataManager {
   }
   
   @discardableResult
-  func fetch<T: NSManagedObject>(entity: T.Type, predicate: NSPredicate? = nil,  fetchLimit: Int? = nil) throws -> [T] {
-    
-    let entityName = String(describing: entity)
-    let fetchRequest = NSFetchRequest<T>(entityName: entityName)
-    fetchRequest.predicate = predicate
-    if let limit = fetchLimit {
-        fetchRequest.fetchLimit = limit
-    }
-    return try context.fetch(fetchRequest)
+  func fetch<T: NSManagedObject>(entity: T.Type, predicate: NSPredicate? = nil, fetchLimit: Int? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> [T] {
+      let entityName = String(describing: entity)
+      let fetchRequest = NSFetchRequest<T>(entityName: entityName)
+      fetchRequest.predicate = predicate
+      if let limit = fetchLimit {
+          fetchRequest.fetchLimit = limit
+      }
+      fetchRequest.sortDescriptors = sortDescriptors
+      return try context.fetch(fetchRequest)
   }
   
   func update<T: NSManagedObject>(entity: T, properties: [String: Any]) throws {
@@ -112,4 +112,7 @@ public extension CoreDataManager {
     try saveContext()
   }
   
+  func createFetchRequest<T: NSManagedObject>(entity: T.Type) -> NSFetchRequest<T> {
+      return NSFetchRequest<T>(entityName: String(describing: entity))
+  }
 }

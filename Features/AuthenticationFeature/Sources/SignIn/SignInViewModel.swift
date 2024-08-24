@@ -8,11 +8,13 @@
 import RxSwift
 import RxRelay
 import RxCocoa
-import Services
 import Foundation
+import NetworkManager
+import KeychainSwift
 
 class SignInViewModel {
-  private let authentication: AuthenticationServiceable
+  private let APIService = APIManager.shared
+  private let keychain = KeychainSwift()
   
   let email = BehaviorRelay<String>(value: "")
   let password = BehaviorRelay<String>(value: "")
@@ -30,23 +32,16 @@ class SignInViewModel {
   
   private let disposeBag = DisposeBag()
   
-  init(authentication: AuthenticationServiceable) {
-    self.authentication = authentication
+  init() {
     setupSigninBinding()
   }
   
   func setupSigninBinding() {
-    
-    
     signIn.subscribe { [weak self] _ in
       guard let self = self else { return }
-//      isLoading.accept(true)
-//      DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//        self.isLoading.accept(false)
-//        self.isSuccess.onNext(true)
-//      }
       let email = email.value
       let password = password.value
+      let loginParam = LoginParam(email: email, password: password)
       guard !email.isEmpty,
             !password.isEmpty else {
         errorMessage.onNext("username and password cannot be emptied.")
@@ -54,12 +49,26 @@ class SignInViewModel {
       }
       
       self.isLoading.accept(true)
-      authentication.signIn(email: email, password: password) { [weak self] result in
+      APIService.fetchRequest(endpoint: .login(param: loginParam), expecting: LoginResponse.self) {
+        [weak self] result in
         guard let self else {return}
         isLoading.accept(false)
         switch result {
-        case .success(_):
+        case .success(let response):
+          keychain.set(response.token, forKey: "userToken")
+          print(response)
           isSuccess.onNext(true)
+//          APIService.fetchRequest(endpoint: .profile, expecting: ProfileResponse.self){
+//            [weak self] result in guard let self else {return}
+//            switch result {
+//            case .success(_):
+//              keychain.set(response.token, forKey: "userToken")
+//              print(response)
+//              isSuccess.onNext(true)
+//            case .failure(let error):
+//              errorMessage.onNext(error.localizedDescription)
+//            }
+//          }
         case .failure(let error):
           errorMessage.onNext(error.localizedDescription)
         }

@@ -10,7 +10,7 @@ import Coordinator
 import UIKit
 import Dependency
 
-class MidtransCoordinator: Coordinator {
+class MidtransCoordinator: MidtransCoordinatorable {
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
@@ -21,6 +21,14 @@ class MidtransCoordinator: Coordinator {
   
   func start(){
     let midtransVC = MidtransViewController(coordinator: self)
+    let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
+    tabBarCoordinator?.tabbarController
+      .present(midtransVC, animated: true)
+  }
+  
+  func start(token: String){
+    let midtransVC = MidtransViewController(coordinator: self)
+    midtransVC.token = token
     let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
     tabBarCoordinator?.tabbarController
       .present(midtransVC, animated: true)

@@ -8,6 +8,7 @@
 import UIKit
 import Dependency
 import TheNorthCoreDataManager
+import NetworkManager
 
 class ContactDetailViewController: UIViewController {
   
@@ -21,9 +22,9 @@ class ContactDetailViewController: UIViewController {
   
   // MARK: - Properties
   weak var coordinator: ContactDetailCoordinator!
-  //    var quickSendModel: [QuickSendModel] = []
+      var quickSendModel: [QuickSendModel] = []
   var quickSendData: QuickSendModel?
-  var selectedData: ContactModel?
+  var selectedData: ListContactResponseData?
   
   // MARK: - Initialization
   init(coordinator: ContactDetailCoordinator) {
@@ -46,36 +47,24 @@ class ContactDetailViewController: UIViewController {
   // MARK: - UI Setup
   private func setupUI() {
     sendButton.layer.cornerRadius = 8
+    avatar.layer.cornerRadius = 26
+
   }
   
   private func configureView() {
     if let quickSend = quickSendData {
-      // Use data from QuickSendModel
+      let url = URL(string: quickSend.avatar ?? "contact-profile")
       username.text = quickSend.username
       email.text = quickSend.email
       phoneNumber.text = quickSend.phoneNumber
-      
-      // Check if avatar is available
-      if let avatarName = quickSend.avatar, !avatarName.isEmpty {
-        avatar.image = UIImage(named: avatarName, in: .module, with: nil) ?? UIImage(named: "contact-profile")
-      } else {
-        avatar.image = UIImage(named: "contact-profile", in: .module, with: nil) ?? UIImage(named: "contact-profile")
-      }
+      avatar.kf.setImage(with: url)
       addToQuickSendButton.isHidden = true
-      
-      
     } else if let selectedItem = selectedData {
-      // Use data from ContactModel
-      username.text = selectedItem.username
+      let url = URL(string: selectedItem.avatar)
+      username.text = selectedItem.name
       email.text = selectedItem.email
       phoneNumber.text = selectedItem.phoneNumber
-      
-      // Check if avatar is available
-      if let avatarName = selectedItem.avatar, !avatarName.isEmpty {
-        avatar.image = UIImage(named: avatarName, in: .module, with: nil) ?? UIImage(named: "contact-profile")
-      } else {
-        avatar.image = UIImage(named: "contact-profile", in: .module, with: nil) ?? UIImage(named: "contact-profile")
-      }
+      avatar.kf.setImage(with: url)
       addToQuickSendButton.isHidden = false
       
     }
@@ -113,11 +102,9 @@ class ContactDetailViewController: UIViewController {
   }
   
   private func addToQuickSend() {
-    // Determine which data to use
     let newItemProperties: [String: Any]
     
     if let quickSend = quickSendData {
-      // If quickSendData is available, create properties for QuickSendModel
       newItemProperties = [
         "id": quickSend.id ?? "",
         "avatar": quickSend.avatar ?? "",
@@ -126,22 +113,19 @@ class ContactDetailViewController: UIViewController {
         "phoneNumber": quickSend.phoneNumber ?? ""
       ]
     } else if let selectedItem = selectedData {
-      // If quickSendData is not available, create properties for ContactModel
       newItemProperties = [
-        "id": selectedItem.id ?? "",
-        "avatar": selectedItem.avatar ?? "",
-        "username": selectedItem.username ?? "",
-        "email": selectedItem.email ?? "",
-        "phoneNumber": selectedItem.phoneNumber ?? ""
+        "id": selectedItem.id,
+        "avatar": selectedItem.avatar,
+        "username": selectedItem.name,
+        "email": selectedItem.email,
+        "phoneNumber": selectedItem.phoneNumber
       ]
     } else {
-      // Handle case where neither data is available
       print("No data available to add to Quick Send.")
       return
     }
     
     do {
-      // Fetch existing QuickSendModel items
       var quickSendModel = try CoreDataManager.shared.fetch(entity: QuickSendModel.self)
       
       // Remove the oldest item if the count exceeds 6
@@ -150,19 +134,15 @@ class ContactDetailViewController: UIViewController {
         quickSendModel.removeLast()
       }
       
-      // Create and insert the new item into the collection
       let newItem: QuickSendModel
       if let _ = quickSendData {
-        // If quickSendData is used, create a QuickSendModel
         newItem = try CoreDataManager.shared.create(entity: QuickSendModel.self, properties: newItemProperties)
       } else {
-        // If selectedData is used, create a QuickSendModel
         newItem = try CoreDataManager.shared.create(entity: QuickSendModel.self, properties: newItemProperties)
       }
       
       quickSendModel.insert(newItem, at: 0)
       
-      // Post a notification
       NotificationCenter.default.post(name: NSNotification.Name(rawValue: "contactDetailVCNotificationCenter"), object: nil)
       presentSuccessAlert()
       
@@ -170,8 +150,6 @@ class ContactDetailViewController: UIViewController {
       print("Failed to add to Quick Send: \(error)")
     }
   }
-  
-  
   
   private func presentSuccessAlert() {
     let successAlert = UIAlertController(

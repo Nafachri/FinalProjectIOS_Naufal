@@ -8,7 +8,6 @@
 import RxSwift
 import RxRelay
 import RxCocoa
-import Services
 import Foundation
 
 class GenerateQRViewModel {

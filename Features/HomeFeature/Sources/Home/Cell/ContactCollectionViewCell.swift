@@ -21,6 +21,6 @@ class ContactCollectionViewCell: UICollectionViewCell {
   }
   
   func populate(_ contact: ContactModel){
-    avatarImage.image =  UIImage(named: contact.avatar ?? "home-contact-dummy", in: .module, with: nil)
+    avatarImage.image =  UIImage(named: "home-contact-dummy", in: .module, with: nil)
   }
 }

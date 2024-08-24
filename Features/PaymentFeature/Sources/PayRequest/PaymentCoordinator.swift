@@ -11,14 +11,17 @@ import UIKit
 import Dependency
 import TheNorthCoreDataManager
 import TNUI
+import NetworkManager
 
 class PaymentCoordinator: PaymentCoordinatorable {
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
+
   
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
+
   }
   
   func start(){
@@ -26,15 +29,22 @@ class PaymentCoordinator: PaymentCoordinatorable {
     navigationController.pushViewController(paymentVC, animated: true)
   }  
   
-  func start(with selectedData: ContactModel) {
-    // Implement the flow for ContactModel
+  func startPresent(userData: ProfileResponse) {
+    let paymentVC = PaymentViewController(coordinator: self)
+    paymentVC.userData = userData
+    paymentVC.typeTransaction = .topup
+    navigationController.setViewControllers([paymentVC], animated: false)
+    let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
+    tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
+  }
+  
+  func start(with selectedData: ListContactResponseData) {
     let paymentVC = PaymentViewController(coordinator: self)
     paymentVC.selectedData = selectedData
     navigationController.pushViewController(paymentVC, animated: true)
   }
   
   func start(quickSendData: QuickSendModel) {
-    // Implement the flow for QuickSendModel
     let paymentVC = PaymentViewController(coordinator: self)
     paymentVC.quickSendData = quickSendData
     navigationController.pushViewController(paymentVC, animated: true)
@@ -45,5 +55,11 @@ class PaymentCoordinator: PaymentCoordinatorable {
       
       let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
       tabBarCoordinator?.tabbarController.present(successVC, animated: true)
+  }
+  
+  func goToMidtrans(token: String){
+    let coordinator = MidtransCoordinator(navigationController: navigationController)
+    addChildCoordinator(coordinator)
+    coordinator.start(token: token)
   }
 }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Services
 import RxSwift
 import RxRelay
 
@@ -25,7 +24,7 @@ class SignInViewController: UIViewController {
   let alertController = UIAlertController(title: "Signing", message: "Signin in..", preferredStyle: .alert)
   let alertErrorController = UIAlertController(title: "Failed", message: "Signin in failed..", preferredStyle: .alert)
   
-  init(coordinator: SignInCoordinator!, viewModel: SignInViewModel = SignInViewModel(authentication: AuthenticationService())) {
+  init(coordinator: SignInCoordinator!, viewModel: SignInViewModel = SignInViewModel()) {
     self.coordinator = coordinator
     self.viewModel = viewModel
     super.init(nibName: "SignInViewController", bundle: .module)

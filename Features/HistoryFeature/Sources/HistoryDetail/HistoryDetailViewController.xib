@@ -27,22 +27,26 @@
                     <rect key="frame" x="24" y="83" width="345" height="190"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar-detail-dummy" translatesAutoresizingMaskIntoConstraints="NO" id="ugS-vH-x3r">
-                            <rect key="frame" x="24" y="16" width="82" height="84"/>
+                            <rect key="frame" x="24" y="16" width="80" height="80"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="80" id="SCO-I4-bls"/>
+                                <constraint firstAttribute="height" constant="80" id="uJY-uz-c0Y"/>
+                            </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Faris" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVb-Br-cvj" userLabel="Detail Name">
-                            <rect key="frame" x="130" y="36" width="54.333333333333343" height="28.666666666666671"/>
+                            <rect key="frame" x="127.99999999999999" y="36" width="54.333333333333329" height="28.666666666666671"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01/08/2024" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a72-5t-gB5" userLabel="Detail Amount">
-                            <rect key="frame" x="130" y="68.666666666666657" width="81.333333333333314" height="17"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01/08/2024" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a72-5t-gB5" userLabel="Detail Date">
+                            <rect key="frame" x="128" y="68.666666666666657" width="81.333333333333314" height="17"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                             <color key="textColor" red="0.70588235290000001" green="0.69411764710000001" blue="0.69411764710000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ IDR 150.000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lIg-TB-Fhf" userLabel="Detail Amount">
-                            <rect key="frame" x="92.000000000000014" y="112" width="161.33333333333337" height="28.666666666666657"/>
+                            <rect key="frame" x="92.000000000000014" y="109.66666666666666" width="161.33333333333337" height="28.666666666666657"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -57,7 +61,7 @@
                         <constraint firstAttribute="height" constant="190" placeholder="YES" id="fVf-sR-UKU"/>
                         <constraint firstItem="a72-5t-gB5" firstAttribute="leading" secondItem="ugS-vH-x3r" secondAttribute="trailing" constant="24" id="h7Y-tp-QBP"/>
                         <constraint firstItem="ugS-vH-x3r" firstAttribute="leading" secondItem="rbf-ng-HCW" secondAttribute="leading" constant="24" id="iv6-Ps-Vew"/>
-                        <constraint firstItem="lIg-TB-Fhf" firstAttribute="top" secondItem="ugS-vH-x3r" secondAttribute="bottom" constant="12" id="kC0-j0-VYC"/>
+                        <constraint firstItem="lIg-TB-Fhf" firstAttribute="top" secondItem="a72-5t-gB5" secondAttribute="bottom" constant="24" id="kC0-j0-VYC"/>
                         <constraint firstItem="oVb-Br-cvj" firstAttribute="leading" secondItem="ugS-vH-x3r" secondAttribute="trailing" constant="24" id="kTg-jG-NwS"/>
                     </constraints>
                 </view>

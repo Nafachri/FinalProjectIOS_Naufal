@@ -10,6 +10,7 @@ import Coordinator
 import UIKit
 import Dependency
 import TheNorthCoreDataManager
+import NetworkManager
 
 class HomeCoordinator: Coordinator {
   weak var navigationController: UINavigationController!
@@ -51,7 +52,7 @@ class HomeCoordinator: Coordinator {
   }
   
   func goToPayRequest() {
-    let coordinator = payRequestDependency.payRequestCoordinator(navigationController)
+    let coordinator = payRequestDependency.paymentCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start()
   }
@@ -62,27 +63,18 @@ class HomeCoordinator: Coordinator {
     coordinator.start()
   }
   
-  func goToTopUp() {
-    let coordinator = payRequestDependency.midtransCoordinator(navigationController)
+  func goToTopUp(userData: ProfileResponse) {
+    let nav = UINavigationController()
+    let coordinator = payRequestDependency.paymentCoordinator(nav)
     addChildCoordinator(coordinator)
-    coordinator.start()
+    coordinator.startPresent(userData: userData)
   }
   
   func goToContacts(){
     let nav = UINavigationController()
     let coordinator = contactsDependency.contactsCoordinator(nav)
-//    {contact in
-//      print("contact : \(contact)")
-//    }
     addChildCoordinator(coordinator)
     coordinator.startPresent()
-  }
-  
-  func goToContactDetail(with selectedData: ContactModel) {
-    let nav = UINavigationController()
-    let coordinator = contactsDependency.contactDetailCoordinator(nav)
-    addChildCoordinator(coordinator)
-    coordinator.startPresent(with: selectedData)
   }
   
   func  goToContactDetailQuickSend(quickSendData: QuickSendModel){
@@ -99,7 +91,7 @@ class HomeCoordinator: Coordinator {
     coordinator.startPresent()
   }
   
-  func goToHistoryDetail(with selectedData: HistoryModel) {
+  func goToHistoryDetail(with selectedData: TransactionResponse) {
     let nav = UINavigationController()
     let coordinator = historyDependency.historyDetailCoordinator(nav)
     addChildCoordinator(coordinator)

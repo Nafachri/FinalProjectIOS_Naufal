@@ -59,7 +59,7 @@ class TabbarCoordinator: NSObject, TabbarCoordinatorable {
       contactsNav,
       historyNav,
       profileNav
-    ], animated: false)
+    ], animated: true)
     setupTabbar()
     
   }

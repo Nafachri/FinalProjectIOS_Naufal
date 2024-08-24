@@ -16,3 +16,15 @@ public struct Constants {
     return formatter
   }()
 }
+
+public extension String {
+
+    // Function that converts a formatted currency string back to an integer
+    func currencyFormattedToInteger() -> Int {
+        // Remove non-numeric characters from the currency string
+        let cleanedValue = self.removingNonNumericCharacters()
+        // Convert the cleaned string to an integer
+        let number = (cleanedValue as NSString).integerValue
+        return number
+    }
+}

@@ -10,7 +10,7 @@ import Networking
 import Coordinator
 
 public protocol PayRequestDependency {
-  func payRequestCoordinator(_ navigationController: UINavigationController) -> PaymentCoordinatorable
+  func paymentCoordinator(_ navigationController: UINavigationController) -> PaymentCoordinatorable
   func scanQRCoordinator(_ navigationController: UINavigationController) -> Coordinator
   func generateQRCoordinator(_ navigationController: UINavigationController) ->
       Coordinator

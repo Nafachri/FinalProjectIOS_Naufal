@@ -30,13 +30,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     
     guard let windowScene = (scene as? UIWindowScene) else { return }
+    #if DEBUG
+    NFX.sharedInstance().start()
+    #endif
     
     window = UIWindow(windowScene: windowScene)
     setupAppearance()
     setupMidtransConfig()
     let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
     print(paths[0])
-
+    
     
     let nav = UINavigationController()
     window?.rootViewController = nav
@@ -55,7 +58,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
   
   private func setupMidtransConfig() {
-    MidtransConfig.shared().setClientKey("SB-Mid-client-vyQWn0s0GlP-L_22", environment: .sandbox, merchantServerURL: "http://localhost:3030")
+    MidtransConfig.shared().setClientKey("SB-Mid-client-4zX2hEwOqCgsOpUX", environment: .sandbox, merchantServerURL:
+                                          //                                          "http://localhost:3030"
+                                         "https://merchant-url-sandbox.com"
+    )
   }
   
   private func setupCoordinator(navigationController: UINavigationController) {
@@ -85,8 +91,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
   
   private func loadContactsData() {
-    deleteAllContacts()
-    
     for contact in loadDataContact() {
       do {
         try coreData.create(entity: ContactModel.self, properties: contact)
@@ -94,17 +98,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print("Failed to create contact: \(error.localizedDescription)")
       }
       
-    }
-  }
-  
-  private func deleteAllContacts() {
-    do {
-      let contacts = try coreData.fetch(entity: ContactModel.self)
-      for contact in contacts {
-        try CoreDataManager.shared.delete(entity: contact)
-      }
-    } catch {
-      print("Error deleting contacts: \(error.localizedDescription)")
     }
   }
   
@@ -132,6 +125,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 // Debugging Extensions
 #if DEBUG
+
 extension UIWindow {
   
   override open func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {

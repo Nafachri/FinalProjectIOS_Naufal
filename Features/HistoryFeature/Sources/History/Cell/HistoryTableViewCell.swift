@@ -8,6 +8,9 @@
 import UIKit
 import TNUI
 import TheNorthCoreDataManager
+import NetworkManager
+import Utils
+import Kingfisher
 
 class HistoryTableViewCell: UITableViewCell {
   
@@ -26,24 +29,20 @@ class HistoryTableViewCell: UITableViewCell {
     
   }
   
-  func populate(_ history: HistoryModel) {
-    let avatarName = history.contact?.avatar ?? "avatar-dummy"
-    let username = history.contact?.username ?? "Unknown"
-    let createdDate = history.created_date ?? "Unknown Date"
-    let amount = history.amount ?? "0"
-    let transactionType = history.type ?? "pay"
-    
-    avatarImage.image = UIImage(named: avatarName, in: .module, with: nil)
-    nameLabel.text = username
-    dateLabel.text = createdDate
-    
-    if transactionType == "pay" {
-      amountLabel.text = "- \(amount)"
-      containerView.backgroundColor = UIColor.red.withAlphaComponent(0.2)
-    } else {
-      amountLabel.text = "+ \(amount)"
+  func populate(_ history: TransactionResponse) {
+    if history.type == "topup" {
       containerView.backgroundColor = UIColor.green.withAlphaComponent(0.2)
+    } else {
+      containerView.backgroundColor = UIColor.red.withAlphaComponent(0.2)
     }
+    
+    let url = URL(string: history.avatar)
+    avatarImage.kf.setImage(with: url)
+    avatarImage.layer.cornerRadius = 28
+    
+    nameLabel.text = history.name
+    dateLabel.text = history.timestamp
+    amountLabel.text = history.amount
+
   }
-  
 }

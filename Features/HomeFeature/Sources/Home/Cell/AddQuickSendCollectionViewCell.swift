@@ -7,6 +7,7 @@
 
 import UIKit
 import TheNorthCoreDataManager
+import Kingfisher
 
 class AddQuickSendCollectionViewCell: UICollectionViewCell {
   
@@ -21,10 +22,7 @@ class AddQuickSendCollectionViewCell: UICollectionViewCell {
   }
   
   func populate(_ quickSend: QuickSendModel) {
-      if let avatarName = quickSend.avatar, !avatarName.isEmpty {
-          uiImage.image = UIImage(named: avatarName, in: .module, with: nil)
-      } else {
-          uiImage.image = UIImage(named: "home-contact-dummy2", in: .module, with: nil)
-      }
+    let url = URL(string: quickSend.avatar ?? "home-contact-dummy2")
+      uiImage?.kf.setImage(with: url)
   }
 }

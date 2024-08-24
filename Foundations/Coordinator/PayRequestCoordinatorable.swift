@@ -12,4 +12,5 @@ public protocol PayRequestCoordinatorable: Coordinator {
   func startPresent()
   func start(quickSendData: QuickSendModel)
   func start(with selectedData: ContactModel)
+  func start(userData: UserModel)
 }

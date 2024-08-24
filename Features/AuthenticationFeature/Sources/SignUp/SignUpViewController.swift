@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Services
 import RxSwift
 import RxRelay
 
@@ -20,8 +19,9 @@ class SignUpViewController: UIViewController {
   @IBOutlet weak var passwordTextField: UITextField!
   @IBOutlet weak var confirmPasswordTextField: UITextField!
   @IBOutlet weak var signUpButton: UIButton!
+  weak var coordinator: SignInCoordinator!
   
-  var viewModel = SignUpViewModel(authentication: AuthenticationService())
+  var viewModel = SignUpViewModel()
   
   let alertController = UIAlertController(title: "Sign Up", message: "Sign up..", preferredStyle: .alert)
   
@@ -39,17 +39,11 @@ class SignUpViewController: UIViewController {
     let confirmPasswordPlaceholder = "enter confirm password"
     let attributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
     
-    // Username TextField
     usernameTextField.attributedPlaceholder = NSAttributedString(string: usernamePlaceholder, attributes: attributes)
-    // Email TextField
     emailTextField.attributedPlaceholder = NSAttributedString(string: emailPlaceholder, attributes: attributes)
-    // Phone Number TextField
     phoneNumberTextField.attributedPlaceholder = NSAttributedString(string: phoneNumberPlaceholder, attributes: attributes)
-    // Password TextField
     passwordTextField.attributedPlaceholder = NSAttributedString(string: passwordPlaceholder, attributes: attributes)
-    // Confirm Password TextField
     confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: confirmPasswordPlaceholder, attributes: attributes)
-    // Sign Up Button
     signUpButton.layer.cornerRadius = 10
   }
   
@@ -86,17 +80,16 @@ class SignUpViewController: UIViewController {
       .bind(to: viewModel.signUp)
       .disposed(by: disposeBag)
     
-    // setup error binding
     viewModel.errorMessage
       .subscribe(onNext: { errorMessage in
         print("error: \(String(describing: errorMessage))")
       })
       .disposed(by: disposeBag)
     
-    // setup isSuccess
     viewModel.isSuccess
-      .subscribe(onNext: { value in
-        print(value)
+      .subscribe(onNext: { [weak self] value in
+        guard let self, value else { return }
+        self.navigationController?.popToRootViewController(animated: true)
       })
       .disposed(by: disposeBag)
     

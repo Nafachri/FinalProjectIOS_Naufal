@@ -7,6 +7,7 @@
 
 import UIKit
 import TheNorthCoreDataManager
+import NetworkManager
 
 class HistoryCollectionViewCell: UICollectionViewCell {
   
@@ -22,21 +23,15 @@ class HistoryCollectionViewCell: UICollectionViewCell {
     super.layer.cornerRadius = 8
   }
   
-  func populate(_ history: HistoryModel) {
-    let avatarName = history.contact?.avatar ?? "home-history-dummy"
-    let username = history.contact?.username ?? "Unknown"
-    let createdDate = history.created_date ?? "Unknown Date"
-    let amount = history.amount ?? "0"
-    let transactionType = history.type ?? "pay"
+  func populate(_ history: TransactionResponse) {
+    let avatarName = "home-history-dummy"
+    let username = history.name
+    let createdDate = history.timestamp
+    let amount = history.amount
     
     avatarImage.image = UIImage(named: avatarName, in: .module, with: nil)
     nameLabel.text = username
     dateLabel.text = createdDate
-    
-    if transactionType == "pay" {
-      amountLabel.text = "- \(amount)"
-    } else {
-      amountLabel.text = "+ \(amount)"
-    }
+    amountLabel.text = String(amount)
   }
 }

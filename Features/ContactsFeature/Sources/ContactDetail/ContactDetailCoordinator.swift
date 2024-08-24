@@ -10,6 +10,7 @@ import Coordinator
 import Dependency
 import UIKit
 import TheNorthCoreDataManager
+import NetworkManager
 
 class ContactDetailCoordinator: ContactDetailCoordinatorable {
   
@@ -34,13 +35,13 @@ class ContactDetailCoordinator: ContactDetailCoordinatorable {
       navigationController.pushViewController(contactDetailVC, animated: true)
   }
   
-  func start(with selectedData: ContactModel){
+  func start(with selectedData: ListContactResponseData){
     let contactDetailVC = ContactDetailViewController(coordinator: self)
     contactDetailVC.selectedData = selectedData
     navigationController.pushViewController(contactDetailVC, animated: true)
   }
   
-  func startPresent(with selectedData: ContactModel) {
+  func startPresent(with selectedData: ListContactResponseData) {
     let contactDetailVC = ContactDetailViewController(coordinator: self)
     contactDetailVC.selectedData = selectedData
     navigationController.setViewControllers([contactDetailVC], animated: false)
@@ -55,15 +56,14 @@ class ContactDetailCoordinator: ContactDetailCoordinatorable {
     tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
   }
   
-  
-  func goToPayment(with selectedData: ContactModel){
-    let coordinator = paymentDependency.payRequestCoordinator(navigationController)
+  func goToPayment(with selectedData: ListContactResponseData){
+    let coordinator = paymentDependency.paymentCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start(with: selectedData)
   }
   
   func goToPayment(quickSendData: QuickSendModel){
-    let coordinator = paymentDependency.payRequestCoordinator(navigationController)
+    let coordinator = paymentDependency.paymentCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start(quickSendData: quickSendData)
   }

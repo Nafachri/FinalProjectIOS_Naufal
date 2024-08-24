@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileViewController" customModule="ProfileFeature" customModuleProvider="target">
             <connections>
+                <outlet property="avatar" destination="3QE-Vg-d78" id="Khz-2F-Yh5"/>
                 <outlet property="confirmButton" destination="Cwm-xe-nrS" id="Rli-B8-t4q"/>
                 <outlet property="editButton" destination="RFg-Nb-gIj" id="HDJ-ZE-de0"/>
                 <outlet property="emailField" destination="2tY-FD-Z5u" id="LKl-oL-sYt"/>
@@ -24,10 +25,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileavatar" translatesAutoresizingMaskIntoConstraints="NO" id="3QE-Vg-d78">
-                    <rect key="frame" x="98" y="123" width="197" height="195"/>
+                    <rect key="frame" x="106.66666666666669" y="123" width="180" height="180"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="180" id="Gjp-YQ-PlX"/>
+                        <constraint firstAttribute="width" constant="180" id="nrZ-d4-ir1"/>
+                    </constraints>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="BDD-zE-B4w">
-                    <rect key="frame" x="99.333333333333329" y="366" width="194.33333333333337" height="60"/>
+                    <rect key="frame" x="99.333333333333329" y="351" width="194.33333333333337" height="60"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Naufal" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yz7-uG-cIv">
                             <rect key="frame" x="0.0" y="0.0" width="149.33333333333334" height="60"/>
@@ -52,7 +57,7 @@
                     </subviews>
                 </stackView>
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="example@mail.com" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2tY-FD-Z5u">
-                    <rect key="frame" x="24" y="450" width="345" height="44"/>
+                    <rect key="frame" x="24" y="435" width="345" height="44"/>
                     <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="IyJ-rR-y3v"/>
@@ -62,7 +67,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="********9172" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uSb-d6-Kef">
-                    <rect key="frame" x="24" y="510" width="345" height="44"/>
+                    <rect key="frame" x="24" y="495" width="345" height="44"/>
                     <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Vs3-NQ-O54"/>
@@ -72,7 +77,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cwm-xe-nrS">
-                    <rect key="frame" x="24" y="570" width="345" height="50"/>
+                    <rect key="frame" x="24" y="555" width="345" height="50"/>
                     <color key="backgroundColor" red="0.14901960780000001" green="0.41568627450000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="31b-L8-lEm"/>

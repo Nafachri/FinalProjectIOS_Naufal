@@ -8,6 +8,11 @@
 import UIKit
 import Dependency
 import TheNorthCoreDataManager
+import TNUI
+import NetworkManager
+import RxSwift
+import RxCocoa
+import RxRelay
 
 
 class ContactsViewController: UIViewController {
@@ -16,12 +21,17 @@ class ContactsViewController: UIViewController {
   @IBOutlet weak var tableView: UITableView!
   
   weak var coordinator: ContactsCoordinator!
-  private var dataArray: [ContactModel] = []
+  private var dataArray: ListContactResponse = []
+  private let disposeBag = DisposeBag()
+  private var emptyStateView: EmptyStateView?
   private let coreDataManager = CoreDataManager.shared
+  let viewModel: ContactsViewModel
+  
   
   
   // MARK: - Initializers
-  init(coordinator: ContactsCoordinator) {
+  init(coordinator: ContactsCoordinator, viewModel: ContactsViewModel = ContactsViewModel()) {
+    self.viewModel = viewModel
     self.coordinator = coordinator
     super.init(nibName: "ContactsViewController", bundle: .module)
   }
@@ -34,7 +44,12 @@ class ContactsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
-    fetchContacts()
+    setupBinding()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(true)
+    viewModel.fetchContact()
   }
   
   // MARK: - UI Setup
@@ -45,21 +60,25 @@ class ContactsViewController: UIViewController {
     tableView.delegate = self
   }
   
+  // MARK: - Setup Binding
+  func setupBinding(){
+    viewModel.listOfContact
+      .subscribe(onNext: {[weak self] result in
+        guard let self else {return}
+        self.dataArray = result
+        DispatchQueue.main.async {
+          self.tableView.reloadData()
+        }
+      })
+      .disposed(by: disposeBag)
+  }
+  
   // MARK: - Core Data Operations
   private func deleteContact(_ contact: ContactModel) {
     do {
       try coreDataManager.delete(entity: contact)
     } catch {
       print("Failed to delete contact: \(error.localizedDescription)")
-    }
-  }
-  
-  private func fetchContacts() {
-    do {
-      dataArray = try coreDataManager.fetch(entity: ContactModel.self)
-      tableView.reloadData()
-    } catch {
-      print("Failed to fetch contacts: \(error.localizedDescription)")
     }
   }
 }
@@ -69,16 +88,6 @@ extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     return true
-  }
-  
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    guard editingStyle == .delete else { return }
-    
-    let contactToDelete = dataArray[indexPath.row]
-    deleteContact(contactToDelete)
-    
-    dataArray.remove(at: indexPath.row)
-    tableView.deleteRows(at: [indexPath], with: .automatic)
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -23,7 +23,9 @@ let project = Project(
               .external(name: "Lottie"),
               .external(name: "KeychainSwift"),
               .external(name: "MidtransKit"),
-              .target(name: "TheNorthCoreDataManager")
+              .target(name: "TheNorthCoreDataManager"),
+              .target(name: "NetworkManager"),
+              .external(name: "Kingfisher")
 ]),
     
     //MARK: Foundations
@@ -42,7 +44,8 @@ let project = Project(
                sources: ["Foundations/Dependency/**/*.swift"],
                resources: [],
                dependencies: [
-                .target(name: "Networking")
+                .target(name: "Networking"),
+                .target(name: "Coordinator")
                ]),
     .framework("Networking",
                sources: ["Foundations/Networking/**/*.swift"],
@@ -54,7 +57,9 @@ let project = Project(
     .framework("Coordinator",
                sources: ["Foundations/Coordinator/**/*.swift"],
                resources: [],
-               dependencies: []
+               dependencies: [
+                .target(name: "NetworkManager")
+               ]
               ),
     .framework("Utils",
                sources: ["Foundations/Utils/**/*.swift"],
@@ -70,15 +75,12 @@ let project = Project(
                            "Foundations/TheNorthCoreDataManager/Resources/**/*.xcdatamodeld"],
                dependencies: []
               ),
-    //MARK: Features
-    .framework("Services",
-               sources: ["Features/Services/**/*.swift"],
+    .framework("NetworkManager",
+               sources: ["Foundations/NetworkManager/**/*.swift"],
                resources: [],
-               dependencies: [
-                .target(name: "Dependency"),
-                .target(name: "Networking"),
-                .external(name: "RxSwift"),
-               ]),
+               dependencies: [.external(name: "KeychainSwift")]
+              ),
+    //MARK: Features
     .framework("AuthenticationFeature",
                sources: ["Features/AuthenticationFeature/Sources/**/*.swift"],
                resources: ["Features/AuthenticationFeature/Sources/**/*.xib",         
@@ -87,11 +89,10 @@ let project = Project(
                dependencies: [
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
-                .target(name: "Services"),
                 .external(name: "RxRelay"),
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
-                .target(name: "Coordinator"),
+                .target(name: "Coordinator")
                ]),
     .framework("ProfileFeature",
                sources: ["Features/ProfileFeature/Sources/**/*.swift"],
@@ -106,6 +107,8 @@ let project = Project(
                 .external(name: "RxRelay"),
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
+                .target(name: "NetworkManager"),
+                .external(name: "Kingfisher")
 
                ]),
     .framework("SettingFeature",
@@ -132,7 +135,9 @@ let project = Project(
                 .external(name: "RxRelay"),
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
-                .target(name: "Utils")
+                .target(name: "Utils"),
+                .target(name: "NetworkManager")
+
                ]),
     .framework("ContactsFeature",
                sources: ["Features/ContactsFeature/Sources/**/*.swift"],
@@ -143,7 +148,12 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
-                .target(name: "TheNorthCoreDataManager")
+                .target(name: "TheNorthCoreDataManager"),
+                .target(name: "NetworkManager"),
+                .external(name: "RxRelay"),
+                .external(name: "RxCocoa"),
+                .external(name: "RxSwift"),
+                .external(name: "Kingfisher")
                ]),
     .framework("OnBoardingFeature",
                sources: ["Features/OnBoardingFeature/Sources/**/*.swift"],
@@ -164,9 +174,13 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
-                .target(name: "Services"),
                 .target(name: "TheNorthCoreDataManager"),
-                .external(name: "SnapKit")
+                .external(name: "SnapKit"),
+                .external(name: "RxRelay"),
+                .external(name: "RxCocoa"),
+                .external(name: "RxSwift"),
+                .target(name: "NetworkManager"),
+                .external(name: "Kingfisher")
                ]),
     .framework("HistoryFeature",
                sources: ["Features/HistoryFeature/Sources/**/*.swift"],
@@ -177,7 +191,11 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
-                .target(name: "Services"),
+                .external(name: "RxRelay"),
+                .external(name: "RxCocoa"),
+                .external(name: "RxSwift"),
+                .target(name: "NetworkManager"),
+                .external(name: "Kingfisher")
                ]),
     .framework("TabBarFeature",
                sources: ["Features/TabBarFeature/Sources/**/*.swift"],
@@ -186,7 +204,6 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
-                .target(name: "Services"),
                ]),
     
     //     diaktifkan kalau perlu test

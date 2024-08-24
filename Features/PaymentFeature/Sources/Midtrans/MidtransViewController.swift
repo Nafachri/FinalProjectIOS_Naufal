@@ -7,12 +7,16 @@
 
 import UIKit
 import MidtransKit
+import RxSwift
+import RxRelay
+import TNUI
 
 
 class MidtransViewController: UIViewController, MidtransUIPaymentViewControllerDelegate {
   
   weak var coordinator: MidtransCoordinator!
   
+  var token: String?
   init(coordinator: MidtransCoordinator!){
     self.coordinator = coordinator
     super.init(nibName: "MidtransViewController", bundle: .module)
@@ -22,21 +26,18 @@ class MidtransViewController: UIViewController, MidtransUIPaymentViewControllerD
     fatalError("init(coder:) has not been implemented")
   }
 
-  
-  @IBAction func buttonTapped(_ sender: UIButton) {
-      
-    MidtransMerchantClient.shared().requestTransacation(withCurrentToken: "2b72ac20-d51f-4319-859b-bdd86da83336") { (response, error) in
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    MidtransMerchantClient.shared().requestTransacation(withCurrentToken: token ?? "") { (response, error) in
         if (response != nil){
-            //initialize MidtransUIPaymentViewController
             let vc = MidtransUIPaymentViewController.init(token: response)
-            //set you ViewController as delegate
             vc?.paymentDelegate = self
-            //present the payment page
             self.present(vc!, animated: true, completion: nil)
         } else {
             print("error \(error!)");
         }
     }
+
   }
   
   func paymentViewController(_ viewController: MidtransUIPaymentViewController!, paymentPending result: MidtransTransactionResult!) {
@@ -49,7 +50,8 @@ class MidtransViewController: UIViewController, MidtransUIPaymentViewControllerD
   
   func paymentViewController(_ viewController: MidtransUIPaymentViewController!, paymentSuccess result: MidtransTransactionResult!) {
     print("payment success")
-
+    self.dismiss(animated: true)
+    NotificationCenter.default.post(name: SuccessScreenViewController.chekcoutNotification, object: nil)
 
   }
   
@@ -61,10 +63,4 @@ class MidtransViewController: UIViewController, MidtransUIPaymentViewControllerD
   func paymentViewController_paymentCanceled(_ viewController: MidtransUIPaymentViewController!) {
     print("payment cancelled")
   }
-  
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
 }

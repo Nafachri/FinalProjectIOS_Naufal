@@ -8,6 +8,9 @@
 import UIKit
 import SnapKit
 import TheNorthCoreDataManager
+import NetworkManager
+import Utils
+import Kingfisher
 
 
 class HistoryDetailViewController: UIViewController {
@@ -20,7 +23,7 @@ class HistoryDetailViewController: UIViewController {
   @IBOutlet weak var amountLabel: UILabel!
   
   weak var coordinator: HistoryDetailCoordinator!
-  var selectedData: HistoryModel?
+  var selectedData: TransactionResponse?
   
   // MARK: - Initializers
   init(coordinator: HistoryDetailCoordinator){
@@ -43,6 +46,8 @@ class HistoryDetailViewController: UIViewController {
   private func setupUI() {
     setupContainerView()
     populateData()
+    avatar.layer.cornerRadius = 36
+
   }
   
   private func setupContainerView() {
@@ -53,24 +58,20 @@ class HistoryDetailViewController: UIViewController {
   }
   
   private func populateData() {
-    let avatarName = selectedData?.contact?.avatar ?? "avatar-dummy"
-    let username = selectedData?.contact?.username ?? "Unknown"
-    let createdDate = selectedData?.created_date ?? "Unknown Date"
-    let amount = selectedData?.amount ?? "0"
-    let transactionType = selectedData?.type ?? "pay"
     
-    avatar.image = UIImage(named: selectedData?.contact?.avatar ?? avatarName, in: .module, with: nil)
-    nameLabel.text = username
+    if selectedData?.type == "topup" {
+      uiView.backgroundColor = UIColor(hex: "#266A61")
+    } else {
+      uiView.backgroundColor = UIColor(hex: "#C20000")
+    }
+    
+    let url = URL(string: selectedData?.avatar ?? "avatar-detail-dummy")
+    let createdDate = selectedData?.timestamp
+    let amount = selectedData?.amount
+    nameLabel.text = selectedData?.name
+    avatar.kf.setImage(with: url)
     dateLabel.text = createdDate
     amountLabel.text = amount
     
-    
-    if transactionType == "pay" {
-      amountLabel.text = "- \(amount)"
-      uiView.backgroundColor = UIColor(hex: "#C20000")
-    } else {
-      amountLabel.text = "+ \(amount)"
-      uiView.backgroundColor = UIColor(hex: "#266A61")
-    }
   }
 }
