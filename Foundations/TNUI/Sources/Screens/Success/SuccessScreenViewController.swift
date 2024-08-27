@@ -66,9 +66,11 @@ public class SuccessScreenViewController: UIViewController {
     // Set nameLabel based on transactionType
     switch transactionType {
     case "pay":
-      nameLabel.text = "Recipient Name: "
-    default:
+      nameLabel.text = "Recipient Name : "
+    case "topup":
       nameLabel.isHidden = true
+    default:
+      break
     }
   }
   

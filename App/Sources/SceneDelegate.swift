@@ -41,16 +41,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     setupAppearance()
     setupMidtransConfig()
     
-    let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-    print(paths[0])
-    
     let nav = UINavigationController()
     window?.rootViewController = nav
     window?.makeKeyAndVisible()
     
-    setupCoordinator(navigationController: nav)
-    loadContactsData()
-    
+    setupCoordinator(navigationController: nav)    
     let darkModeEnabled = UserDefaults.standard.bool(forKey: "darkModeEnabled")
     window?.overrideUserInterfaceStyle = darkModeEnabled ? .dark : .light
   }
@@ -91,31 +86,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       navigationController: navigationController
     )
     app?.start()
-  }
-  
-  private func loadContactsData() {
-    for contact in loadDataContact() {
-      do {
-        try coreData.create(entity: ContactModel.self, properties: contact)
-      } catch {
-        print("Failed to create contact: \(error.localizedDescription)")
-      }
-    }
-  }
-  
-  private func loadDataContact() -> [[String: Any]] {
-    guard let path = Bundle(for: TheNorthCoreDataManager.ContactModel.self).path(forResource: "contacts", ofType: "json") else {
-      return []
-    }
-    
-    do {
-      let data = try Data(contentsOf: URL(fileURLWithPath: path))
-      let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [[String: Any]]
-      return jsonResult ?? []
-    } catch {
-      print("Error loading contacts data: \(error.localizedDescription)")
-      return []
-    }
   }
   
   // MARK: - UISceneDelegate Lifecycle Methods

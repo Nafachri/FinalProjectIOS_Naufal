@@ -156,7 +156,7 @@ class PaymentViewController: UIViewController {
         let transactionDate = data?.timestamp
         let transactionTitle = "Payment Success"
         let transactionId = data?.orderId
-        let transactionType = data?.type
+        let transactionType = "pay"
         let transactionName = data?.name
         
         self.dismiss(animated: true) {
@@ -166,7 +166,7 @@ class PaymentViewController: UIViewController {
             transactionDate: transactionDate ?? "",
             transactionTitle: transactionTitle,
             transactionId: transactionId ?? "",
-            transactionType: transactionType ?? ""
+            transactionType: transactionType
           )
         }
         NotificationCenter.default.post(

@@ -37,16 +37,14 @@ public struct LoginParam {
   }
 }
 
-// MARK: - Change Password Param
-public struct ChangePasswordParam {
+// MARK: - Forgot Password Param
+public struct ForgotPasswordParam {
   public let email: String
-  public let newPassword: String
-  public let confirmPassword: String
+  public let password: String
   
-  public init(email: String, newPassword: String, confirmPassword: String){
+  public init(email: String, password: String){
     self.email = email
-    self.newPassword = newPassword
-    self.confirmPassword = confirmPassword
+    self.password = password
   }
 }
 

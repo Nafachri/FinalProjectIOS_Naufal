@@ -31,7 +31,7 @@ class ScanQRViewController: UIViewController {
     layer.setAffineTransform(self.videoRotationTransform())
     return layer
   }()
-
+  
   private var lastScannedCode: String?
   
   // MARK: - Initializers
@@ -57,7 +57,7 @@ class ScanQRViewController: UIViewController {
     view.addSubview(qrCodeFrameView)
     view.bringSubviewToFront(qrCodeFrameView)
     view.addSubview(qrCodeLabel)
-
+    
     preview.frame = view.bounds
     qrCodeFrameView.layer.borderColor = UIColor.green.cgColor
     qrCodeFrameView.layer.borderWidth = 2
@@ -65,36 +65,36 @@ class ScanQRViewController: UIViewController {
   }
   
   private func setupBinding() {
-      viewModel?.responsePayScanQR
-          .subscribe(onNext: { [weak self] data in
-              guard let self = self else { return }
-              
-              let transactionDate = Date.now.formatted(.dateTime.year().month().day())
-              let transactionTitle = "Payment Success"
-              let transactionId = ""
-              let transactionType = "pay"
-              let transactionName = data?.recipient ?? "Unknown"
-              let transactionAmount = data?.amount
-
-              self.dismiss(animated: true) {
-                  self.coordinator?.showSuccess(
-                      transactionName: transactionName,
-                      transactionAmount: transactionAmount ?? "",
-                      transactionDate: transactionDate,
-                      transactionTitle: transactionTitle,
-                      transactionId: transactionId,
-                      transactionType: transactionType
-                  )
-              }
-              
-              NotificationCenter.default.post(
-                  name: SuccessScreenViewController.checkoutNotification,
-                  object: data
-              )
-          })
-          .disposed(by: disposeBag)
+    viewModel?.responsePayScanQR
+      .subscribe(onNext: { [weak self] data in
+        guard let self = self else { return }
+        
+        let transactionDate = Date.now.formatted(.dateTime.year().month().day())
+        let transactionTitle = "Payment Success"
+        let transactionId = ""
+        let transactionType = "pay"
+        let transactionName = data?.recipient ?? "Unknown"
+        let transactionAmount = data?.amount
+        
+        self.dismiss(animated: true) {
+          self.coordinator?.showSuccess(
+            transactionName: transactionName,
+            transactionAmount: transactionAmount ?? "",
+            transactionDate: transactionDate,
+            transactionTitle: transactionTitle,
+            transactionId: transactionId,
+            transactionType: transactionType
+          )
+        }
+        
+        NotificationCenter.default.post(
+          name: SuccessScreenViewController.checkoutNotification,
+          object: data
+        )
+      })
+      .disposed(by: disposeBag)
   }
-
+  
   
   private func setupScanQR() {
     guard let captureDevice = AVCaptureDevice.default(for: .video) else {
@@ -156,7 +156,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
         if stringValue != lastScannedCode {
           lastScannedCode = stringValue
           self.captureSession?.stopRunning()
-          showAlert(message: "Pay: \(String(describing: extractAmount(from: stringValue)))?", value: stringValue)
+          showAlert(message: "Pay: \(String(describing: extractAmount(from: stringValue)!))?", value: stringValue)
         }
       }
       
@@ -183,19 +183,27 @@ extension ScanQRViewController {
   
   func showAlert(message: String, value: String) {
     let alert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .alert)
-    let action = UIAlertAction(title: "Confirm", style: .default) { _ in
+    let confirmAction = UIAlertAction(title: "Confirm", style: .default) { _ in
       self.viewModel?.payScanQR(param: PayQRParam(qrCodeData: value))
       alert.dismiss(animated: true, completion: nil)
     }
-    alert.addAction(action)
+    
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+      alert.dismiss(animated: true, completion: nil)
+    }
+    
+    alert.addAction(confirmAction)
+    alert.addAction(cancelAction)
+    
     present(alert, animated: true)
   }
   
+  
   func extractAmount(from input: String) -> String? {
-      let components = input.split(separator: ":")
-      guard components.count >= 3 else {
-          return nil
-      }
-      return String(components.last!)
+    let components = input.split(separator: ":")
+    guard components.count >= 3 else {
+      return nil
+    }
+    return String(components.last!)
   }
 }

@@ -82,7 +82,15 @@ class ChangePasswordViewController: UIViewController {
     
     confirmButton.rx
       .tap
-      .bind(to: viewModel.confirmButton)
+      .subscribe(onNext: { [weak self] in
+        guard let self = self else { return }
+        
+        if self.viewModel.newPassword.value != self.viewModel.confirmPassword.value {
+          self.showAlert(title: "Error", message: "Password and Confirm Password don't match")
+        } else {
+          self.viewModel.confirmButton.onNext(())
+        }
+      })
       .disposed(by: disposeBag)
     
     // MARK: - Error Handling
@@ -111,6 +119,12 @@ class ChangePasswordViewController: UIViewController {
     } else {
       alertController.dismiss(animated: true)
     }
+  }
+  
+  func showAlert(title: String, message: String) {
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "OK", style: .default))
+    present(alert, animated: true)
   }
 }
 

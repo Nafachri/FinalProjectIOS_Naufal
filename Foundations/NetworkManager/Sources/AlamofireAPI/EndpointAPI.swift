@@ -13,7 +13,7 @@ import KeychainSwift
 public enum EndpointAPI {
   case login(param: LoginParam)
   case register(param: RegisterParam)
-  case changePassword(param: ChangePasswordParam)
+  case forgotPassword(param: ForgotPasswordParam)
   case profile
   case topup(param: TopUpParam)
   case transfer(param: TransferParam)
@@ -26,7 +26,7 @@ public enum EndpointAPI {
     switch self {
     case .login: return "/login"
     case .register: return "/register"
-    case .changePassword: return "/change-password"
+    case .forgotPassword: return "/forgot-password"
     case .topup: return "/topup"
     case .profile: return "/profile"
     case .transfer: return "/transfer"
@@ -41,7 +41,7 @@ public enum EndpointAPI {
   
   var method: HTTPMethod {
     switch self {
-    case .login, .register, .changePassword, .transfer, .topup, .generateQR, .payQR: return .post
+    case .login, .register, .forgotPassword, .transfer, .topup, .generateQR, .payQR: return .post
     case .listContact, .profile, .history: return .get
     }
   }
@@ -50,7 +50,7 @@ public enum EndpointAPI {
     let keychain = KeychainSwift()
     let token = keychain.get("userToken")
     switch self {
-    case .changePassword, .topup, .transfer, .listContact, .profile, .history, .generateQR, .payQR:
+    case .forgotPassword, .topup, .transfer, .listContact, .profile, .history, .generateQR, .payQR:
       return [
         "Content-Type": "application/json",
         "Authorization": "Bearer \(token ?? "")"
@@ -82,11 +82,10 @@ public enum EndpointAPI {
         "password": param.password
       ]
       return params
-    case .changePassword(let param):
+    case .forgotPassword(let param):
       let params: [String: Any] = [
         "email": param.email,
-        "newPassword": param.newPassword,
-        "confirmPassword": param.confirmPassword
+        "password": param.password,
       ]
       return params
     case .topup(let param):
