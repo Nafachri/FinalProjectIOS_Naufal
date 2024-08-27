@@ -1,8 +1,9 @@
-//  HomeViewController.swift
-//  The North
+// HomeViewController.swift
+// The North
 //
-//  Created by Naufal Al-Fachri on 08/08/24.
+// Created by Naufal Al-Fachri on 08/08/24.
 //
+
 import UIKit
 import SnapKit
 import TNUI
@@ -10,10 +11,12 @@ import TheNorthCoreDataManager
 import NetworkManager
 import RxSwift
 import RxRelay
+import Utils
 
 class HomeViewController: UIViewController {
   
   // MARK: - IBOutlets
+  @IBOutlet weak var greetingLabel: UILabel!
   @IBOutlet weak var fullnameLabel: UILabel!
   @IBOutlet weak var userBalanceLabel: UILabel!
   @IBOutlet weak var settingButton: UIButton!
@@ -23,6 +26,21 @@ class HomeViewController: UIViewController {
   @IBOutlet weak var payButton: UIButton!
   @IBOutlet weak var contactCollectionView: UICollectionView!
   @IBOutlet weak var historyCollectionView: UICollectionView!
+  
+  private let activityIndicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView(style: .large)
+    indicator.color = .systemGreen
+    indicator.translatesAutoresizingMaskIntoConstraints = false
+    return indicator
+  }()
+  
+  private let loadingOverlay: UIView = {
+    let overlay = UIView()
+    overlay.backgroundColor = UIColor.systemBackground
+    overlay.translatesAutoresizingMaskIntoConstraints = false
+    overlay.isHidden = true
+    return overlay
+  }()
   
   // MARK: - Properties
   weak var coordinator: HomeCoordinator?
@@ -46,7 +64,6 @@ class HomeViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-
   // MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -68,42 +85,87 @@ class HomeViewController: UIViewController {
   }
   
   deinit {
-    NotificationCenter.default.removeObserver(self, name: SuccessScreenViewController.chekcoutNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: SuccessScreenViewController.checkoutNotification, object: nil)
     NotificationCenter.default.removeObserver(self, name: NSNotification.Name("contactDetailVCNotificationCenter"), object: nil)
-  }
-  
-  // MARK: - Setup Binding
-  func setupBinding() {
-    viewModel.profileData
-       .asDriver(onErrorJustReturn: nil)
-       .drive(onNext: { [weak self] result in
-         guard let self else {return}
-         guard let profileData = result else {return}
-         self.userData = profileData
-         self.fullnameLabel.text = profileData.fullName
-         self.userBalanceLabel.text = profileData.balance
-       })
-       .disposed(by: disposeBag)
-    
-    viewModel.historyData
-      .subscribe(onNext: { [weak self] result in
-        guard let self else {return}
-        guard let historyData = result else {return}
-        self.historyDataArray = historyData.transaction
-        DispatchQueue.main.async{
-          self.historyCollectionView.reloadData()
-        }
-      })
-      .disposed(by: disposeBag)
   }
   
   // MARK: - UI Setup
   private func setupUI() {
+    greetingLabel.setGreeting()
     setupCollectionView()
     setupObservers()
     [topUpButton, requestButton, payButton].forEach {
       $0?.layer.cornerRadius = 8
     }
+    
+    view.addSubview(loadingOverlay)
+    loadingOverlay.addSubview(activityIndicator)
+    
+    NSLayoutConstraint.activate([
+      loadingOverlay.topAnchor.constraint(equalTo: view.topAnchor),
+      loadingOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      loadingOverlay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      loadingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      
+      activityIndicator.centerXAnchor.constraint(equalTo: loadingOverlay.centerXAnchor),
+      activityIndicator.centerYAnchor.constraint(equalTo: loadingOverlay.centerYAnchor)
+    ])
+  }
+  
+  // MARK: - Setup Binding
+  func setupBinding() {
+    viewModel.profileData
+      .asDriver(onErrorJustReturn: nil)
+      .drive(onNext: { [weak self] result in
+        guard let self = self else { return }
+        guard let profileData = result else { return }
+        self.userData = profileData
+        self.fullnameLabel.text = profileData.fullName
+        self.userBalanceLabel.text = profileData.balance
+      })
+      .disposed(by: disposeBag)
+    
+    viewModel.historyData
+      .subscribe(onNext: { [weak self] result in
+        guard let self = self else { return }
+        guard let historyData = result?.transaction else { return }
+        
+        let sortedTransactions = historyData.sorted { $0.timestamp > $1.timestamp }
+        let recentTransactions = Array(sortedTransactions.prefix(5))
+        
+        self.historyDataArray = recentTransactions
+        DispatchQueue.main.async {
+          self.historyCollectionView.reloadData()
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    viewModel.isLoading
+      .observe(on: MainScheduler.instance)
+      .subscribe(onNext: { [weak self] isLoading in
+        guard let self = self else { return }
+        if isLoading {
+          self.loadingOverlay.isHidden = false
+          self.activityIndicator.startAnimating()
+          
+          self.hideEmptyStateView()
+          self.hideEmptyStateViewQuickSend()
+        } else {
+          self.loadingOverlay.isHidden = true
+          self.activityIndicator.stopAnimating()
+          
+          DispatchQueue.main.async {
+            self.historyCollectionView.reloadData()
+            
+            if self.historyDataArray.isEmpty {
+              self.showEmptyStateView(for: self.historyCollectionView, message: "No History Available")
+            } else {
+              self.hideEmptyStateView()
+            }
+            
+          }
+        }
+      }).disposed(by: disposeBag)
   }
   
   private func applyCornerRadiusToTopView() {
@@ -127,13 +189,12 @@ class HomeViewController: UIViewController {
   
   // MARK: - Notification Observers
   private func setupObservers() {
-    NotificationCenter.default.addObserver(forName: SuccessScreenViewController.chekcoutNotification, object: nil, queue: .main) { [weak self] _ in
-      guard let self else {return}
+    NotificationCenter.default.addObserver(forName: SuccessScreenViewController.checkoutNotification, object: nil, queue: .main) { [weak self] _ in
+      guard let self = self else { return }
       self.viewModel.fetchHistory()
       self.viewModel.fetchProfile()
     }
     NotificationCenter.default.addObserver(self, selector: #selector(fetchQuickSendContacts), name: NSNotification.Name("contactDetailVCNotificationCenter"), object: nil)
-
   }
   
   // MARK: - Data Fetching
@@ -143,19 +204,17 @@ class HomeViewController: UIViewController {
   
   @objc private func fetchQuickSendContacts(_ notification: Notification) {
     do {
-      quickSendDataArray = try coreDataManager.fetch(entity: QuickSendModel.self, fetchLimit: 6)
-      if quickSendDataArray.isEmpty {
-        showEmptyStateViewQuickSend(for: contactCollectionView, message: "No Quick Send Available")
+      quickSendDataArray = try coreDataManager.fetch(entity: QuickSendModel.self, fetchLimit: 5)
+      if !quickSendDataArray.isEmpty {
+        self.hideEmptyStateViewQuickSend()
       } else {
-        hideEmptyStateViewQuickSend()
-        
+        self.showEmptyStateViewQuickSend(for: self.contactCollectionView, message: "No Quick Send Available")
       }
       contactCollectionView.reloadData()
     } catch {
       print("Failed to fetch contacts: \(error.localizedDescription)")
     }
   }
-
   
   // MARK: - Empty State Handling
   private func showEmptyStateView(for collectionView: UICollectionView, message: String) {
@@ -192,49 +251,43 @@ class HomeViewController: UIViewController {
     emptyStateViewQuickSend = nil
   }
   
-  
   // MARK: - IBActions
-  @IBAction func requestButtonTapped(_ sender: UIButton) {
-    coordinator?.goToGenerateQR()
-  }
+    @IBAction func requestButtonTapped(_ sender: UIButton) {
+      coordinator?.goToGenerateQR()
+    }
   
-  @IBAction func payRequestButtonTapped(_ sender: UIButton) {
-    coordinator?.goToScanQR()
-  }
+    @IBAction func payRequestButtonTapped(_ sender: UIButton) {
+      coordinator?.goToScanQR()
+    }
   
-  @IBAction func topUpButtonTapped(_ sender: UIButton) {
-    guard let userData = userData else {
+    @IBAction func topUpButtonTapped(_ sender: UIButton) {
+      guard let userData = userData else {
         print("userData is nil")
         return
+      }
+      coordinator?.goToTopUp(userData: userData)
     }
-    coordinator?.goToTopUp(userData: userData)
-//    if let user = userData.first {
-//      coordinator?.goToTopUp(userData: user)
-//    } else {
-//      print("No user data available")
-//    }
-  }
   
-  @IBAction func quickSendViewAllButtonTapped(_ sender: UIButton) {
-    coordinator?.goToContacts()
-  }
+    @IBAction func quickSendViewAllButtonTapped(_ sender: UIButton) {
+      coordinator?.goToContacts()
+    }
   
-  @IBAction func historyViewAllButtonTapped(_ sender: UIButton) {
-    coordinator?.goToHistory()
-  }
+    @IBAction func historyViewAllButtonTapped(_ sender: UIButton) {
+      coordinator?.goToHistory()
+    }
   
-  @IBAction func settingButtonTapped(_ sender: UIButton) {
-    coordinator?.goToSetting()
-  }
+    @IBAction func settingButtonTapped(_ sender: UIButton) {
+      coordinator?.goToSetting()
+    }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-  
+
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return collectionView === contactCollectionView ? quickSendDataArray.count : historyDataArray.count
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     if collectionView === contactCollectionView {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "quicksend_cell", for: indexPath) as! AddQuickSendCollectionViewCell
@@ -253,7 +306,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
       return cell
     }
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if collectionView === contactCollectionView, indexPath.row < quickSendDataArray.count {
       let quickSendData = quickSendDataArray[indexPath.row]
@@ -263,7 +316,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
       coordinator?.goToHistoryDetail(with: historyData)
     }
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     if collectionView === contactCollectionView {
       return CGSize(width: 60, height: 60)

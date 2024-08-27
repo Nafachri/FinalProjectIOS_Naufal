@@ -21,7 +21,26 @@ public func formatCurrency(_ amountString: String) -> String {
     currencyFormatter.numberStyle = .currency
     currencyFormatter.currencyCode = "IDR"
     currencyFormatter.locale = Locale(identifier: "id_ID") // Indonesian locale
+    currencyFormatter.currencySymbol = "Rp "
     currencyFormatter.usesGroupingSeparator = true // Disable commas in the output
 
     return currencyFormatter.string(from: number) ?? ""
 }
+
+
+public func formatToIDR(_ amount: NSNumber?) -> String {
+    guard let amount = amount else {
+        return "Invalid amount" // Handle the case where amount is nil
+    }
+    
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = .currency
+    numberFormatter.locale = Locale(identifier: "id_ID") // Locale for Indonesia
+    numberFormatter.currencyCode = "IDR" // Set the currency code to IDR
+    numberFormatter.currencySymbol = "Rp " // Optional: Set the symbol if needed
+    numberFormatter.usesGroupingSeparator = true // Enable grouping separators (commas)
+
+    return numberFormatter.string(from: amount) ?? "\(amount)"
+}
+
+

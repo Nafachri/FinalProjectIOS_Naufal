@@ -11,30 +11,43 @@ import RxCocoa
 import NetworkManager
 import KeychainSwift
 
+enum LoadingState: String {
+  case loading
+  case finished
+  case failed
+}
+
 class ContactsViewModel {
-  private let APIService = APIManager.shared
+  
+  // MARK: - Properties
+  private let apiService = APIManager.shared
   private let keychain = KeychainSwift()
   
-  var listOfContact = BehaviorRelay<ListContactResponse>(value: [])
-  let isLoading = BehaviorRelay<Bool>(value: false)
+  let listOfContact = BehaviorRelay<ListContactResponse>(value: [])
+  let isLoading = BehaviorRelay<LoadingState>(value: .loading)
   let errorMessage = PublishSubject<String?>()
   let isSuccess = PublishSubject<Bool>()
   
   private let disposeBag = DisposeBag()
   
+  // MARK: - Initialization
   init() {}
   
-  func fetchContact() {
-    APIService.fetchRequest(endpoint: .listContact, expecting: ListContactResponse.self) { [weak self] result in
-      guard let self else { return }
-      isLoading.accept(false)
-      switch result {
-      case .success(let response):
-        listOfContact.accept(response)
-      case .failure(let error):
-        errorMessage.onNext(error.localizedDescription)
-      }
+  // MARK: - Public Methods
+    func fetchContacts() {
+      isLoading.accept(.loading)
+        apiService.fetchRequest(endpoint: .listContact, expecting: ListContactResponse.self) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+              self.isLoading.accept(.finished)
+                self.listOfContact.accept(response)
+                self.isSuccess.onNext(true)
+            case .failure(let error):
+              self.isLoading.accept(.failed)
+                self.errorMessage.onNext(error.localizedDescription)
+                self.isSuccess.onNext(false)
+            }
+        }
     }
-  }
-  
 }

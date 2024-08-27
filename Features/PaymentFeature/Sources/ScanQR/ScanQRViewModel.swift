@@ -1,46 +1,39 @@
 //
-//  GenerateQRViewModel.swift
-//  PaymentFeature
+//  ScanQRViewModel.swift
+//  Utils
 //
-//  Created by Naufal Al-Fachri on 12/08/24.
+//  Created by Naufal Al-Fachri on 26/08/24.
 //
 
+import Foundation
 import RxSwift
 import RxRelay
 import RxCocoa
-import Foundation
 import NetworkManager
 
-// MARK: - GenerateQRViewModel
-
-class GenerateQRViewModel {
+class ScanQRViewModel {
   
   // MARK: - Properties
-  
   private let APIService = APIManager.shared
   private let disposeBag = DisposeBag()
   
-  let amount = BehaviorRelay<String>(value: "")
   let isSuccess = PublishSubject<Bool>()
   let isLoading = BehaviorRelay<Bool>(value: false)
   let errorMessage = PublishSubject<String?>()
-  let responseGenerateQR = PublishSubject<GenerateQRResponse?>()
-  var previousAmount: Int?
+  let responsePayScanQR = BehaviorRelay<PayQRResponse?>(value: nil)
   
   // MARK: - Initializer
-  
   init() {}
   
-  // MARK: - Methods
-  
-  func generateQR(param: GenerateQRParam) {
+  // MARK: - API Requests
+  func payScanQR(param: PayQRParam) {
     isLoading.accept(true)
-    APIService.fetchRequest(endpoint: .generateQR(param: param), expecting: GenerateQRResponse.self) { [weak self] result in
+    APIService.fetchRequest(endpoint: .payQR(param: param), expecting: PayQRResponse.self) { [weak self] result in
       guard let self = self else { return }
       isLoading.accept(false)
       switch result {
       case .success(let response):
-        responseGenerateQR.onNext(response)
+        responsePayScanQR.accept(response)
       case .failure(let error):
         errorMessage.onNext(error.localizedDescription)
       }

@@ -25,8 +25,10 @@ let project = Project(
               .external(name: "MidtransKit"),
               .target(name: "TheNorthCoreDataManager"),
               .target(name: "NetworkManager"),
-              .external(name: "Kingfisher")
-]),
+              .external(name: "Kingfisher"),
+              .external(name: "SkeletonView"),
+              .external(name: "SnapKit")
+             ]),
     
     //MARK: Foundations
     .framework("TNUI",
@@ -35,7 +37,7 @@ let project = Project(
                 "Foundations/TNUI/Sources/**/*.xib",
                 "Foundations/TNUI/Resources/**/*.xcassets",
                 "Foundations/TNUI/Resources/**/*.json",
-                ],
+               ],
                dependencies: [
                 .target(name: "Utils"),
                 .external(name: "RxSwift")
@@ -68,13 +70,13 @@ let project = Project(
                 .external(name: "RxSwift"),
                ]
               ),
-
-    .framework("TheNorthCoreDataManager",
-               sources: ["Foundations/TheNorthCoreDataManager/**/*.swift"],
-               resources: ["Foundations/TheNorthCoreDataManager/Resources/**/*.json",
-                           "Foundations/TheNorthCoreDataManager/Resources/**/*.xcdatamodeld"],
-               dependencies: []
-              ),
+    
+      .framework("TheNorthCoreDataManager",
+                 sources: ["Foundations/TheNorthCoreDataManager/**/*.swift"],
+                 resources: ["Foundations/TheNorthCoreDataManager/Resources/**/*.json",
+                             "Foundations/TheNorthCoreDataManager/Resources/**/*.xcdatamodeld"],
+                 dependencies: []
+                ),
     .framework("NetworkManager",
                sources: ["Foundations/NetworkManager/**/*.swift"],
                resources: [],
@@ -83,7 +85,7 @@ let project = Project(
     //MARK: Features
     .framework("AuthenticationFeature",
                sources: ["Features/AuthenticationFeature/Sources/**/*.swift"],
-               resources: ["Features/AuthenticationFeature/Sources/**/*.xib",         
+               resources: ["Features/AuthenticationFeature/Sources/**/*.xib",
                            "Features/AuthenticationFeature/Resources/**/*.xcassets"
                           ],
                dependencies: [
@@ -108,8 +110,8 @@ let project = Project(
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
                 .target(name: "NetworkManager"),
-                .external(name: "Kingfisher")
-
+                .external(name: "Kingfisher"),
+                
                ]),
     .framework("SettingFeature",
                sources: ["Features/SettingFeature/Sources/**/*.swift"],
@@ -120,7 +122,7 @@ let project = Project(
                 .target(name: "TNUI"),
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
-
+                
                ]),
     .framework("PaymentFeature",
                sources: ["Features/PaymentFeature/Sources/**/*.swift"],
@@ -137,7 +139,7 @@ let project = Project(
                 .external(name: "RxSwift"),
                 .target(name: "Utils"),
                 .target(name: "NetworkManager")
-
+                
                ]),
     .framework("ContactsFeature",
                sources: ["Features/ContactsFeature/Sources/**/*.swift"],
@@ -153,7 +155,10 @@ let project = Project(
                 .external(name: "RxRelay"),
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
-                .external(name: "Kingfisher")
+                .external(name: "Kingfisher"),
+                .target(name: "Utils"),
+                .external(name: "SkeletonView"),
+                .external(name: "SnapKit")
                ]),
     .framework("OnBoardingFeature",
                sources: ["Features/OnBoardingFeature/Sources/**/*.swift"],
@@ -180,7 +185,8 @@ let project = Project(
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
                 .target(name: "NetworkManager"),
-                .external(name: "Kingfisher")
+                .external(name: "Kingfisher"),
+                .target(name: "Utils")
                ]),
     .framework("HistoryFeature",
                sources: ["Features/HistoryFeature/Sources/**/*.swift"],
@@ -195,7 +201,9 @@ let project = Project(
                 .external(name: "RxCocoa"),
                 .external(name: "RxSwift"),
                 .target(name: "NetworkManager"),
-                .external(name: "Kingfisher")
+                .external(name: "Kingfisher"),
+                .target(name: "Utils"),
+                .external(name: "SkeletonView"),
                ]),
     .framework("TabBarFeature",
                sources: ["Features/TabBarFeature/Sources/**/*.swift"],
@@ -234,10 +242,11 @@ public extension ProjectDescription.Target {
       bundleId: "\(prefixBundleID).\(name.dashSeparator)",
       infoPlist: .file(path: .relativeToManifest("App/Info.plist")),
       sources: ["App/Sources/**"],
-      resources: ["App/Resources/**", "App/Resources/**/*.xcassets", 
-//                  "App/Resources/Data/**/*/.xcdatamodeld", "App/Resources/Data/**/*/.json"
+      resources: ["App/Resources/**", "App/Resources/**/*.xcassets",
                  ],
-      dependencies: dependencies
+      dependencies: dependencies,
+      settings: .settings(
+        base: ["OTHER_LDFLAGS": "$(inherited) -ObjC"])
     )
   }
   
@@ -249,7 +258,9 @@ public extension ProjectDescription.Target {
       bundleId: "\(prefixBundleID).\(targetName.dashSeparator)",
       sources: sources,
       resources: resources,
-      dependencies: dependencies
+      dependencies: dependencies,
+      settings: .settings(
+        base: ["OTHER_LDFLAGS": "$(inherited) -ObjC"])
     )
   }
   
@@ -261,7 +272,9 @@ public extension ProjectDescription.Target {
       bundleId: "\(prefixBundleID).\(targetName.dashSeparator)",
       sources: sources,
       resources: resources,
-      dependencies: dependencies
+      dependencies: dependencies,
+      settings: .settings(
+        base: ["OTHER_LDFLAGS": "$(inherited) -ObjC"])
     )
   }
   

@@ -8,10 +8,13 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GenerateQRViewController" customModule="PayRequestFeature" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GenerateQRViewController" customModule="PaymentFeature" customModuleProvider="target">
             <connections>
                 <outlet property="amountTextField" destination="94Z-wa-P8J" id="OZC-S3-eEO"/>
-                <outlet property="qrImageView" destination="oDF-9M-xqf" id="F6Q-Ea-Q4c"/>
+                <outlet property="askfriendLabel" destination="IY5-DS-pLf" id="ONM-sy-yYy"/>
+                <outlet property="cancelButton" destination="FFG-bv-BnO" id="XFE-os-X5M"/>
+                <outlet property="generateQRButton" destination="08v-Nj-Wwi" id="uV1-po-zmg"/>
+                <outlet property="qrImageView" destination="DGa-Gg-EOB" id="9g4-Ld-zd1"/>
                 <outlet property="uiView" destination="qli-7j-HH4" id="5Uv-0e-PgF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -22,28 +25,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="De3-nB-iHV">
-                    <rect key="frame" x="0.0" y="59" width="393" height="793"/>
+                    <rect key="frame" x="0.0" y="59" width="334" height="793"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qli-7j-HH4" userLabel="Content View">
-                            <rect key="frame" x="24" y="56" width="345" height="557.33333333333337"/>
+                            <rect key="frame" x="24" y="56" width="286" height="575.66666666666663"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thenorthicon" translatesAutoresizingMaskIntoConstraints="NO" id="AKO-BN-7lU">
-                                    <rect key="frame" x="24" y="24" width="297" height="48"/>
-                                </imageView>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oDF-9M-xqf">
-                                    <rect key="frame" x="24" y="96" width="297" height="297"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="oDF-9M-xqf" secondAttribute="height" id="ZV0-J4-OBE"/>
-                                    </constraints>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvv-Yc-nmQ">
-                                    <rect key="frame" x="24" y="409" width="297" height="21"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" placeholder="enter amount" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="94Z-wa-P8J">
-                                    <rect key="frame" x="24" y="438" width="297" height="60"/>
+                                    <rect key="frame" x="24" y="116.33333333333334" width="238" height="60"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="60" id="yUG-jR-MyW"/>
@@ -52,32 +40,72 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thenorthicon" translatesAutoresizingMaskIntoConstraints="NO" id="AKO-BN-7lU">
+                                    <rect key="frame" x="24" y="24" width="238" height="48"/>
+                                </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Ask your friend to scan this QR" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IY5-DS-pLf">
-                                    <rect key="frame" x="24" y="514" width="297" height="19.333333333333371"/>
+                                    <rect key="frame" x="24" y="532.33333333333337" width="238" height="19.333333333333371"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvv-Yc-nmQ">
+                                    <rect key="frame" x="24" y="84" width="238" height="20.333333333333329"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="08v-Nj-Wwi">
+                                    <rect key="frame" x="24" y="188.33333333333331" width="238" height="35"/>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" title="Generate QR"/>
+                                    <connections>
+                                        <action selector="qrButtonTapped:" destination="-1" eventType="touchUpInside" id="vRl-Kf-0Ke"/>
+                                    </connections>
+                                </button>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="qr" translatesAutoresizingMaskIntoConstraints="NO" id="DGa-Gg-EOB">
+                                    <rect key="frame" x="0.0" y="223.33333333333331" width="250" height="250"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="250" id="VzV-dh-WeA"/>
+                                        <constraint firstAttribute="width" constant="250" id="nKs-Wu-UVx"/>
+                                    </constraints>
+                                </imageView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FFG-bv-BnO">
+                                    <rect key="frame" x="24" y="485.33333333333337" width="238" height="35"/>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" title="Cancel"/>
+                                    <connections>
+                                        <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="YQY-I5-6rn"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" red="0.14901960780000001" green="0.41568627450000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstItem="oDF-9M-xqf" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="4oS-Sb-8g3"/>
+                                <constraint firstItem="FFG-bv-BnO" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="4Nz-86-zol"/>
                                 <constraint firstAttribute="bottom" secondItem="IY5-DS-pLf" secondAttribute="bottom" constant="24" id="6fr-ew-fyx"/>
                                 <constraint firstItem="AKO-BN-7lU" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="9JR-RT-yxl"/>
-                                <constraint firstItem="oDF-9M-xqf" firstAttribute="top" secondItem="AKO-BN-7lU" secondAttribute="bottom" constant="24" id="B5X-Nt-l2d"/>
                                 <constraint firstItem="Dvv-Yc-nmQ" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="C8w-cR-r2K"/>
+                                <constraint firstItem="FFG-bv-BnO" firstAttribute="top" secondItem="DGa-Gg-EOB" secondAttribute="bottom" constant="12" id="CLD-k4-GLk"/>
                                 <constraint firstItem="AKO-BN-7lU" firstAttribute="top" secondItem="qli-7j-HH4" secondAttribute="top" constant="24" id="Cmu-yu-mK6"/>
-                                <constraint firstAttribute="trailing" secondItem="oDF-9M-xqf" secondAttribute="trailing" constant="24" id="DbA-gg-tIP"/>
-                                <constraint firstItem="Dvv-Yc-nmQ" firstAttribute="top" secondItem="oDF-9M-xqf" secondAttribute="bottom" constant="16" id="GAW-qr-KdQ"/>
-                                <constraint firstItem="IY5-DS-pLf" firstAttribute="top" secondItem="94Z-wa-P8J" secondAttribute="bottom" constant="16" id="JPo-5c-h6u"/>
+                                <constraint firstItem="Dvv-Yc-nmQ" firstAttribute="top" secondItem="AKO-BN-7lU" secondAttribute="bottom" constant="12" id="EPc-AH-DrM"/>
+                                <constraint firstItem="08v-Nj-Wwi" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="KKX-24-HZB"/>
                                 <constraint firstItem="IY5-DS-pLf" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="LqH-h5-T26"/>
+                                <constraint firstItem="IY5-DS-pLf" firstAttribute="top" secondItem="FFG-bv-BnO" secondAttribute="bottom" constant="12" id="Mlx-zU-K2Y"/>
                                 <constraint firstAttribute="trailing" secondItem="94Z-wa-P8J" secondAttribute="trailing" constant="24" id="Qfz-cD-jpe"/>
+                                <constraint firstItem="08v-Nj-Wwi" firstAttribute="top" secondItem="94Z-wa-P8J" secondAttribute="bottom" constant="12" id="UCI-3D-Itu"/>
                                 <constraint firstAttribute="trailing" secondItem="AKO-BN-7lU" secondAttribute="trailing" constant="24" id="ViI-jN-hGi"/>
-                                <constraint firstItem="94Z-wa-P8J" firstAttribute="top" secondItem="Dvv-Yc-nmQ" secondAttribute="bottom" constant="8" id="W4I-r5-cew"/>
                                 <constraint firstAttribute="trailing" secondItem="Dvv-Yc-nmQ" secondAttribute="trailing" constant="24" id="XUV-0r-rxh"/>
                                 <constraint firstAttribute="trailing" secondItem="IY5-DS-pLf" secondAttribute="trailing" constant="24" id="XwH-kb-2qD"/>
+                                <constraint firstItem="DGa-Gg-EOB" firstAttribute="top" secondItem="08v-Nj-Wwi" secondAttribute="bottom" id="YHa-1u-5SD"/>
                                 <constraint firstAttribute="trailing" secondItem="IY5-DS-pLf" secondAttribute="trailing" constant="24" id="aB0-ax-xpX"/>
+                                <constraint firstItem="94Z-wa-P8J" firstAttribute="top" secondItem="Dvv-Yc-nmQ" secondAttribute="bottom" constant="12" id="b1E-SM-jzt"/>
                                 <constraint firstItem="IY5-DS-pLf" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="b5V-pv-Vai"/>
+                                <constraint firstAttribute="trailing" secondItem="08v-Nj-Wwi" secondAttribute="trailing" constant="24" id="cqg-LT-S8e"/>
+                                <constraint firstItem="DGa-Gg-EOB" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" id="hKy-z6-U9q"/>
+                                <constraint firstAttribute="trailing" secondItem="FFG-bv-BnO" secondAttribute="trailing" constant="24" id="ljV-8W-gux"/>
+                                <constraint firstAttribute="trailing" secondItem="DGa-Gg-EOB" secondAttribute="trailing" id="vVi-cE-UPZ"/>
                                 <constraint firstItem="94Z-wa-P8J" firstAttribute="leading" secondItem="qli-7j-HH4" secondAttribute="leading" constant="24" id="x6h-Fg-LaF"/>
                             </constraints>
                         </view>
@@ -101,10 +129,11 @@
                 <constraint firstItem="De3-nB-iHV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cxD-4b-gcQ"/>
                 <constraint firstAttribute="bottom" secondItem="De3-nB-iHV" secondAttribute="bottom" id="kWF-9L-MyC"/>
             </constraints>
-            <point key="canvasLocation" x="11" y="21"/>
+            <point key="canvasLocation" x="9.9236641221374047" y="20.422535211267608"/>
         </view>
     </objects>
     <resources>
+        <image name="qr" width="382" height="424"/>
         <image name="thenorthicon" width="198" height="48"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -9,18 +9,29 @@ import Foundation
 import Coordinator
 import UIKit
 
+// MARK: - MainOnBoardingCoordinator
+
 class MainOnBoardingCoordinator: Coordinator {
+  
+  // MARK: - Properties
+  
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   
-  init(navigationController: UINavigationController,
-       childCoordinators: [Coordinator] = [],
-       parentCoordinator: Coordinator? = nil) {
+  // MARK: - Initializer
+  
+  init(
+    navigationController: UINavigationController,
+    childCoordinators: [Coordinator] = [],
+    parentCoordinator: Coordinator? = nil
+  ) {
     self.navigationController = navigationController
     self.childCoordinators = childCoordinators
     self.parentCoordinator = parentCoordinator
   }
+  
+  // MARK: - Coordinator Methods
   
   func start() {
     let mainOnBoardingVC = MainOnBoardingViewController(coordinator: self)
@@ -29,7 +40,10 @@ class MainOnBoardingCoordinator: Coordinator {
   }
   
   func letsGo() {
-    let coordinator = SecondaryOnBoardingCoordinator(navigationController: navigationController, authdependency: OnBoardingModule.authDependency)
+    let coordinator = SecondaryOnBoardingCoordinator(
+      navigationController: navigationController,
+      authdependency: OnBoardingModule.authDependency
+    )
     addChildCoordinator(coordinator)
     coordinator.start()
   }

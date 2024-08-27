@@ -13,6 +13,8 @@ import NetworkManager
 import RxSwift
 import RxCocoa
 import RxRelay
+import SkeletonView
+import SnapKit
 
 
 class ContactsViewController: UIViewController {
@@ -23,11 +25,13 @@ class ContactsViewController: UIViewController {
   weak var coordinator: ContactsCoordinator!
   private var dataArray: ListContactResponse = []
   private let disposeBag = DisposeBag()
-  private var emptyStateView: EmptyStateView?
   private let coreDataManager = CoreDataManager.shared
   let viewModel: ContactsViewModel
   
-  
+  private lazy var emptyStateView: EmptyStateView = {
+    let view = EmptyStateView(message: "No Contacts Available")
+    return view
+  }()
   
   // MARK: - Initializers
   init(coordinator: ContactsCoordinator, viewModel: ContactsViewModel = ContactsViewModel()) {
@@ -49,7 +53,7 @@ class ContactsViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
-    viewModel.fetchContact()
+    viewModel.fetchContacts()
   }
   
   // MARK: - UI Setup
@@ -60,26 +64,45 @@ class ContactsViewController: UIViewController {
     tableView.delegate = self
   }
   
-  // MARK: - Setup Binding
-  func setupBinding(){
-    viewModel.listOfContact
-      .subscribe(onNext: {[weak self] result in
-        guard let self else {return}
-        self.dataArray = result
-        DispatchQueue.main.async {
-          self.tableView.reloadData()
-        }
-      })
-      .disposed(by: disposeBag)
+  private func setupEmptyStateView() {
+    view.addSubview(emptyStateView)
+    emptyStateView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
   }
   
-  // MARK: - Core Data Operations
-  private func deleteContact(_ contact: ContactModel) {
-    do {
-      try coreDataManager.delete(entity: contact)
-    } catch {
-      print("Failed to delete contact: \(error.localizedDescription)")
-    }
+
+  
+  private func hideEmptyStateView() {
+    emptyStateView.isHidden = true
+  }
+  
+  // MARK: - ViewModel Binding
+  private func setupBinding() {
+    viewModel.listOfContact
+      .observe(on: MainScheduler.instance)
+      .subscribe(onNext: { [weak self] result in
+        self?.updateUI(with: result)
+      })
+      .disposed(by: disposeBag)
+    
+    viewModel.isLoading.asObservable().subscribe(onNext: {[weak self] isLoading in
+      guard let self = self else { return }
+      switch isLoading {
+      case .loading:
+        self.tableView.showAnimatedGradientSkeleton()
+      default:
+        self.tableView.hideSkeleton()
+      }
+    }).disposed(by: disposeBag)
+  }
+  
+  
+  
+  // MARK: - UI Update
+  private func updateUI(with contacts: ListContactResponse) {
+    self.dataArray = contacts    
+    tableView.reloadData()
   }
 }
 
@@ -95,7 +118,9 @@ extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "contacts_cell", for: indexPath) as! ContactsTableViewCell
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: "contacts_cell", for: indexPath) as? ContactsTableViewCell else {
+      return UITableViewCell()
+    }
     let contact = dataArray[indexPath.row]
     cell.populate(with: contact)
     return cell
@@ -109,5 +134,15 @@ extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
     let selectedContact = dataArray[indexPath.row]
     coordinator.goToContactDetail(with: selectedContact)
     tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
+
+extension ContactsViewController: SkeletonTableViewDataSource {
+  func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 6
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    return "contacts_cell"
   }
 }

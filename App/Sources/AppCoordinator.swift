@@ -76,12 +76,6 @@ class AppCoordinator: AppCoordinatorable, NavigationCoordinator {
     coordinator.start()
   }
   
-//  func showContacts() {
-//    let coordinator = contactsDependency.contactsCoordinator(navigationController)
-//    addChildCoordinator(coordinator)
-//    coordinator.start()
-//  }
-  
   func showOnBoarding() {
     let coordinator = onBoardingDependency.onBoardingCoordinator(navigationController)
     addChildCoordinator(coordinator)

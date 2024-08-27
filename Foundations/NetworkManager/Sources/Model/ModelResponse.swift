@@ -50,12 +50,18 @@ public typealias ListContactResponse = [ListContactResponseData]
 
 // MARK: - Top Up Response
 public struct TopUpResponse: Codable {
-  public let status, redirectURL , token: String
+  public let status, redirectURL , token, name, timestamp, orderId, amount, type: String
 
   enum CodingKeys: String, CodingKey {
     case status = "status"
     case redirectURL = "redirect_url"
     case token = "token"
+    case name = "name"
+    case timestamp = "timestamp"
+    case orderId = "order_id"
+    case amount = "amount"
+    case type = "type"
+    
 
   }
 }
@@ -85,4 +91,16 @@ public struct HistoryResponse: Codable {
 public enum TypeTransaction: String {
   case topup
   case transfer
+}
+
+public struct GenerateQRResponse: Codable {
+  public let qrCodeUrl: String
+  public let amount: String
+  public let qrCodeData: String
+}
+
+public struct PayQRResponse: Codable {
+  public let message: String
+  public let amount: String
+  public let recipient: String
 }

@@ -19,7 +19,8 @@ public enum EndpointAPI {
   case transfer(param: TransferParam)
   case listContact
   case history
-//  case updateProfile(param: ProfileParam)
+  case generateQR(param: GenerateQRParam)
+  case payQR(param: PayQRParam)
   
   var path: String {
     switch self {
@@ -31,14 +32,16 @@ public enum EndpointAPI {
     case .transfer: return "/transfer"
     case .listContact: return "/contact"
     case .history: return "/history"
-//    case .updateProfile: return "/update-profile"
-
+    case .generateQR: return "/request"
+    case .payQR: return "/pay"
+      
+      
     }
   }
   
   var method: HTTPMethod {
     switch self {
-    case .login, .register, .changePassword, .transfer, .topup: return .post
+    case .login, .register, .changePassword, .transfer, .topup, .generateQR, .payQR: return .post
     case .listContact, .profile, .history: return .get
     }
   }
@@ -47,7 +50,7 @@ public enum EndpointAPI {
     let keychain = KeychainSwift()
     let token = keychain.get("userToken")
     switch self {
-    case .changePassword, .topup, .transfer, .listContact, .profile, .history:
+    case .changePassword, .topup, .transfer, .listContact, .profile, .history, .generateQR, .payQR:
       return [
         "Content-Type": "application/json",
         "Authorization": "Bearer \(token ?? "")"
@@ -67,6 +70,7 @@ public enum EndpointAPI {
     case .register(let param):
       let params: [String: Any] = [
         "username": param.username,
+        "fullName": param.fullName,
         "email": param.email,
         "phoneNumber": param.phoneNumber,
         "password": param.password
@@ -81,7 +85,8 @@ public enum EndpointAPI {
     case .changePassword(let param):
       let params: [String: Any] = [
         "email": param.email,
-        "password": param.newPassword
+        "newPassword": param.newPassword,
+        "confirmPassword": param.confirmPassword
       ]
       return params
     case .topup(let param):
@@ -95,14 +100,16 @@ public enum EndpointAPI {
         "recipientUsername": param.recipientUsername
       ]
       return params
-//    case .updateProfile(let param):
-//      let params: [String: Any] = [
-//        "username": param.username ?? "",
-//        "email": param.email ?? "",
-//        "phoneNumber": param.phoneNumber ?? "",
-//        "avatar": param.avatar
-//      ]
-//      return params
+    case .generateQR(let param):
+      let params: [String: Any] = [
+        "amount": param.amount
+      ]
+      return params
+    case .payQR(let param):
+      let params: [String: Any] = [
+        "qrCodeData": param.qrCodeData
+      ]
+      return params
     default:
       return nil
     }

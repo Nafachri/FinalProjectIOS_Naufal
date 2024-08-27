@@ -11,7 +11,8 @@ let package = Package(
         .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.5.0"),
         .package(url: "https://github.com/evgenyneu/keychain-swift.git", from: "24.0.0"),
         .package(url: "https://github.com/veritrans/Veritrans-ios-sdk.git", from: "1.27.0"),
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.12.0")
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.12.0"),
+        .package(url: "https://github.com/Juanpe/SkeletonView.git", from: "1.31.0")
     ]
 )
 

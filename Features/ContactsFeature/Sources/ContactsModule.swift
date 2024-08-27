@@ -28,13 +28,4 @@ public class ContactsModule: ContactsDependency {
   public func contactDetailCoordinator(_ navigationController: UINavigationController) -> any ContactDetailCoordinatorable {
     ContactDetailCoordinator(navigationController: navigationController, paymentDependency: paymentDependency)
   }
-  
-
-  
-//  public func paymentCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
-//    paymentCoordinator.payRequestCoordinator(navigationController)
-//  }
-  
-  
-  
 }

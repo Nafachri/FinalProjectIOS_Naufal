@@ -10,11 +10,18 @@ import Coordinator
 import UIKit
 import Dependency
 
+// MARK: - SecondaryOnBoardingCoordinator
+
 class SecondaryOnBoardingCoordinator: Coordinator {
+  
+  // MARK: - Properties
+  
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let authDependency: AuthenticationDependency
+  
+  // MARK: - Initializer
   
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
@@ -26,15 +33,16 @@ class SecondaryOnBoardingCoordinator: Coordinator {
     self.authDependency = authdependency
   }
   
+  // MARK: - Coordinator Methods
+  
   func start() {
     let secondaryOnBoardingVC = SecondaryOnBoardingViewController(coordinator: self)
     navigationController.show(secondaryOnBoardingVC, sender: nil)
   }
   
-  func goToSignIn(){
+  func goToSignIn() {
     let coordinator = authDependency.signinCoordinator(navigationController)
     addChildCoordinator(coordinator)
     coordinator.start()
   }
-  
 }

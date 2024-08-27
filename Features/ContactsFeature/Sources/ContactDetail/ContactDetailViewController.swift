@@ -22,7 +22,7 @@ class ContactDetailViewController: UIViewController {
   
   // MARK: - Properties
   weak var coordinator: ContactDetailCoordinator!
-      var quickSendModel: [QuickSendModel] = []
+  var quickSendModel: [QuickSendModel] = []
   var quickSendData: QuickSendModel?
   var selectedData: ListContactResponseData?
   
@@ -39,36 +39,53 @@ class ContactDetailViewController: UIViewController {
   // MARK: - Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "Contact Detail"
     setupUI()
-    configureView()
+    configureViewWithData()
   }
   
   // MARK: - UI Setup
   private func setupUI() {
-    sendButton.layer.cornerRadius = 8
-    avatar.layer.cornerRadius = 26
-
+    title = "Contact Detail"
+    navigationController?.navigationBar.tintColor = .label
+    setupUIElements()
   }
   
-  private func configureView() {
+  private func setupUIElements() {
+    sendButton.layer.cornerRadius = 8
+    avatar.layer.cornerRadius = avatar.frame.size.width / 2
+    avatar.clipsToBounds = true
+  }
+  
+  private func configureViewWithData() {
     if let quickSend = quickSendData {
-      let url = URL(string: quickSend.avatar ?? "contact-profile")
-      username.text = quickSend.username
-      email.text = quickSend.email
-      phoneNumber.text = quickSend.phoneNumber
-      avatar.kf.setImage(with: url)
-      addToQuickSendButton.isHidden = true
+      configureView(with: quickSend)
+      setAddToQuickSendButton(icon: "minus.square.fill")
     } else if let selectedItem = selectedData {
-      let url = URL(string: selectedItem.avatar)
-      username.text = selectedItem.name
-      email.text = selectedItem.email
-      phoneNumber.text = selectedItem.phoneNumber
-      avatar.kf.setImage(with: url)
-      addToQuickSendButton.isHidden = false
-      
+      configureView(with: selectedItem)
+      setAddToQuickSendButton(icon: "plus.bubble.fill")
     }
   }
+  
+  
+  private func configureView(with quickSend: QuickSendModel) {
+    avatar.kf.setImage(with: URL(string: quickSend.avatar ?? "contact-profile"))
+    username.text = quickSend.username
+    email.text = quickSend.email
+    phoneNumber.text = quickSend.phoneNumber
+  }
+  
+  private func configureView(with selectedItem: ListContactResponseData) {
+    avatar.kf.setImage(with: URL(string: selectedItem.avatar))
+    username.text = selectedItem.name
+    email.text = selectedItem.email
+    phoneNumber.text = selectedItem.phoneNumber
+  }
+  
+  private func setAddToQuickSendButton(icon: String) {
+    addToQuickSendButton.setImage(UIImage(systemName: icon), for: .normal)
+  }
+  
+  
   // MARK: - Actions
   @IBAction func sendButtonTapped(_ sender: UIButton) {
     if let quickSend = quickSendData {
@@ -79,86 +96,90 @@ class ContactDetailViewController: UIViewController {
       print("No data available to proceed with payment.")
     }
   }
-
   
   @IBAction func addToQuickSendButtonTapped(_ sender: UIButton) {
-    presentAddToQuickSendAlert()
+    let alertTitle = quickSendData != nil ? "Remove contact" : "Add contact to Quick Send"
+    let alertMessage = quickSendData != nil ? "Remove contact from Quick Send?" : "Add contact to Quick Send?"
+    presentAddToQuickSendAlert(title: alertTitle, message: alertMessage)
   }
   
   // MARK: - Quick Send Management
-  private func presentAddToQuickSendAlert() {
-    let alert = UIAlertController(
-      title: "Add to Quick Send",
-      message: "Do you want to add this contact to Quick Send?",
-      preferredStyle: .alert
-    )
-    
+  private func presentAddToQuickSendAlert(title: String, message: String) {
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
-      self?.addToQuickSend()
+      self?.manageQuickSend()
     })
-    
     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
     present(alert, animated: true)
   }
   
+  private func manageQuickSend() {
+    quickSendData != nil ? removeFromQuickSend() : addToQuickSend()
+  }
+  
   private func addToQuickSend() {
-    let newItemProperties: [String: Any]
-    
-    if let quickSend = quickSendData {
-      newItemProperties = [
-        "id": quickSend.id ?? "",
-        "avatar": quickSend.avatar ?? "",
-        "username": quickSend.username ?? "",
-        "email": quickSend.email ?? "",
-        "phoneNumber": quickSend.phoneNumber ?? ""
-      ]
-    } else if let selectedItem = selectedData {
-      newItemProperties = [
+    do {
+      let quickSendModel = try CoreDataManager.shared.fetch(entity: QuickSendModel.self)
+      
+      guard let selectedItem = selectedData else {
+        print("No data available to add to Quick Send.")
+        return
+      }
+      
+      if quickSendModel.contains(where: { $0.id == selectedItem.id }) {
+        presentErrorAlert(message: "Contact already exists in Quick Send")
+        return
+      }
+      
+      if quickSendModel.count >= 6, let lastItem = quickSendModel.last {
+        try CoreDataManager.shared.delete(entity: lastItem)
+      }
+      
+      let newItemProperties: [String: Any] = [
         "id": selectedItem.id,
         "avatar": selectedItem.avatar,
         "username": selectedItem.name,
         "email": selectedItem.email,
         "phoneNumber": selectedItem.phoneNumber
       ]
-    } else {
-      print("No data available to add to Quick Send.")
-      return
-    }
-    
-    do {
-      var quickSendModel = try CoreDataManager.shared.fetch(entity: QuickSendModel.self)
       
-      // Remove the oldest item if the count exceeds 6
-      if quickSendModel.count >= 6, let lastItem = quickSendModel.last {
-        try CoreDataManager.shared.delete(entity: lastItem)
-        quickSendModel.removeLast()
-      }
-      
-      let newItem: QuickSendModel
-      if let _ = quickSendData {
-        newItem = try CoreDataManager.shared.create(entity: QuickSendModel.self, properties: newItemProperties)
-      } else {
-        newItem = try CoreDataManager.shared.create(entity: QuickSendModel.self, properties: newItemProperties)
-      }
-      
-      quickSendModel.insert(newItem, at: 0)
-      
-      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "contactDetailVCNotificationCenter"), object: nil)
-      presentSuccessAlert()
-      
+      _ = try CoreDataManager.shared.create(entity: QuickSendModel.self, properties: newItemProperties)
+      NotificationCenter.default.post(name: .contactDetailUpdate, object: nil)
+      presentSuccessAlert(message: "The contact has been added to Quick Send.")
     } catch {
       print("Failed to add to Quick Send: \(error)")
     }
   }
   
-  private func presentSuccessAlert() {
-    let successAlert = UIAlertController(
-      title: "Success",
-      message: "The contact has been added to Quick Send.",
-      preferredStyle: .alert
-    )
+  private func removeFromQuickSend() {
+    guard let quickSend = quickSendData else { return }
     
-    successAlert.addAction(UIAlertAction(title: "OK", style: .default))
-    present(successAlert, animated: true)
+    do {
+      try CoreDataManager.shared.delete(entity: quickSend)
+      NotificationCenter.default.post(name: .contactDetailUpdate, object: nil)
+      presentSuccessAlert(message: "The contact has been removed from Quick Send.")
+    } catch {
+      print("Failed to remove from Quick Send: \(error)")
+    }
   }
+  
+  // MARK: - Alerts
+  private func presentSuccessAlert(message: String) {
+    presentAlert(title: "Success", message: message)
+  }
+  
+  private func presentErrorAlert(message: String) {
+    presentAlert(title: "Error", message: message)
+  }
+  
+  private func presentAlert(title: String, message: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "OK", style: .default))
+    present(alertController, animated: true)
+  }
+}
+
+// MARK: - Notification Extension
+extension Notification.Name {
+  static let contactDetailUpdate = Notification.Name(rawValue: "contactDetailVCNotificationCenter")
 }

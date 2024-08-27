@@ -16,6 +16,8 @@ public extension ObservableType where Element == String {
       return String(value)
     }
   }
+  
+  
   func valueToCurrencyFormatted() -> Observable<String> {
     return asObservable().map { valueString in
       let formatter = Constants.moneyFormatter

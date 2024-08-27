@@ -11,6 +11,7 @@ import TNUI
 import NetworkManager
 import RxSwift
 import RxCocoa
+import SkeletonView
 
 class HistoryViewController: UIViewController {
   
@@ -51,20 +52,22 @@ class HistoryViewController: UIViewController {
   }
   
   deinit {
-    NotificationCenter.default.removeObserver(self, name: SuccessScreenViewController.chekcoutNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: SuccessScreenViewController.checkoutNotification, object: nil)
   }
   
   // MARK: - Private Methods
   private func setupViewController() {
-    title = "History"
     setupTableView()
-//    setupEmptyStateView()
     setupBinding()
-//    fetchHistory()
-//    observeNotifications()
+    setupUI()
+  }
+  
+  // MARK: - Setup UI
+  private func setupUI() {
+    title = "History"
+    navigationController?.navigationBar.tintColor = .label
   }
 
-  
   // MARK: - Setup Binding
    func setupBinding() {
     viewModel.historyData
@@ -76,6 +79,16 @@ class HistoryViewController: UIViewController {
           self.tableView.reloadData()
         }
       }).disposed(by: disposeBag)
+     
+     viewModel.isLoading.asObservable().subscribe(onNext: {[weak self] isLoading in
+       guard let self = self else { return }
+       switch isLoading {
+       case .loading:
+         self.tableView.showAnimatedGradientSkeleton()
+       default:
+         self.tableView.hideSkeleton()
+       }
+     }).disposed(by: disposeBag)
   }
   
 
@@ -94,21 +107,7 @@ class HistoryViewController: UIViewController {
       emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       emptyStateView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ])
-//    updateUI()
   }
-  
-  
-//  private func observeNotifications() {
-//    NotificationCenter.default.addObserver(forName: SuccessScreenViewController.chekcoutNotification, object: nil, queue: .main) { [weak self] _ in
-//      self?.fetchHistory()
-//    }
-//  }
-  
-//  private func updateUI() {
-//    let isEmpty = historyDataArray.isEmpty
-//    tableView.isHidden = isEmpty
-//    emptyStateView.isHidden = !isEmpty
-//  }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -134,5 +133,15 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     coordinator?.goToHistoryDetail(with: historyDataArray[indexPath.row])
     tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
+
+extension HistoryViewController: SkeletonTableViewDataSource {
+  func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 6
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    return "history_cell"
   }
 }

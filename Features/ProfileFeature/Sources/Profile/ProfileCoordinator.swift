@@ -11,10 +11,13 @@ import UIKit
 import Dependency
 
 class ProfileCoordinator: Coordinator {
+  
+  // MARK: - Properties
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   
+  // MARK: - Initialization
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
        parentCoordinator: Coordinator? = nil) {
@@ -23,7 +26,8 @@ class ProfileCoordinator: Coordinator {
     self.parentCoordinator = parentCoordinator
   }
   
-  func start(){
+  // MARK: - Coordinator Methods
+  func start() {
     let profileViewController = ProfileViewController(coordinator: self)
     navigationController.setViewControllers([profileViewController], animated: true)
   }

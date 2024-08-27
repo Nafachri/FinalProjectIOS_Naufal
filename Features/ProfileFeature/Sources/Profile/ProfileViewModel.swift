@@ -12,8 +12,11 @@ import NetworkManager
 import UIKit
 import Alamofire
 import KeychainSwift
+import Utils
 
 class ProfileViewModel {
+  
+  // MARK: - Properties
   private let APIService = APIManager.shared
   private let disposeBag = DisposeBag()
   
@@ -39,11 +42,14 @@ class ProfileViewModel {
   
   var profileData = BehaviorRelay<ProfileResponse?>(value: nil)
   
-  init(){}
+  // MARK: - Initializers
+  init() {}
 
+  // MARK: - Networking
   func fetchProfile() {
+    isLoading.accept(true)
     APIService.fetchRequest(endpoint: .profile, expecting: ProfileResponse.self) { [weak self] result in
-      guard let self else { return }
+      guard let self = self else { return }
       isLoading.accept(false)
       switch result {
       case .success(let response):
@@ -66,13 +72,19 @@ class ProfileViewModel {
     let token = keychain.get("userToken")
     
     var header: HTTPHeaders {
-       return [
-        "Content-Type": "application/json",
+      return [
+        "Content-Type": "multipart/form-data",
         "Authorization": "Bearer \(token ?? "")"
       ]
     }
     
+    isLoading.accept(true)
+    
     AF.upload(multipartFormData: { multipartFormData in
+      if let imageData = param?.avatar.compressToSize(kb: 20) {
+        multipartFormData.append(imageData, withName: "avatar", fileName: "imageProfiles", mimeType: "image/jpeg")
+      }
+      
       for (key, value) in parameters {
         if let stringValue = value as? String {
           multipartFormData.append(Data(stringValue.utf8), withName: key)
@@ -80,6 +92,7 @@ class ProfileViewModel {
       }
     }, to: url, method: .post, headers: header)
     .responseDecodable(of: GlobalMessageResponse.self) { response in
+      self.isLoading.accept(false)
       switch response.result {
       case .success(let profileResponse):
         self.isSuccessUpdate.onNext(true)
@@ -90,4 +103,3 @@ class ProfileViewModel {
     }
   }
 }
-

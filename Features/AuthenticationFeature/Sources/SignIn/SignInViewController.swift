@@ -10,6 +10,9 @@ import RxSwift
 import RxRelay
 
 class SignInViewController: UIViewController {
+  
+  // MARK: - Properties
+  
   var disposeBag = DisposeBag()
   
   @IBOutlet weak var emailField: UITextField!
@@ -17,12 +20,14 @@ class SignInViewController: UIViewController {
   @IBOutlet weak var signinButton: UIButton!
   @IBOutlet weak var forgotPasswordButton: UIButton!
   @IBOutlet weak var signUpButton: UIButton!
-  weak var coordinator: SignInCoordinator!
   
+  weak var coordinator: SignInCoordinator!
   var viewModel: SignInViewModel
   
-  let alertController = UIAlertController(title: "Signing", message: "Signin in..", preferredStyle: .alert)
-  let alertErrorController = UIAlertController(title: "Failed", message: "Signin in failed..", preferredStyle: .alert)
+  let alertController = UIAlertController(title: "Signing", message: "Signing in..", preferredStyle: .alert)
+  let alertErrorController = UIAlertController(title: "Failed", message: "Sign in failed..", preferredStyle: .alert)
+  
+  // MARK: - Initializers
   
   init(coordinator: SignInCoordinator!, viewModel: SignInViewModel = SignInViewModel()) {
     self.coordinator = coordinator
@@ -34,41 +39,47 @@ class SignInViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  // MARK: - Lifecycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
     setupBinding()
   }
   
-  private func setupUI(){
-    let emailPlaceholder = "enter email"
-    let passwordPlaceholder = "enter password"
+  // MARK: - UI Setup
+  
+  private func setupUI() {
+    let emailPlaceholder = "Enter email"
+    let passwordPlaceholder = "Enter password"
     let attributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
     
-    // Email/Username TextField
     emailField.attributedPlaceholder = NSAttributedString(string: emailPlaceholder, attributes: attributes)
-    // Password TextField
     passwordField.attributedPlaceholder = NSAttributedString(string: passwordPlaceholder, attributes: attributes)
-    // Sign In Button
+    
     signinButton.layer.cornerRadius = 10
+    
     let okButton = UIAlertAction(title: "Dismiss", style: .cancel) { [weak self] _ in
       guard let self else { return }
       alertErrorController.dismiss(animated: true)
     }
+    
     alertErrorController.addAction(okButton)
   }
   
-  func setupBinding(){
-    // receive update when isLoading changed
+  // MARK: - Binding Setup
+  
+  func setupBinding() {
+    // Observe isLoading
     viewModel.isLoading
-      .subscribe{ [weak self] isLoading in
-        DispatchQueue.main.asyncAfter(deadline: .now()){
+      .subscribe(onNext: { [weak self] isLoading in
+        DispatchQueue.main.async {
           self?.showLoading(isLoading: isLoading)
         }
-      }
+      })
       .disposed(by: disposeBag)
     
-    // email textfield
+    // Bind email and password fields
     emailField.rx.text.orEmpty
       .bind(to: viewModel.email)
       .disposed(by: disposeBag)
@@ -77,23 +88,21 @@ class SignInViewController: UIViewController {
       .bind(to: viewModel.password)
       .disposed(by: disposeBag)
     
-    // send action when button tapped
-    signinButton.rx
-      .tap
+    // Bind signinButton tap action
+    signinButton.rx.tap
       .bind(to: viewModel.signIn)
       .disposed(by: disposeBag)
     
-    // setup error binding
+    // Observe error messages
     viewModel.errorMessage
       .subscribe(onNext: { [weak self] errorMessage in
-        guard let self else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-          self.showError(errorMessage)
+          self?.showError(errorMessage)
         }
       })
       .disposed(by: disposeBag)
     
-    // setup isSuccess
+    // Observe success state
     viewModel.isSuccess
       .subscribe(onNext: { [weak self] value in
         guard let self, value else { return }
@@ -102,8 +111,10 @@ class SignInViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
+  // MARK: - Helper Methods
+  
   func showLoading(isLoading: Bool) {
-    if isLoading  {
+    if isLoading {
       present(alertController, animated: true)
     } else {
       alertController.dismiss(animated: true)
@@ -115,18 +126,24 @@ class SignInViewController: UIViewController {
     present(alertErrorController, animated: true)
   }
   
+  // MARK: - Actions
+  
   @IBAction func forgotPasswordButtonTapped(_ sender: UIButton) {
     let changePasswordVC = ChangePasswordViewController(nibName: "ChangePasswordViewController", bundle: .module)
     show(changePasswordVC, sender: self)
   }
+  
   @IBAction func signupButtonTapped(_ sender: UIButton) {
     let signupVC = SignUpViewController(nibName: "SignUpViewController", bundle: .module)
     show(signupVC, sender: self)
   }
+  
   @IBAction func signInButtonTapped(_ sender: UIButton) {
-//    coordinator.goToDashboard()
+    // coordinator.goToDashboard() // Commented out for now
   }
 }
+
+// MARK: - UITextField Extension
 
 private extension UITextField {
   func setPlaceholder(text: String, color: UIColor) {

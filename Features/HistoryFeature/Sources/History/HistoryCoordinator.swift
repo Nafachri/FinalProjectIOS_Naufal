@@ -13,9 +13,13 @@ import NetworkManager
 
 class HistoryCoordinator: HistoryCoordinatorable {
   
+  // MARK: - Properties
+  
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
+  
+  // MARK: - Initialization
   
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
@@ -24,6 +28,8 @@ class HistoryCoordinator: HistoryCoordinatorable {
     self.childCoordinators = childCoordinators
     self.parentCoordinator = parentCoordinator
   }
+  
+  // MARK: - Coordinator Methods
   
   func start() {
     let historyVC = HistoryViewController(coordinator: self)

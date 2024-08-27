@@ -46,7 +46,9 @@ class HistoryDetailViewController: UIViewController {
   private func setupUI() {
     setupContainerView()
     populateData()
-    avatar.layer.cornerRadius = 36
+    avatar.layer.cornerRadius = avatar.frame.size.width / 2
+    avatar.clipsToBounds = true
+    
 
   }
   
@@ -58,7 +60,6 @@ class HistoryDetailViewController: UIViewController {
   }
   
   private func populateData() {
-    
     if selectedData?.type == "topup" {
       uiView.backgroundColor = UIColor(hex: "#266A61")
     } else {

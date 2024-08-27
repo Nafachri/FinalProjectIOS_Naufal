@@ -26,15 +26,24 @@
                                     <constraint firstAttribute="height" constant="43" id="2Jl-nF-QNG"/>
                                     <constraint firstAttribute="width" constant="46" id="nBX-Eb-UoN"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Faris Gabie Arie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZq-fC-wbj">
                                 <rect key="frame" x="74" y="24" width="121.66666666666669" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Vwh-33-xda">
                                 <rect key="frame" x="271.33333333333331" y="25.333333333333332" width="12.666666666666686" height="16.666666666666654"/>
                                 <color key="tintColor" systemColor="labelColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -47,6 +56,9 @@
                             <constraint firstItem="VZq-fC-wbj" firstAttribute="leading" secondItem="Ney-jS-VI8" secondAttribute="trailing" constant="16" id="ITp-S9-T52"/>
                             <constraint firstItem="Ney-jS-VI8" firstAttribute="leading" secondItem="0kZ-fS-RWX" secondAttribute="leading" constant="12" id="UVP-xP-kWQ"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
                 <constraints>
@@ -57,6 +69,9 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="contactImage" destination="Ney-jS-VI8" id="H0J-WX-AG8"/>
                 <outlet property="contactNameLabel" destination="VZq-fC-wbj" id="pQf-GG-c5a"/>

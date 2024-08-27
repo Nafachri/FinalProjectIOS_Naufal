@@ -8,19 +8,30 @@
 import UIKit
 import TheNorthCoreDataManager
 
+// MARK: - ContactCollectionViewCell
+
 class ContactCollectionViewCell: UICollectionViewCell {
   
+  // MARK: - Outlets
+  
   @IBOutlet weak var avatarImage: UIImageView!
+  
+  // MARK: - Lifecycle
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     setupUI()
   }
   
-  func setupUI() {
+  // MARK: - Setup Methods
+  
+  private func setupUI() {
     super.layer.cornerRadius = 8
   }
   
-  func populate(_ contact: ContactModel){
-    avatarImage.image =  UIImage(named: "home-contact-dummy", in: .module, with: nil)
+  // MARK: - Configuration
+  
+  func populate(_ contact: ContactModel) {
+    avatarImage.image = UIImage(named: "home-contact-dummy", in: .module, with: nil)
   }
 }

@@ -13,37 +13,54 @@ import TheNorthCoreDataManager
 import NetworkManager
 
 class ContactsCoordinator: ContactsCoordinatorable {
+  
+  // MARK: - Properties
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
-  let paymentDependency: PayRequestDependency
+  private let paymentDependency: PayRequestDependency
   
+  // MARK: - Initialization
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
        parentCoordinator: Coordinator? = nil,
        paymentDependency: PayRequestDependency
   ) {
-    self.navigationController = navigationController
-    self.childCoordinators = childCoordinators
-    self.parentCoordinator = parentCoordinator
-    self.paymentDependency = paymentDependency
+      self.navigationController = navigationController
+      self.childCoordinators = childCoordinators
+      self.parentCoordinator = parentCoordinator
+      self.paymentDependency = paymentDependency
   }
   
-  func start(){
-    let contactsVC = ContactsViewController(coordinator: self)
-    navigationController.setViewControllers([contactsVC], animated: false)
+  // MARK: - Coordinator Methods
+  func start() {
+      let contactsVC = ContactsViewController(coordinator: self)
+      navigationController.setViewControllers([contactsVC], animated: false)
   }
   
   func startPresent() {
-    let contactsVC = ContactsViewController(coordinator: self)
-    navigationController.setViewControllers([contactsVC], animated: false)
-    let tabBarCoordinator = getParentCoordinator(from: self, with: "TabbarCoordinator") as? TabbarCoordinatorable
-    tabBarCoordinator?.tabbarController.present(navigationController, animated: true)
+      let contactsVC = ContactsViewController(coordinator: self)
+      navigationController.setViewControllers([contactsVC], animated: false)
+      presentNavigationController()
   }
   
   func goToContactDetail(with selectedData: ListContactResponseData) {
-    let coordinator = ContactDetailCoordinator(navigationController: navigationController,paymentDependency: paymentDependency)
-    addChildCoordinator(coordinator)
-    coordinator.start(with: selectedData)
+      let contactDetailCoordinator = ContactDetailCoordinator(
+          navigationController: navigationController,
+          paymentDependency: paymentDependency
+      )
+      addChildCoordinator(contactDetailCoordinator)
+      contactDetailCoordinator.start(with: selectedData)
+  }
+  
+  // MARK: - Private Methods
+  private func presentNavigationController() {
+      guard let tabBarCoordinator = getParentCoordinator(
+          from: self,
+          with: "TabbarCoordinator"
+      ) as? TabbarCoordinatorable else {
+          return
+      }
+      tabBarCoordinator.tabbarController.present(navigationController, animated: true)
   }
 }

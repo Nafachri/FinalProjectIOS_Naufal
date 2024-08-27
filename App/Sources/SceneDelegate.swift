@@ -20,26 +20,29 @@ import TNUI
 import MidtransKit
 import TheNorthCoreDataManager
 import netfox
+import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
+  // MARK: - Properties
   var window: UIWindow?
   var app: AppCoordinator?
   let coreData = CoreDataManager.shared
   
+  // MARK: - UIWindowSceneDelegate
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    
     guard let windowScene = (scene as? UIWindowScene) else { return }
-    #if DEBUG
+    
+#if DEBUG
     NFX.sharedInstance().start()
-    #endif
+#endif
     
     window = UIWindow(windowScene: windowScene)
     setupAppearance()
     setupMidtransConfig()
+    
     let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
     print(paths[0])
-    
     
     let nav = UINavigationController()
     window?.rootViewController = nav
@@ -52,6 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.overrideUserInterfaceStyle = darkModeEnabled ? .dark : .light
   }
   
+  // MARK: - Private Methods
   private func setupAppearance() {
     UITabBar.appearance().unselectedItemTintColor = .gray
     UITabBar.appearance().tintColor = .label
@@ -59,8 +63,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   private func setupMidtransConfig() {
     MidtransConfig.shared().setClientKey("SB-Mid-client-4zX2hEwOqCgsOpUX", environment: .sandbox, merchantServerURL:
-                                          //                                          "http://localhost:3030"
-                                         "https://merchant-url-sandbox.com"
+                                          "https://merchant-url-sandbox.com"
     )
   }
   
@@ -97,7 +100,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       } catch {
         print("Failed to create contact: \(error.localizedDescription)")
       }
-      
     }
   }
   
@@ -116,6 +118,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
   
+  // MARK: - UISceneDelegate Lifecycle Methods
   func sceneDidDisconnect(_ scene: UIScene) { }
   func sceneDidBecomeActive(_ scene: UIScene) { }
   func sceneWillResignActive(_ scene: UIScene) { }
@@ -123,7 +126,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func sceneDidEnterBackground(_ scene: UIScene) { }
 }
 
-// Debugging Extensions
+// MARK: - Debugging Extensions
 #if DEBUG
 
 extension UIWindow {

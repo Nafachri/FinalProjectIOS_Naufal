@@ -10,17 +10,22 @@ import Coordinator
 import Dependency
 
 class TabbarCoordinator: NSObject, TabbarCoordinatorable {
+  
+  // MARK: - Properties
   var tabbarController: UITabBarController
-  
   var childCoordinators: [any Coordinator] = []
-  
   weak var parentCoordinator: Coordinator?
   let homeDependency: HomeDependency
   let contactsDependency: ContactsDependency
   let historyDependency: HistoryDependency
   let profileDependency: ProfileDependency
   
-  init(tabBarController: UITabBarController = .init(), homeDependency: HomeDependency, contactsDependency: ContactsDependency, historyDependency: HistoryDependency, profileDependency: ProfileDependency) {
+  // MARK: - Initializer
+  init(tabBarController: UITabBarController = .init(),
+       homeDependency: HomeDependency,
+       contactsDependency: ContactsDependency,
+       historyDependency: HistoryDependency,
+       profileDependency: ProfileDependency) {
     self.tabbarController = tabBarController
     self.homeDependency = homeDependency
     self.contactsDependency = contactsDependency
@@ -31,6 +36,7 @@ class TabbarCoordinator: NSObject, TabbarCoordinatorable {
     self.tabbarController.delegate = self
   }
   
+  // MARK: - Public Methods
   func start() {
     let homeNav = UINavigationController()
     let homeCoordinator = homeDependency.homeCoordinator(homeNav)
@@ -52,7 +58,6 @@ class TabbarCoordinator: NSObject, TabbarCoordinatorable {
     addChildCoordinator(profileCoordinator)
     profileCoordinator.start()
     
-    
     startWithRoot(tabbarController)
     tabbarController.setViewControllers([
       homeNav,
@@ -61,17 +66,24 @@ class TabbarCoordinator: NSObject, TabbarCoordinatorable {
       profileNav
     ], animated: true)
     setupTabbar()
-    
   }
   
+  // MARK: - Private Methods
   private func setupTabbar() {
     guard let viewControllers = tabbarController.viewControllers else { return }
     
-    viewControllers[0].tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
-    viewControllers[1].tabBarItem = UITabBarItem(title: "Contact", image: UIImage(systemName: "person.3"), selectedImage: UIImage(systemName: "person.3.fill"))
-    viewControllers[2].tabBarItem = UITabBarItem(title: "History", image: UIImage(systemName: "clock"), selectedImage: UIImage(systemName: "clock.fill"))
-    viewControllers[3].tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.crop.circle"), selectedImage: UIImage(systemName: "person.crop.circle.fill"))
-    
+    viewControllers[0].tabBarItem = UITabBarItem(title: "Home",
+                                                image: UIImage(systemName: "house"),
+                                                selectedImage: UIImage(systemName: "house.fill"))
+    viewControllers[1].tabBarItem = UITabBarItem(title: "Contact",
+                                                image: UIImage(systemName: "person.3"),
+                                                selectedImage: UIImage(systemName: "person.3.fill"))
+    viewControllers[2].tabBarItem = UITabBarItem(title: "History",
+                                                image: UIImage(systemName: "clock"),
+                                                selectedImage: UIImage(systemName: "clock.fill"))
+    viewControllers[3].tabBarItem = UITabBarItem(title: "Profile",
+                                                image: UIImage(systemName: "person.crop.circle"),
+                                                selectedImage: UIImage(systemName: "person.crop.circle.fill"))
   }
 }
 

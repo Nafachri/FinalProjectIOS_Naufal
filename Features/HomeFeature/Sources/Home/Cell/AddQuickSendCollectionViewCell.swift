@@ -9,20 +9,31 @@ import UIKit
 import TheNorthCoreDataManager
 import Kingfisher
 
+// MARK: - AddQuickSendCollectionViewCell
+
 class AddQuickSendCollectionViewCell: UICollectionViewCell {
   
+  // MARK: - Outlets
+  
   @IBOutlet weak var uiImage: UIImageView!
+  
+  // MARK: - Lifecycle
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     setupUI()
   }
   
-  func setupUI() {
+  // MARK: - Setup Methods
+  
+  private func setupUI() {
     super.layer.cornerRadius = 8
   }
   
+  // MARK: - Configuration
+  
   func populate(_ quickSend: QuickSendModel) {
     let url = URL(string: quickSend.avatar ?? "home-contact-dummy2")
-      uiImage?.kf.setImage(with: url)
+    uiImage?.kf.setImage(with: url)
   }
 }

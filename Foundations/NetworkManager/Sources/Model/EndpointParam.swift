@@ -11,12 +11,14 @@ import UIKit
 // MARK: - Register Param
 public struct RegisterParam {
   public let email: String
+  public let fullName: String
   public let password: String
   public let username: String
   public let phoneNumber: String
   
-  public init(username: String, email: String, phoneNumber: String, password: String) {
+  public init(username: String,fullName: String , email: String, phoneNumber: String, password: String) {
     self.email = email
+    self.fullName = fullName
     self.password = password
     self.username = username
     self.phoneNumber = phoneNumber
@@ -39,10 +41,12 @@ public struct LoginParam {
 public struct ChangePasswordParam {
   public let email: String
   public let newPassword: String
+  public let confirmPassword: String
   
-  public init(email: String, newPassword: String){
+  public init(email: String, newPassword: String, confirmPassword: String){
     self.email = email
     self.newPassword = newPassword
+    self.confirmPassword = confirmPassword
   }
 }
 
@@ -80,13 +84,31 @@ public struct ProfileParam {
   public let username: String?
   public let phoneNumber: String?
   public let email: String?
-  public let avatar: UIImage?
+  public let avatar: UIImage
   
-  public init(username: String?, phoneNumber: String?, email: String?, avatar: UIImage?) {
+  public init(username: String?, phoneNumber: String?, email: String?, avatar: UIImage) {
     self.username = username
     self.phoneNumber = phoneNumber
     self.email = email
     self.avatar = avatar
+  }
+}
+
+// MARK: - Generate QR
+public struct GenerateQRParam {
+  public let amount: String
+  
+  public init(amount: String) {
+    self.amount = amount
+  }
+}
+
+// MARK: - Pay QR
+public struct PayQRParam {
+  public let qrCodeData: String
+  
+  public init(qrCodeData: String) {
+    self.qrCodeData = qrCodeData
   }
 }
 

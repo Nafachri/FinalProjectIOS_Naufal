@@ -12,7 +12,12 @@ import Dependency
 import TheNorthCoreDataManager
 import NetworkManager
 
+// MARK: - HomeCoordinator
+
 class HomeCoordinator: Coordinator {
+  
+  // MARK: - Properties
+  
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
@@ -21,15 +26,17 @@ class HomeCoordinator: Coordinator {
   let historyDependency: HistoryDependency
   let settingDependency: SettingDependency
   
+  // MARK: - Initializer
   
-  init(navigationController: UINavigationController,
-       childCoordinators: [Coordinator] = [],
-       parentCoordinator: Coordinator? = nil,
-       payRequestDependency: PayRequestDependency,
-       contactsDependency: ContactsDependency,
-       historyDependency: HistoryDependency,
-       settingDependency: SettingDependency
-    ) {
+  init(
+    navigationController: UINavigationController,
+    childCoordinators: [Coordinator] = [],
+    parentCoordinator: Coordinator? = nil,
+    payRequestDependency: PayRequestDependency,
+    contactsDependency: ContactsDependency,
+    historyDependency: HistoryDependency,
+    settingDependency: SettingDependency
+  ) {
     self.navigationController = navigationController
     self.childCoordinators = childCoordinators
     self.parentCoordinator = parentCoordinator
@@ -37,8 +44,9 @@ class HomeCoordinator: Coordinator {
     self.contactsDependency = contactsDependency
     self.historyDependency = historyDependency
     self.settingDependency = settingDependency
-    
   }
+  
+  // MARK: - Coordinator Methods
   
   func start() {
     let homeVC = HomeViewController(coordinator: self)
@@ -70,14 +78,14 @@ class HomeCoordinator: Coordinator {
     coordinator.startPresent(userData: userData)
   }
   
-  func goToContacts(){
+  func goToContacts() {
     let nav = UINavigationController()
     let coordinator = contactsDependency.contactsCoordinator(nav)
     addChildCoordinator(coordinator)
     coordinator.startPresent()
   }
   
-  func  goToContactDetailQuickSend(quickSendData: QuickSendModel){
+  func goToContactDetailQuickSend(quickSendData: QuickSendModel) {
     let nav = UINavigationController()
     let coordinator = contactsDependency.contactDetailCoordinator(nav)
     addChildCoordinator(coordinator)

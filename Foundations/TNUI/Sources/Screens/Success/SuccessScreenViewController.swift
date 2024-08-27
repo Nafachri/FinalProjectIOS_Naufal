@@ -9,11 +9,9 @@ import Lottie
 import Utils
 import RxSwift
 
-
 public class SuccessScreenViewController: UIViewController {
   
   var transactionName: String?
-  var transactionNameLabel: String?
   var transactionAmount: String?
   var transactionDate: String?
   var transactionTitle: String?
@@ -32,7 +30,6 @@ public class SuccessScreenViewController: UIViewController {
   @IBOutlet weak var saveButton: UIButton!
   @IBOutlet weak var shareButton: UIButton!
   
-  
   public init(transactionName: String, transactionAmount: String, transactionDate: String, transactionTitle: String, transactionId: String, transactionType: String) {
     self.transactionName = transactionName
     self.transactionAmount = transactionAmount
@@ -49,41 +46,44 @@ public class SuccessScreenViewController: UIViewController {
   
   public override func viewDidLoad() {
     super.viewDidLoad()
-    NotificationCenter.default.post(name: SuccessScreenViewController.chekcoutNotification, object: nil)
-    
+
     if let path = Bundle.module.path(forResource: "success-animation", ofType: "json") {
       let animation = LottieAnimation.filepath(path)
       animationView.animation = animation
     }
     
-    animationView!.animationSpeed = 1.0
-    animationView!.play()
+    animationView.animationSpeed = 1.0
+    animationView.play()
     
     
-    transactionNameValueLabel.text = transactionName
+    // Safely unwrap optionals and set labels
+    transactionNameValueLabel.text = transactionName ?? "N/A"
     transactionAmountValueLabel.text = transactionAmount
-    transactionDateValueLabel.text = transactionDate
-    transactionTitleLabel.text = transactionTitle
-    transactionIdValueLabel.text = transactionId
+    transactionDateValueLabel.text = transactionDate ?? "N/A"
+    transactionTitleLabel.text = transactionTitle ?? "N/A"
+    transactionIdValueLabel.text = transactionId ?? "N/A"
     
-    if transactionType == "pay" {
-      nameLabel.text = "Recipient Name :"
-    } else if transactionType == "send" {
-      nameLabel.text = "Sender Name :"
-    } else {
-      nameLabel.text = "Name"
+    // Set nameLabel based on transactionType
+    switch transactionType {
+    case "pay":
+      nameLabel.text = "Recipient Name: "
+    default:
+      nameLabel.isHidden = true
     }
   }
   
   @IBAction func saveButtonTapped(_ sender: UIButton) {
     captureScreenshotAndSave(from: self)
   }
+  
   @IBAction func shareButtonTapped(_ sender: UIButton) {
     SharingUtility.shareCurrentView(from: self, view: self.view)
   }
 }
+
 public extension SuccessScreenViewController {
-  static var chekcoutNotification: NSNotification.Name {
-    NSNotification.Name("")
+  static var checkoutNotification: NSNotification.Name {
+    NSNotification.Name("SuccessScreenCheckoutNotification")
   }
 }
+

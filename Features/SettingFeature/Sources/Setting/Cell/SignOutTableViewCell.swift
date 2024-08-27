@@ -9,9 +9,10 @@ import UIKit
 
 class SignOutTableViewCell: UITableViewCell {
   
+  // MARK: - Outlets
   @IBOutlet weak var iconImage: UIImageView!
   
-
+  // MARK: - Lifecycle
   override func awakeFromNib() {
     super.awakeFromNib()
   }

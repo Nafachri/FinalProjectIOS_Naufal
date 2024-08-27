@@ -11,6 +11,8 @@ import RxCocoa
 import NetworkManager
 
 class HomeViewModel {
+  
+  // MARK: - Properties
   private let APIService = APIManager.shared
   private let disposeBag = DisposeBag()
   
@@ -25,25 +27,23 @@ class HomeViewModel {
   var profileData = BehaviorRelay<ProfileResponse?>(value: nil)
   var historyData = BehaviorRelay<HistoryResponse?>(value: nil)
   
+  // MARK: - Initializer
+  init() {}
   
-  init(){
-//    fetchHistory()
-//    fetchProfile()
-  }
-  
-    func fetchProfile() {
-      isLoading.accept(true)
-      APIService.fetchRequest(endpoint: .profile, expecting: ProfileResponse.self) { [weak self] result in
-        guard let self else { return }
-        isLoading.accept(false)
-        switch result {
-        case .success(let response):
-          profileData.accept(response)
-        case .failure(let error):
-          errorMessage.onNext(error.localizedDescription)
-        }
+  // MARK: - Data Fetching Methods
+  func fetchProfile() {
+    isLoading.accept(true)
+    APIService.fetchRequest(endpoint: .profile, expecting: ProfileResponse.self) { [weak self] result in
+      guard let self else { return }
+      isLoading.accept(false)
+      switch result {
+      case .success(let response):
+        profileData.accept(response)
+      case .failure(let error):
+        errorMessage.onNext(error.localizedDescription)
       }
     }
+  }
   
   func fetchHistory() {
     isLoading.accept(true)

@@ -32,7 +32,7 @@
                     </constraints>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="sC9-Vy-hCa">
-                    <rect key="frame" x="111.00000000000001" y="371" width="171.33333333333337" height="60"/>
+                    <rect key="frame" x="113.00000000000001" y="371" width="167.33333333333337" height="60"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Faris" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tqt-tV-Plm">
                             <rect key="frame" x="0.0" y="0.0" width="111.33333333333333" height="60"/>
@@ -41,10 +41,10 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-30-k11" userLabel="Add to quick send">
-                            <rect key="frame" x="118.33333333333334" y="0.0" width="53" height="60"/>
+                            <rect key="frame" x="118.33333333333334" y="0.0" width="49" height="60"/>
                             <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="plus.bubble.fill" catalog="system"/>
+                            <buttonConfiguration key="configuration" style="plain" image="minus.square.fill" catalog="system"/>
                             <connections>
                                 <action selector="addToQuickSendButtonTapped:" destination="-1" eventType="touchUpInside" id="TJX-wX-rjV"/>
                             </connections>
@@ -103,7 +103,7 @@
     </objects>
     <resources>
         <image name="contact-profile" width="242" height="238"/>
-        <image name="plus.bubble.fill" catalog="system" width="128" height="110"/>
+        <image name="minus.square.fill" catalog="system" width="128" height="114"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

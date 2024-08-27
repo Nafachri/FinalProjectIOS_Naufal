@@ -12,6 +12,7 @@
             <connections>
                 <outlet property="contactCollectionView" destination="Jmy-vD-yky" id="H7p-Dp-U1Q"/>
                 <outlet property="fullnameLabel" destination="kIL-vU-wwz" id="Qye-dh-I3m"/>
+                <outlet property="greetingLabel" destination="JLK-YZ-x2F" id="9Ve-XI-vG6"/>
                 <outlet property="historyCollectionView" destination="Xbg-tu-bI2" id="Qk1-O9-vPs"/>
                 <outlet property="payButton" destination="Ybm-5V-eVh" id="Idc-hu-fuD"/>
                 <outlet property="requestButton" destination="gbB-43-CTh" id="eoz-gd-WFQ"/>

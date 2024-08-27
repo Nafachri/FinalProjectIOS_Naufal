@@ -12,8 +12,10 @@ import Coordinator
 
 public class PayRequestModule: PayRequestDependency {
   
+  // MARK: - Initialization
   public init() {}
-
+  
+  // MARK: - Coordinator Generation
   public func generateQRCoordinator(_ navigationController: UINavigationController) -> Coordinator {
     GenerateQRCoordinator(navigationController: navigationController)
   }
@@ -22,7 +24,7 @@ public class PayRequestModule: PayRequestDependency {
     ScanQRCoordinator(navigationController: navigationController)
   }
   
-  public func paymentCoordinator(_ navigationController: UINavigationController) ->  PaymentCoordinatorable {
+  public func paymentCoordinator(_ navigationController: UINavigationController) -> PaymentCoordinatorable {
     PaymentCoordinator(navigationController: navigationController)
   }
   

@@ -14,6 +14,8 @@ import NetworkManager
 import MidtransKit
 
 class PaymentViewModel {
+  
+  // MARK: - Properties
   private let APIService = APIManager.shared
   private let disposeBag = DisposeBag()
   
@@ -21,10 +23,8 @@ class PaymentViewModel {
   let dotTapped = PublishSubject<Void>()
   let deleteTapped = PublishSubject<Void>()
   let payButtonTapped = PublishSubject<Void>()
-  let responseTransaction = PublishSubject<TransferResponse>()
-  
+  let responseTransaction = PublishSubject<TransferResponse?>()
   let responseTopUp = PublishSubject<TopUpResponse>()
-
   
   let inputText: Observable<String>
   let payButtonOutput: Observable<String>
@@ -33,6 +33,7 @@ class PaymentViewModel {
   let isLoading = BehaviorRelay<Bool>(value: false)
   let errorMessage = PublishSubject<String?>()
   
+  // MARK: - Initializer
   init() {
     let buttonTaps = Observable.merge(
       numberTapped,
@@ -40,67 +41,57 @@ class PaymentViewModel {
       deleteTapped.map { "" }
     )
     
-    inputText = buttonTaps.scan("") { currentText, tappedValue in
-      if tappedValue.isEmpty {
-        return String(currentText.dropLast())
-      } else if tappedValue == "." {
-        return currentText.contains(".") ? currentText : currentText + tappedValue
-      } else {
-        return currentText + tappedValue
+    inputText = buttonTaps
+      .scan("") { currentText, tappedValue in
+        if tappedValue.isEmpty {
+          return String(currentText.dropLast())
+        } else if tappedValue == "." {
+          return currentText.contains(".") ? currentText : currentText + tappedValue
+        } else {
+          return currentText + tappedValue
+        }
       }
-    }
-    .startWith("")
-    .flatMapLatest { text in
-      Observable.just(text)
-        .valueToCurrencyFormatted()
-        .observe(on: MainScheduler.instance)
-      
-    }
+      .startWith("")
+      .flatMapLatest { text in
+        Observable.just(text)
+          .valueToCurrencyFormatted()
+          .observe(on: MainScheduler.instance)
+      }
+    
     payButtonOutput = payButtonTapped
       .withLatestFrom(inputText)
-      .map {$0}
+      .map { $0 }
       .observe(on: MainScheduler.instance)
-    
   }
-
-}
-
-
-// MARK:  API Request
-extension PaymentViewModel {
   
+  // MARK: - API Requests
   // MARK: payRequest
-  func payRequest(param: TransferParam){
+  func payRequest(param: TransferParam) {
     isLoading.accept(true)
-    APIService.fetchRequest(endpoint: .transfer(param: param), expecting: TransferResponse.self) { [weak self]
-      result in
-      guard let self else { return }
-      isLoading.accept(false)
+    APIService.fetchRequest(endpoint: .transfer(param: param), expecting: TransferResponse.self) { [weak self] result in
+      guard let self = self else { return }
+      self.isLoading.accept(false)
       switch result {
       case .success(let response):
-        responseTransaction.onNext(response)
+        self.responseTransaction.onNext(response)
       case .failure(let error):
-        errorMessage.onNext(error.localizedDescription)
+        self.errorMessage.onNext(error.localizedDescription)
       }
     }
   }
   
   // MARK: topupRequest
-  func topupRequest(param: TopUpParam){
+  func topupRequest(param: TopUpParam) {
     isLoading.accept(true)
-    APIService.fetchRequest(endpoint: .topup(param: param), expecting: TopUpResponse.self) { [weak self]
-      result in
-      guard let self else { return }
-      isLoading.accept(false)
+    APIService.fetchRequest(endpoint: .topup(param: param), expecting: TopUpResponse.self) { [weak self] result in
+      guard let self = self else { return }
+      self.isLoading.accept(false)
       switch result {
       case .success(let response):
-        responseTopUp.onNext(response)
+        self.responseTopUp.onNext(response)
       case .failure(let error):
-        errorMessage.onNext(error.localizedDescription)
+        self.errorMessage.onNext(error.localizedDescription)
       }
     }
   }
-  
-  
 }
-

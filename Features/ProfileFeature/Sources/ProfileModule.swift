@@ -12,10 +12,11 @@ import Coordinator
 
 public class ProfileModule: ProfileDependency {
   
+  // MARK: - Initializers
+  public init() {}
+  
+  // MARK: - Coordinator Generation
   public func profileCoordinator(_ navigationController: UINavigationController) -> any Coordinator {
     ProfileCoordinator(navigationController: navigationController)
   }
-  
-  public init() {}
-  
 }

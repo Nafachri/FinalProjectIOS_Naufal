@@ -12,11 +12,12 @@ import Dependency
 
 class SettingCoordinator: SettingCoordinatorable {
   
-  
+  // MARK: - Properties
   weak var navigationController: UINavigationController!
   weak var parentCoordinator: Coordinator?
-  var childCoordinators: [Coordinator] = []  
+  var childCoordinators: [Coordinator] = []
   
+  // MARK: - Initializers
   init(navigationController: UINavigationController,
        childCoordinators: [Coordinator] = [],
        parentCoordinator: Coordinator? = nil
@@ -26,7 +27,8 @@ class SettingCoordinator: SettingCoordinatorable {
     self.parentCoordinator = parentCoordinator
   }
   
-  func start(){
+  // MARK: - Coordinator Methods
+  func start() {
     let appCoordinator = getParentCoordinator(from: self, with: "AppCoordinator") as? AppCoordinatorable
     appCoordinator?.showOnBoarding()
   }

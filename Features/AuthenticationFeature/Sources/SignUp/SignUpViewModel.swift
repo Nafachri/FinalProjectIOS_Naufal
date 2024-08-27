@@ -12,10 +12,13 @@ import NetworkManager
 import KeychainSwift
 
 class SignUpViewModel {
+  
+  // MARK: - Properties
   private let APIService = APIManager.shared
   private let keychain = KeychainSwift()
   
   let username = BehaviorRelay<String>(value: "")
+  let fullName = BehaviorRelay<String>(value: "")
   let email = BehaviorRelay<String>(value: "")
   let phoneNumber = BehaviorRelay<String>(value: "")
   let password = BehaviorRelay<String>(value: "")
@@ -32,45 +35,52 @@ class SignUpViewModel {
   let errorMessage = PublishSubject<String?>()
   let isSuccess = PublishSubject<Bool>()
   
+  let arePasswordsMatching: Observable<Bool>
+  
   private let disposeBag = DisposeBag()
   
+  // MARK: - Initializer
   init() {
+    arePasswordsMatching = Observable.combineLatest(password, confirmPassword)
+      .map { $0 == $1 }
+      .distinctUntilChanged()
+    
     setupSignupBinding()
   }
   
+  // MARK: - Setup Bindings
   func setupSignupBinding() {
     signUp.subscribe { [weak self] _ in
       guard let self = self else { return }
-      let username = username.value
-      let email = email.value
-      let phoneNumber = phoneNumber.value
-      let password = password.value
-      let confirmPassword = confirmPassword.value
-      let signupParam = RegisterParam(username: username, email: email, phoneNumber: phoneNumber, password: password)
+      let username = self.username.value
+      let fullName = self.fullName.value
+      let email = self.email.value
+      let phoneNumber = self.phoneNumber.value
+      let password = self.password.value
+      let confirmPassword = self.confirmPassword.value
+      let signupParam = RegisterParam(username: username, fullName: fullName, email: email, phoneNumber: phoneNumber, password: password)
       
-      guard !username.isEmpty,
-            !email.isEmpty,
-            !phoneNumber.isEmpty,
-            !password.isEmpty,
-            !confirmPassword.isEmpty else {
-          errorMessage.onNext("All fields must be filled.")
-          return
+      // Validate input fields
+      guard !username.isEmpty, !fullName.isEmpty, !email.isEmpty, !phoneNumber.isEmpty, !password.isEmpty, !confirmPassword.isEmpty else {
+        self.errorMessage.onNext("All fields must be filled.")
+        return
       }
+      
+      // Validate password matching
       guard password == confirmPassword else {
-          errorMessage.onNext("Passwords do not match.")
-          return
+        self.errorMessage.onNext("Passwords do not match.")
+        return
       }
       
       self.isLoading.accept(true)
-      APIService.fetchRequest(endpoint: .register(param: signupParam), expecting: GlobalMessageResponse.self) {
-          [weak self] result in
-        guard let self else { return }
-        isLoading.accept(false)
+      APIService.fetchRequest(endpoint: .register(param: signupParam), expecting: GlobalMessageResponse.self) { [weak self] result in
+        guard let self = self else { return }
+        self.isLoading.accept(false)
         switch result {
         case .success(_):
-          isSuccess.onNext(true)
+          self.isSuccess.onNext(true)
         case .failure(let error):
-          errorMessage.onNext(error.localizedDescription)
+          self.errorMessage.onNext(error.localizedDescription)
         }
       }
     }
