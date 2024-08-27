@@ -242,7 +242,7 @@ public extension ProjectDescription.Target {
       bundleId: "\(prefixBundleID).\(name.dashSeparator)",
       infoPlist: .file(path: .relativeToManifest("App/Info.plist")),
       sources: ["App/Sources/**"],
-      resources: ["App/Resources/**", "App/Resources/**/*.xcassets","App/Resources/**/*.mp4"
+      resources: ["App/Resources/**", "App/Resources/**/*.xcassets","App/Resources/**/*.gif"
                  ],
       dependencies: dependencies,
       settings: .settings(
