@@ -6,7 +6,6 @@
   <img src="App/Resources/GIF/jitter.gif" alt="jitter" style="width: 100%; height: 500px;">
 </div>
 
-
 ## Features
 
 - Generate QR codes for transactions.
@@ -14,6 +13,11 @@
 - Top-up wallet balance.
 - Transfer money to contacts securely.
 - Modern UI with animations and placeholders.
+
+| Top Up | Generate QR | Scan QR | Transfer |
+|--------------------|-------------------|--------------------|--------------------|
+| ![TopUp](App/Resources/GIF/topup.gif) | ![GenerateQR](App/Resources/GIF/generateQR.gif) | ![ScanQR](App/Resources/GIF/scannerQR.gif) | ![Transfer](App/Resources/GIF/transfer.gif) |
+
 
 ## Table of Contents
 
