@@ -27,7 +27,8 @@ let project = Project(
               .target(name: "NetworkManager"),
               .external(name: "Kingfisher"),
               .external(name: "SkeletonView"),
-              .external(name: "SnapKit")
+              .external(name: "SnapKit"),
+              .external(name: "Alamofire")
              ]),
     
     //MARK: Foundations
@@ -80,7 +81,10 @@ let project = Project(
     .framework("NetworkManager",
                sources: ["Foundations/NetworkManager/**/*.swift"],
                resources: [],
-               dependencies: [.external(name: "KeychainSwift")]
+               dependencies: [
+                .external(name: "KeychainSwift"),
+                .external(name: "Alamofire")
+               ]
               ),
     //MARK: Features
     .framework("AuthenticationFeature",
@@ -213,7 +217,6 @@ let project = Project(
                 .target(name: "Dependency"),
                 .target(name: "Coordinator"),
                ]),
-    
     //     diaktifkan kalau perlu test
     //    .target(
     //      name: "\(appName)Tests",

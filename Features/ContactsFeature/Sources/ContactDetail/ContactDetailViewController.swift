@@ -36,6 +36,10 @@ class ContactDetailViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  
+  deinit {
+    print("contact detail")
+  }
   // MARK: - Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
